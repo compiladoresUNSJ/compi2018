@@ -1,0 +1,27 @@
+v1.0:
+Corregido ventana de tabcontrol1.
+Agregado reglas writeln y write al arbol de derivacion.
+
+v1.1:
+Corregido nombres de nodos en metodo Statement.
+Corregida la gramatica.
+Corregido coloreo de write y writeln.
+
+v1.2:
+Corregido nombres de nodos en metodo Block y MethodDecl.
+Write y  writeln terminados.
+Codigo limpio en statement, block y methoddecl.
+Para buscar rapido el metodo = PERUMETODO. Por ej: PERUBLOCK.
+
+v1.2b:
+Agregado la funcionalidad en el menú Inspeccionar --> Gramática.
+Agregado las funcionalidades de G1: 
+-Mejoras en la interfaz y modificacion funcion "coloreaConRojo".
+
+v1.2c:
+Terminado y consultado el write y writeln. Falta implementar writeln(Expr);
+Modificada la gramatica en la regla del Writeln y creada la regla String_or_Expr.
+
+v1.2d:
+Agregada la funcion MessageBoxCon3Preg(TreeNode) que permite visualizar el ultimo nodo
+en el árbol de derivación.
