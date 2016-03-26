@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using text_Box_Mio;
+using at.jku.ssw.cc;
 
 namespace text_Box_Mio
 {
@@ -19,8 +19,6 @@ namespace text_Box_Mio
 
         private void button1_Click(object sender, EventArgs e)
         {
-         
-           
             this.Close();
         }
 

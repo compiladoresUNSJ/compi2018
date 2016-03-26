@@ -31,10 +31,10 @@
 21.ElseOpc = . |  "else" Statement.
 22.RestOfStatement = '=' Expr ';' | '('..')' ';' | '++' ';' | '--' ';'.
 23.Expr = OpcMinus Term OpcAddOpTerms.
-24.OpcMinus = . | "-“.
+24.OpcMinus = . | "-".
 25.OpcAddOpTerms  = . | AddOp Term.
 26.Term = Factor  OpcMulOpFactors.
-27.OpcMulOpFactors = . |  MulOp Factor.
+27.OpcMulopFactors = . |  MulOp Factor.
 28.Factor = Designator OpcRestOfMethCall | number | "(" Expr ")".
 29.OpcRestOfMethCall = . |  "(" OpcActPars ")" ].
 30.OpcActPars = . | ActPars.

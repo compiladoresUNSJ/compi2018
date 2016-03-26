@@ -1163,7 +1163,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             guardarComoToolStripMenuItem.Enabled = true;
 
             // button5.Enabled = true;
-            string fileName = "asignacion.txt";
+            string fileName = "programa.txt";
             textReader = new StreamReader(fileName);
             string fileText = textReader.ReadToEnd();
 
@@ -1347,7 +1347,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
 
         }
-
+        
         private void autoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
 

@@ -29,19 +29,10 @@ namespace at.jku.ssw.cc
         }
         private void FrmContinuarMaqVirtual_Load(object sender, EventArgs e)
         {
-            this.Location = new Point(200, 0);///no
         }
 
         private void FrmContinuarMaqVirtual_Load_1(object sender, EventArgs e)
         {
-            this.Location = new Point(400, 0);
-
         }
-
-        //private void FrmContinuarMaqVirtual_Load_1(object sender, EventArgs e)
-        //{
-        //    this.Location = new Point(400, 0);
-
-        //}
     }
 }

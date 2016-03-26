@@ -5,9 +5,11 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Drawing;
 
-namespace at.jku.ssw.cc {
+namespace at.jku.ssw.cc
+{
     /// The code generator for the Z# compiler.
-    public class AlP2 {
+    public class AlP2
+    {
         public static int iii;
         static void f() { iii = 9; }
     } ;
@@ -100,13 +102,13 @@ namespace at.jku.ssw.cc {
         const TypeAttributes PROGATTR = TypeAttributes.Class | TypeAttributes.Public;
 
         /* quick access to conditional branch instructions */
-        static readonly OpCode[] brtrue    = { BEQ, BGE, BGT, BLE, BLT, BNE };
-        static string[] brtrueString =       { "beq", "bge", "bgt", "ble", "blt", "bne" };
+        static readonly OpCode[] brtrue = { BEQ, BGE, BGT, BLE, BLT, BNE };
+        static string[] brtrueString = { "beq", "bge", "bgt", "ble", "blt", "bne" };
 
         public enum BrtrueENUM { BEQenum, BGEenum, BGTenum, BLEenum, BLTenum, BNEenum };
-        
-        static readonly OpCode[] brfalse   = { BNE, BLT, BLE, BGT, BGE, BEQ };
-        static string[] brfalseString =     { "bne", "blt", "ble", "bgt", "bge", "beq" };
+
+        static readonly OpCode[] brfalse = { BNE, BLT, BLE, BGT, BGE, BEQ };
+        static string[] brfalseString = { "bne", "blt", "ble", "bgt", "bge", "beq" };
         public enum BrfalseENUM { BNEenum, BLTenum, BLEenum, BGTenum, BGEenum, BEQenum };
 
         public static BrtrueENUM vsrEnum = BrtrueENUM.BEQenum;
@@ -180,59 +182,15 @@ namespace at.jku.ssw.cc {
                               Program1.form1.richTextBox7.Font.Size, FontStyle.Regular);
         }
 
+        //Inicio Modificacion - Grupo 1 - 10/9/15 - Se cambio tipo del parametro del metodo
         /// <summary>
-        /// true => colorea el Token. False => colorea laToken
+        /// "token" : Pinta Token
+        /// "latoken" : Pinta LaToken
         /// </summary>
         /// <param name="colorearToken"></param>
-        /* public static void coloreaConRojo(bool colorearToken)  //Editor  si el false, lo que colorea es laToken
 
-         {
-             //System.Windows.Forms.MessageBox.Show("****");    
-             int linea1 = -1; int col1 = -1;
-                 int sizeToken1 = -1; ;
-                 if (colorearToken) 
-                 {
-                     if (Parser.yaPintada)
-                     {
-                         Parser.yaPintada = false; //para los tokens que siguen
-                         return;
-                     }
-                     else
-                     {
-                         linea1 = Parser.token.line; col1 = Parser.token.col;
-                         if (Parser.token.str == null) sizeToken1 = 1;
-                         else sizeToken1 = Parser.token.str.Length;
-                     }
-                 }
-                 else
-                 {   //laToken
-                     linea1 = Parser.laToken.line; col1 = Parser.laToken.col;
-
-                     if (Parser.laToken.str == null) sizeToken1 = 1; 
-                                 else sizeToken1 = Parser.laToken.str.Length;
-                     Parser.yaPintada = true;
-                 }
-
-                 restaurarRichTextBox1conNegro();
-                 Program1.form1.Editor.Select(Program1.form1.Editor.GetFirstCharIndexFromLine(linea1 - 1)
-                                                                            + col1 - 1,
-                                                    sizeToken1);
-                 Program1.form1.Editor.SelectionColor = System.Drawing.Color.Red;
-                 Program1.form1.Editor.SelectionFont =
-                           new Font(Program1.form1.Editor.Font.FontFamily,
-                                    Program1.form1.Editor.Font.Size, FontStyle.Bold);
-
-                 if (linea1 % 14 == 0  &&  linea1 != 0)
-                 {
-                     Program1.form1.Editor.SelectionStart =
-                           Program1.form1.richTextBox3.GetFirstCharIndexFromLine((linea1 / 13) * 13);  
-                     Program1.form1.Editor.ScrollToCaret();
-                 }
-               if (Parser.muestraProducciones)  Parser.MessageBoxCon3Preg();  
-         }*/
-        public static void coloreaConRojo(string pintar)  
+        public static void Colorear(string pintar)
         {
-            //System.Windows.Forms.MessageBox.Show("****");    
             int linea1 = -1; int col1 = -1;
             int sizeToken1 = -1; ;
             if (pintar == "token")
@@ -259,10 +217,17 @@ namespace at.jku.ssw.cc {
             }
 
             restaurarRichTextBox1conNegro();
-            Program1.form1.Editor.Select(Program1.form1.Editor.GetFirstCharIndexFromLine(linea1 - 1)
-                                                                       + col1 - 1,
-                                               sizeToken1);
-            Program1.form1.Editor.SelectionColor = System.Drawing.Color.Red;
+            Program1.form1.Editor.Select(Program1.form1.Editor.GetFirstCharIndexFromLine(linea1 - 1)+ col1 - 1,sizeToken1);
+            //Inicio Modificación Grupo 1 - 31/09/15 - Token = Pinta Rojo ; LaToken = Pinta Verde
+            if (pintar == "token")
+            {
+                Program1.form1.Editor.SelectionColor = System.Drawing.Color.Red;
+            }
+            else
+            {
+                Program1.form1.Editor.SelectionColor = System.Drawing.Color.LimeGreen;
+            }
+            //Fin Modificacion Grupo 1 - 31/09/15
             Program1.form1.Editor.SelectionFont =
                       new Font(Program1.form1.Editor.Font.FontFamily,
                                Program1.form1.Editor.Font.Size, FontStyle.Bold);
@@ -273,69 +238,41 @@ namespace at.jku.ssw.cc {
                       Program1.form1.richTextBox3.GetFirstCharIndexFromLine((linea1 / 13) * 13);
                 Program1.form1.Editor.ScrollToCaret();
             }
-            Parser.MessageBoxCon3Preg();
+            if (Parser.muestraProducciones) Parser.MessageBoxCon3Preg();
         }
 
         //Fin Modificacion - Grupo 1 - 10/9/15
 
-        /*public static void cargaInstr2(string instr, System.Windows.Forms.TreeNode papito)
-        {   //fgfranco inicio
-            System.Windows.Forms.TreeNode instruccionDelArbol = new System.Windows.Forms.TreeNode("( "+instr+")");
-            papito.Nodes.Add(instruccionDelArbol);
-            instruccionDelArbol.ExpandAll();
-            //fgfranco fin
-
-
-
-            string instrConNroLinea;
-            instrConNroLinea = Parser.nroDeInstrCorriente.ToString() + ":" + instr  ;
-            if (Parser.nroDeInstrCorriente < 10) instrConNroLinea = " " + instrConNroLinea;
-            string stack = Program1.form1.richTextBox3.Text;
-            if (stack == "") Program1.form1.richTextBox3.Text = instrConNroLinea;
-            else Program1.form1.richTextBox3.Text = stack + "\n" + instrConNroLinea;
-
-            string texto = Program1.form1.richTextBox3.Text;
-            Program1.form1.richTextBox3.SelectionStart = texto.Length;  
-            Program1.form1.richTextBox3.ScrollToCaret();
-
-            if (Parser.muestraCargaDeInstrs) Program1.form1.instContinuar.ShowDialog();  //Parser.MessageBoxCon3Preg();
-
-            //Para ser utilizada despues
-            Parser.cil[Parser.nroDeInstrCorriente].instrString = instrConNroLinea;
-        }*/
-
         public static void cargaInstr(string instr)
         {
-            
+
             string instrConNroLinea;
             instrConNroLinea = Parser.nroDeInstrCorriente.ToString() + ":" + instr;
             if (Parser.nroDeInstrCorriente < 10) instrConNroLinea = " " + instrConNroLinea;
             string stack = Program1.form1.richTextBox3.Text;
             if (stack == "") Program1.form1.richTextBox3.Text = instrConNroLinea;
             else Program1.form1.richTextBox3.Text = stack + "\n" + instrConNroLinea;
-
-            //------------------------------------------------------Grupo 2 23/10/15---------------------------------------------------------- 
-            System.Windows.Forms.TreeNode previo = Program1.form1.treeView1.Nodes[Program1.form1.treeView1.Nodes.Count - 1].LastNode;
-            System.Windows.Forms.TreeNode actual = previo;
-            while (actual != null && actual.Nodes.Count > 0)
+            //Grupo 2 INICIO 23/10
+            //Empieza a buscar el ultimo nodo con hijos para colgar la instruccion cil
+            System.Windows.Forms.TreeNode previo = Program1.form1.treeView1.Nodes[Program1.form1.treeView1.Nodes.Count - 1].LastNode;//Accedemos al ultimo nodo del primer nivel
+            System.Windows.Forms.TreeNode actual = previo;//actual lo usaremos para avanzar en la lista y en previo guardaremos el ultimo nodo que hayamos expandido
+            while (actual != null && actual.Nodes.Count > 0)//empieza a buscar la lista   COunt es la cantidad de hijos
             {
                 previo = actual;
                 actual = actual.Nodes[actual.Nodes.Count - 1].LastNode;
             }
-            previo.Nodes.Add("( " + instrConNroLinea + " )");
-            //------------------------------------------------------Grupo 2 23/10/15----------------------------------------------------------
-
-
+            previo.Nodes.Add("( " + instrConNroLinea + " )");//previo quedo con el ultimo nodo expandido
+            //Grupo 2 FIN 301cargaInstr
             string texto = Program1.form1.richTextBox3.Text;
             Program1.form1.richTextBox3.SelectionStart = texto.Length;
             Program1.form1.richTextBox3.ScrollToCaret();
-
-            if (Parser.muestraCargaDeInstrs) Program1.form1.instContinuar.ShowDialog();  //Parser.MessageBoxCon3Preg();
+            if (Parser.muestraCargaDeInstrs)
+                Program1.form1.instContinuar.ShowDialog();
 
             //Para ser utilizada despues
             Parser.cil[Parser.nroDeInstrCorriente].instrString = instrConNroLinea;
         }
-        
+
         public static void cargaProgDeLaGram(string prod)
         {
             if (Parser.muestraProducciones)
@@ -348,45 +285,36 @@ namespace at.jku.ssw.cc {
                 //Program1.form1.richTextBox6.ScrollToCaret();
                 //Parser.MessageBoxCon3Preg();
             }
-
         }
 
         public static void seleccLaProdEnLaGram(int lineaEnLaGramatica)
         {
             int tamDelSegm = 15;  //21
 
-            if (lineaEnLaGramatica > 18) // G3 PERU Se le suma 9 porque en statement hay 9 lineas en una sola regla.
-                                         // Si se agrega una regla antes de Statement, revisar.
-            { lineaEnLaGramatica += 9; }
-
+            // G3 PERU Se le suma 9 porque en statement hay 9 lineas en una sola regla.
+            // Si se agrega una regla antes de Statement, revisar.
+            if (lineaEnLaGramatica > 18)
+            {
+                lineaEnLaGramatica += 9;
+            }
             if (Parser.muestraProducciones)
             {
                 Code.restaurarRichTextBox7conNegro();//Gramatica
                 string texto = Program1.form1.richTextBox7.Text;
-                int sizeToken1 = 2; // 
-
+                int sizeToken1 = 2;
                 int segActual = lineaEnLaGramatica / tamDelSegm; //De 0 a tamDelSegm-1 (21 -1 = 20) => 0, De tamDelSegm (21) a .. => 1, ....
-
-                //System.Windows.Forms.MessageBox.Show("linGram:" + Convert.ToString(lineaEnLaGramatica) + ", segActual:" + Convert.ToString(segActual) + ", segmAntGram:" + Convert.ToString(segmAnteriorGram));
-
                 if (segActual != segmAnteriorGram)
                 {
                     Program1.form1.richTextBox7.SelectionStart =
                           Program1.form1.richTextBox7.GetFirstCharIndexFromLine(segActual * tamDelSegm);
-                 
+
 
                     Program1.form1.richTextBox7.ScrollToCaret();
                 }
                 segmAnteriorGram = segActual;
-                Program1.form1.richTextBox7.Select(  //
-                    Program1.form1.richTextBox7.GetFirstCharIndexFromLine(
-                                        lineaEnLaGramatica) + 0,
-                                        sizeToken1);
+                Program1.form1.richTextBox7.Select(Program1.form1.richTextBox7.GetFirstCharIndexFromLine(lineaEnLaGramatica) + 0, sizeToken1);
                 Program1.form1.richTextBox7.SelectionColor = System.Drawing.Color.Red;
-                Program1.form1.richTextBox7.SelectionFont =
-                          new Font(Program1.form1.richTextBox7.Font.FontFamily,
-                                   Program1.form1.richTextBox7.Font.Size, FontStyle.Bold);
-                //Parser.MessageBoxCon3Preg();
+                Program1.form1.richTextBox7.SelectionFont = new Font(Program1.form1.richTextBox7.Font.FontFamily, Program1.form1.richTextBox7.Font.Size, FontStyle.Bold);
             }
         }
 
@@ -394,86 +322,73 @@ namespace at.jku.ssw.cc {
         {
             switch (sym.kind)
             {
-                case Symbol.Kinds.Global:  //ya visto
-                    if (sym.type != Tab.noType)
-                        sym.fld = program.DefineField(sym.name, sym.type.sysType, GLOBALATTR);
-                    break;
-                case Symbol.Kinds.Field:  //ya visto
-                    if (sym.type != Tab.noType) //Puede se int[]
-                        sym.fld = inner.DefineField(sym.name, sym.type.sysType, FIELDATTR);
-                    break;
-                case Symbol.Kinds.Local:
-                    LocalBuilder vbleLocalDin = il.DeclareLocal(sym.type.sysType);
-                    if (primeraVez)
+                case Symbol.Kinds.Global:
                     {
-                        ultimaVbleLocalDin = vbleLocalDin;
-                        primeraVez = false;
+                        if (sym.type != Tab.noType)
+                            sym.fld = program.DefineField(sym.name, sym.type.sysType, GLOBALATTR);
+                        break;
                     }
-                    break;
-                case Symbol.Kinds.Type:  
+                case Symbol.Kinds.Field:
+                    {
+                        if (sym.type != Tab.noType)
+                            sym.fld = inner.DefineField(sym.name, sym.type.sysType, FIELDATTR);
+                        break;
+                    }
+                case Symbol.Kinds.Local:
+                    {
+                        LocalBuilder vbleLocalDin = il.DeclareLocal(sym.type.sysType);
+                        if (primeraVez)
+                        {
+                            ultimaVbleLocalDin = vbleLocalDin;
+                            primeraVez = false;
+                        }
+                        break;
+                    }
+                case Symbol.Kinds.Type:
                     inner = module.DefineType(sym.name, INNERATTR);
-                    sym.type.sysType = inner; 
-
+                    sym.type.sysType = inner;
                     // define default contructor (calls base constructor)
-                    sym.ctor = inner.DefineConstructor(MethodAttributes.Public,
-                                                       CallingConventions.Standard, new Type[0]);
+                    sym.ctor = inner.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, new Type[0]);
                     il = sym.ctor.GetILGenerator();
                     il.Emit(LDARG0);
-                    //il.Emit(CALL, objCtor);  //este no funca
                     il.Emit(CALL, typeof(object).GetConstructor(new Type[0]));
                     il.Emit(RET);
                     break;
                 case Symbol.Kinds.Meth:
-                                                                       //sym.name
-                    //MethodBuilder writeStrMthd1 = program.DefineMethod("Main", MethodAttributes.Public, typeof(void), null);
-                     //ok sym.meth = program.DefineMethod("Main", MethodAttributes.Public, typeof(void), null);
-                    sym.meth = program.DefineMethod(sym.name, MethodAttributes.Public, typeof(void), null);
-                    //METHATTR (que es lo que viene originalm) no funca
-                    //sym.meth = program.DefineMethod("Main", METHATTR, sym.type.sysType, null); // args);  //Provis
-                    //il = writeStrMthd1.GetILGenerator();
-                    il = sym.meth.GetILGenerator();
-                    if (sym.name == "Main")
                     {
-                        assembly.SetEntryPoint(sym.meth);
-                       // Console.WriteLine("pasa por assembly.SetEntryPoint(sym.meth)");
+                        sym.meth = program.DefineMethod(sym.name, MethodAttributes.Public, typeof(void), null);
+                        il = sym.meth.GetILGenerator();
+                        if (sym.name == "Main")
+                        {
+                            assembly.SetEntryPoint(sym.meth);
+                        }
+                        break;
                     }
 
-                    //il.EmitWriteLine("...dentro del Main...");  funca bien
-                    //il.Emit(OpCodes.Ret);//AQUI NO
-
-                    break;
-
                 case Symbol.Kinds.Prog:
-                    AssemblyName assemblyName = new AssemblyName();
-                    assemblyName.Name = sym.name;
-                    //Console.WriteLine(sym.name);  if (ZZ.readKey) Console.ReadKey();
-                    assembly =
-                        AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName,   //originalm:Save
-                                               AssemblyBuilderAccess.RunAndSave);
-                    module = assembly.DefineDynamicModule(sym.name + "Module", sym.name + ".exe");//".exe"
-                    program = module.DefineType(sym.name, PROGATTR);  //clase din para el program
-
-                    Type objType = Type.GetType("System.Object");
-                    ConstructorInfo objCtor = objType.GetConstructor(new Type[0]);
-                    ConstructorBuilder pointCtor =
-                          program.DefineConstructor(MethodAttributes.Public,
-                                            CallingConventions.Standard, new Type[0]);
-                    ILGenerator ctorIL = pointCtor.GetILGenerator();
-
-                    // First, you build the constructor.
-                    ctorIL.Emit(OpCodes.Ldarg_0);
-                    //ctorIL.EmitWriteLine("...dentro del constr de class P..."); //funca bien
-                    ctorIL.Emit(OpCodes.Call, objCtor);
-                    ctorIL.Emit(OpCodes.Ret);
-
-                    inner = null;
-
-                    // build methods for I/O keywords (read, write)
-                    BuildReadChar();//como lo usa?
-                    BuildReadInt();
-                    BuildWriteChar();
-                    BuildWriteInt();
-                    break;
+                    {
+                        AssemblyName assemblyName = new AssemblyName();
+                        assemblyName.Name = sym.name;
+                        assembly =
+                            AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave);
+                        module = assembly.DefineDynamicModule(sym.name + "Module", sym.name + ".exe");//".exe"
+                        program = module.DefineType(sym.name, PROGATTR);  //clase din para el program
+                        Type objType = Type.GetType("System.Object");
+                        ConstructorInfo objCtor = objType.GetConstructor(new Type[0]);
+                        ConstructorBuilder pointCtor = program.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, new Type[0]);
+                        ILGenerator ctorIL = pointCtor.GetILGenerator();
+                        // First, you build the constructor.
+                        ctorIL.Emit(OpCodes.Ldarg_0);
+                        ctorIL.Emit(OpCodes.Call, objCtor);
+                        ctorIL.Emit(OpCodes.Ret);
+                        inner = null;
+                        // build methods for I/O keywords (read, write)
+                        BuildReadChar();
+                        BuildReadInt();
+                        BuildWriteChar();
+                        BuildWriteInt();
+                        break;
+                    }
             }
         }
 
@@ -485,78 +400,92 @@ namespace at.jku.ssw.cc {
             inner = null;
         }
 
-
         // ---------- instruction generation
-
         /* Load the operand x onto the expression stack. */
         //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
         internal static void Load(Item x)
         {
             switch (x.kind)
             {
-		        case Item.Kinds.Const:
-			        if (x.type == Tab.nullType) il.Emit(LDNULL);
-			        else LoadConst(x.val);
-			        break;
+                case Item.Kinds.Const:
+                    if (x.type == Tab.nullType) il.Emit(LDNULL);
+                    else LoadConst(x.val);
+                    break;
                 case Item.Kinds.Arg:
-                    switch (x.adr)
                     {
-                        case 0: il.Emit(LDARG0); break;
-                        case 1: il.Emit(LDARG1); break;
-                        case 2: il.Emit(LDARG2); break;
-                        case 3: il.Emit(LDARG3); break;
-                        default: il.Emit(LDARG, x.adr); break;
+                        switch (x.adr)
+                        {
+                            case 0: il.Emit(LDARG0); break;
+                            case 1: il.Emit(LDARG1); break;
+                            case 2: il.Emit(LDARG2); break;
+                            case 3: il.Emit(LDARG3); break;
+                            default: il.Emit(LDARG, x.adr); break;
+                        }
+                        break;
                     }
-                    break;
                 case Item.Kinds.Local:
-                    Parser.nroDeInstrCorriente++;
-                    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.loadLocal;
-                    Parser.cil[Parser.nroDeInstrCorriente].nro = x.adr;
-                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                    switch (x.adr)
                     {
-                        case 0: il.Emit(LDLOC0); cargaInstr("ldloc.0   ");
-                            break;
-                        case 1: il.Emit(LDLOC1); cargaInstr("ldloc.1   ");
-                            break;
-                        case 2: il.Emit(LDLOC2); cargaInstr("ldloc.2   ");
-                            break;
-                        case 3: il.Emit(LDLOC3); cargaInstr("ldloc.3   ");
-                            break;
-                        default:
-                            string instr = "ldloc." + x.adr.ToString();
-                            il.Emit(LDLOC, x.adr); cargaInstr(instr);
-                            break;
+                        Parser.nroDeInstrCorriente++;
+                        Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.loadLocal;
+                        Parser.cil[Parser.nroDeInstrCorriente].nro = x.adr;
+                        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                        switch (x.adr)
+                        {
+                            case 0: il.Emit(LDLOC0); cargaInstr("ldloc.0   ");
+                                break;
+                            case 1: il.Emit(LDLOC1); cargaInstr("ldloc.1   ");
+                                break;
+                            case 2: il.Emit(LDLOC2); cargaInstr("ldloc.2   ");
+                                break;
+                            case 3: il.Emit(LDLOC3); cargaInstr("ldloc.3   ");
+                                break;
+                            default:
+                                string instr = "ldloc." + x.adr.ToString();
+                                il.Emit(LDLOC, x.adr); cargaInstr(instr);
+                                break;
+                        }
+                        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                        break;
                     }
-                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                    break;
                 case Item.Kinds.Static:
-                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                    if (x.sym.fld != null)
                     {
-                        il.Emit(LDSFLD, x.sym.fld);
-                        cargaInstr(".field static assembly int32 "+ x.sym.name); 
+                        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                        if (x.sym.fld != null)
+                        {
+                            il.Emit(LDSFLD, x.sym.fld);
+                            cargaInstr(".field static assembly int32 " + x.sym.name);
+                        }
+                        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                        break;
                     }
-                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                   break;
-                case Item.Kinds.Stack: break; // nothing to do (already loaded)
+                case Item.Kinds.Stack:
+                    break; // nothing to do (already loaded)
                 case Item.Kinds.Field:  // assert: object base address is on stack
-                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                    if (x.sym.fld != null) 
-                      {il.Emit(LDFLD, x.sym.fld); 
-                       cargaInstr(".field static assembly int32 "+ x.sym.name); 
-                      };
-                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                    break;
+                    {
+                        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                        if (x.sym.fld != null)
+                        {
+                            il.Emit(LDFLD, x.sym.fld);
+                            cargaInstr(".field static assembly int32 " + x.sym.name);
+                        };
+                        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                        break;
+                    }
                 case Item.Kinds.Elem: // assert: array base address and index are on stack
-                    if (x.type == Tab.charType) il.Emit(LDELEMCHR);
-                    else if (x.type == Tab.intType) il.Emit(LDELEMINT);
-                    else if (x.type.kind == Struct.Kinds.Class) il.Emit(LDELEMREF);
-                    else Parser.Errors.Error("invalid array element type");
-                    break;
-                default: Parser.Errors.Error("cannot load this value"); break;
-	        }
-	        x.kind = Item.Kinds.Stack;
+                    {
+                        if (x.type == Tab.charType) il.Emit(LDELEMCHR);
+                        else if (x.type == Tab.intType) il.Emit(LDELEMINT);
+                        else if (x.type.kind == Struct.Kinds.Class) il.Emit(LDELEMREF);
+                        else Parser.Errors.Error("invalid array element type");
+                        break;
+                    }
+                default:
+                    {
+                        Parser.Errors.Error("cannot load this value");
+                        break;
+                    }
+            }
+            x.kind = Item.Kinds.Stack;
         }//Fin internal static void Load(Item x)
 
         /* Load an integer constant onto the expression stack. */
@@ -573,86 +502,100 @@ namespace at.jku.ssw.cc {
             Parser.nroDeInstrCorriente++;
             Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.loadConst;
             Parser.cil[Parser.nroDeInstrCorriente].nro = n;  //aqui
- 
-	        switch (n) {
+
+            switch (n)
+            {
                 case -1: il.Emit(LDCM1); cargaInstr("ldc.i4 -1"); break;
                 case 0: il.Emit(LDC0); cargaInstr("ldc.i4 0  "); break;
                 case 1: il.Emit(LDC1); cargaInstr("ldc.i4 1  "); break;
                 case 2: il.Emit(LDC2); cargaInstr("ldc.i4 2  "); break;
                 case 3: il.Emit(LDC3); cargaInstr("ldc.i4 3  "); break;
                 default: il.Emit(LDC, n); cargaInstr("ldc.i4 " + n.ToString() + blancos(3 - n.ToString().Length)); break;
-	        }
+            }
         }
         //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
         /* Generate an assignment x = y. */
         internal static void Assign(Item izq, Item der, System.Windows.Forms.TreeNode padrecito)
         {
             switch (izq.kind)
-             {
+            {
                 case Item.Kinds.Stack:  //Para el caso de x = 17. izq tendrá kind Stack
-                    switch (izq.sym.kind)
-                       {    
-                        case Symbol.Kinds.Arg:
-                             //Debo saber que nro de arg
-                             il.Emit(STARG, izq.adr); break;
-                        case Symbol.Kinds.Local:
-                            //Debo saber que nro de local
-                            int nroDeArg = izq.adr;
-                            Parser.nroDeInstrCorriente++;
-                            Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.storeLocal;
-                            Parser.cil[Parser.nroDeInstrCorriente].nro= nroDeArg; //cuando haya args hay restarle la cant de args
-                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                            switch (nroDeArg)
-                            {
-                                case 0: il.Emit(STLOC0); cargaInstr("stloc.0   "); break; //il.EmitWriteLine("..dentro del Assign: STLOC0 "); 
-                                case 1: il.Emit(STLOC1); cargaInstr("stloc.1   "); break;
-                                case 2: il.Emit(STLOC2); cargaInstr("stloc.2   "); break;
-                                case 3: il.Emit(STLOC3); cargaInstr("stloc.3   "); break;
-                                default: il.Emit(STLOC, nroDeArg); 
-                                         //il.EmitWriteLine("..dentro del Assign por el default..."); 
-                                    cargaInstr("stloc." + nroDeArg.ToString());
-                                         break;
-                            }
-                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                            //En el caso de local (x = 17), hubo un load(x)=ldloc.0 antes de ldc.17
-                            //por lo tanto, luego del stloc.0, queda aun en la pila el x
-                            //il.EmitWriteLine("...********* dentro del Assign *********...");
-                            //il.EmitWriteLine("ultimaVbleLocalDin");
-
-                            il.Emit(POP);
-                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                            Parser.nroDeInstrCorriente++; cargaInstr("pop      ");
-                            Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
-                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-
-                            break;
-                        case Symbol.Kinds.Global:
-                            if (izq.sym == null) { Console.Write("Error 3032928)"); if (ZZ.readKey) Console.ReadKey(); }
-                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                            il.Emit(STSFLD, izq.sym.fld); cargaInstr(".field static assembly int32 " + izq.sym.name);
-                            il.Emit(POP); Parser.nroDeInstrCorriente++; cargaInstr("pop");
-                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                            break;
-                        default: Parser.Errors.Error("izq.kind=Stack, yo contemplè solo 3 casos: Arg, Local y Global"); break;
-                       }//Fin switch (izq.sym.kind)
-                    break;
-                
+                    {
+                        switch (izq.sym.kind)
+                        {
+                            case Symbol.Kinds.Arg:
+                                {
+                                    //Debo saber que nro de arg
+                                    il.Emit(STARG, izq.adr);
+                                    break;
+                                }
+                            case Symbol.Kinds.Local:
+                                {
+                                    //Debo saber que nro de local
+                                    int nroDeArg = izq.adr;
+                                    Parser.nroDeInstrCorriente++;
+                                    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.storeLocal;
+                                    Parser.cil[Parser.nroDeInstrCorriente].nro = nroDeArg; //cuando haya args hay restarle la cant de args
+                                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                                    switch (nroDeArg)
+                                    {
+                                        case 0: il.Emit(STLOC0); cargaInstr("stloc.0   "); break;
+                                        case 1: il.Emit(STLOC1); cargaInstr("stloc.1   "); break;
+                                        case 2: il.Emit(STLOC2); cargaInstr("stloc.2   "); break;
+                                        case 3: il.Emit(STLOC3); cargaInstr("stloc.3   "); break;
+                                        default: il.Emit(STLOC, nroDeArg);
+                                            cargaInstr("stloc." + nroDeArg.ToString());
+                                            break;
+                                    }
+                                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                                    il.Emit(POP);
+                                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                                    Parser.nroDeInstrCorriente++; cargaInstr("pop      ");
+                                    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
+                                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                                    break;
+                                }
+                            case Symbol.Kinds.Global:
+                                {
+                                    if (izq.sym == null)
+                                    {
+                                        Console.Write("Error 3032928)"); if (ZZ.readKey) Console.ReadKey();
+                                    }
+                                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                                    il.Emit(STSFLD, izq.sym.fld); cargaInstr(".field static assembly int32 " + izq.sym.name);
+                                    il.Emit(POP); Parser.nroDeInstrCorriente++; cargaInstr("pop");
+                                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                                    break;
+                                }
+                            default: Parser.Errors.Error("izq.kind=Stack, yo contemplè solo 3 casos: Arg, Local y Global"); break;
+                        }//Fin switch (izq.sym.kind)
+                        break;
+                    }
                 case Item.Kinds.Field:
-                    il.Emit(STFLD, izq.sym.fld); cargaInstr(".field static assembly int32 " + izq.sym.name);
-                //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-                    break;
+                    {
+                        il.Emit(STFLD, izq.sym.fld); cargaInstr(".field static assembly int32 " + izq.sym.name);
+                        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
+                        break;
+                    }
                 case Item.Kinds.Elem:
-                    if (izq.type == Tab.intType) il.Emit(STELEMINT);
-                    else if (izq.type == Tab.charType) il.Emit(STELEMCHR);
-                         else il.Emit(STELEMREF);
-                    break;
-                default: Parser.Errors.Error("caso no contemplado para izq.kind"); break;
-             }//Fin switch (izq.kind)
+                    {
+                        if (izq.type == Tab.intType) il.Emit(STELEMINT);
+                        else if (izq.type == Tab.charType) il.Emit(STELEMCHR);
+                        else il.Emit(STELEMREF);
+                        break;
+                    }
+                default:
+                    {
+                        Parser.Errors.Error("caso no contemplado para izq.kind");
+                        break;
+                    }
+            }//Fin switch (izq.kind)
         }//Fin internal static void Assign(Item izq, Item der)
 
         /* Generate an increment instruction that increments x by n. */
-        internal static void Inc(Item x, int n) //??
+        internal static void Inc(Item x, int n)
         {
+            //NADA
         }
 
         /* Unconditional jump. */
@@ -664,27 +607,26 @@ namespace at.jku.ssw.cc {
         /* True Jump. Generates conditional branch instruction. */
         internal static void TJump(Item x)
         {
-		    il.Emit(brtrue[x.relop - Token.EQ], x.tLabel);
+            il.Emit(brtrue[x.relop - Token.EQ], x.tLabel);
         }
 
         /* False Jump. Generates conditional branch instruction. */
         //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
-        internal static void FJump(Item x)  
+        internal static void FJump(Item x)
         {
-            //Code.FJump
             il.Emit(brfalse[x.relop - Token.EQ], x.fLabel);
-            
+
             Parser.nroDeInstrCorriente++;
-            
+
             Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.fJump;
             Parser.cil[Parser.nroDeInstrCorriente].nroLinea = -1;  //el Br cond está indefinido
             Parser.cil[Parser.nroDeInstrCorriente].indBrFalse = brfalseVar[x.relop - Token.EQ]; //bge, etc (enum)
 
-            cargaInstr(brfalseString[x.relop - Token.EQ] + "  " //bge -1
-                      + Parser.cil[Parser.nroDeInstrCorriente].nroLinea.ToString());
+            cargaInstr(brfalseString[x.relop - Token.EQ] + "  " + Parser.cil[Parser.nroDeInstrCorriente].nroLinea.ToString());
         }
         //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
         /* Generate an executable .NET-PE-File. */
+
         public static void WritePEFile()
         {
             program.CreateType();
@@ -694,11 +636,8 @@ namespace at.jku.ssw.cc {
 
         static void BuildReadChar()
         {
-            // char read () {
             readChar = program.DefineMethod("readc", MethodAttributes.Static, typeof(char), new Type[0]);
             il = readChar.GetILGenerator();
-
-            //   return (char) System.Console.Read();
             il.EmitCall(CALL, typeof(Console).GetMethod("Read", new Type[0]), null);
             il.Emit(OpCodes.Conv_U2);
             il.Emit(RET);
@@ -706,43 +645,26 @@ namespace at.jku.ssw.cc {
 
         static void BuildReadInt()
         {
-            // int readi ()
             readInt = program.DefineMethod("readi", MethodAttributes.Static, typeof(int), new Type[0]);
             il = readInt.GetILGenerator();
-
-            //   bool neg = false;
             LocalBuilder neg = il.DeclareLocal(typeof(bool));
             il.Emit(LDC0);
             il.Emit(STLOC0);
-
-            //   int x = 0;
             LocalBuilder x = il.DeclareLocal(typeof(int));
             il.Emit(LDC0);
             il.Emit(STLOC1);
-
-            //   char ch = read();
             LocalBuilder ch = il.DeclareLocal(typeof(char));
             il.EmitCall(CALL, readChar, null);
             il.Emit(STLOC2);
-
-            //   if (c == '-') {
             Label ifEnd = il.DefineLabel();
             il.Emit(LDLOC2);
             il.Emit(LDC, (int)'-');
             il.Emit(BNE, ifEnd);
-
-            //     neg = true;
             il.Emit(LDC1);
             il.Emit(STLOC0);
-
-            //     c = ReadChar();
             il.EmitCall(CALL, readChar, null);
             il.Emit(STLOC2);
-
-            //   }
             il.MarkLabel(ifEnd);
-
-            //   while ('0' <= c && c <= '9') {
             Label whileStart = il.DefineLabel();
             Label whileEnd = il.DefineLabel();
             il.MarkLabel(whileStart);
@@ -752,8 +674,6 @@ namespace at.jku.ssw.cc {
             il.Emit(LDLOC2);
             il.Emit(LDC, (int)'9');
             il.Emit(BGT, whileEnd);
-
-            //     x = 10 * x + (int) (c-'0');
             il.Emit(LDC, 10);
             il.Emit(LDLOC1);
             il.Emit(MUL);
@@ -762,16 +682,10 @@ namespace at.jku.ssw.cc {
             il.Emit(SUB);
             il.Emit(ADD);
             il.Emit(STLOC1);
-
-            //     c = ReadChar();
             il.EmitCall(CALL, readChar, null);
             il.Emit(STLOC2);
-
-            //   }
             il.Emit(BR, whileStart);
             il.MarkLabel(whileEnd);
-
-            //   return neg ? -x : x;
             ifEnd = il.DefineLabel();
             Label elseBranch = il.DefineLabel();
             il.Emit(LDLOC0);
@@ -787,47 +701,32 @@ namespace at.jku.ssw.cc {
 
         static void BuildWriteChar()
         {
-            // void Write (char c, int width) 
-            writeChar = program.DefineMethod("write", MethodAttributes.Static,
-                                             typeof(void),
-                                             new Type[] { typeof(char), typeof(int) });
+            writeChar = program.DefineMethod("write", MethodAttributes.Static, typeof(void), new Type[] { typeof(char), typeof(int) });
             il = writeChar.GetILGenerator();
-            
-
-            // System.Console.Write(System.String.Format("{{0,{0}}}", width), c)
             il.Emit(OpCodes.Ldstr, "{{0,{0}}}");
             il.Emit(LDARG1);
             il.Emit(OpCodes.Box, typeof(int));
             il.EmitCall(CALL, typeof(string).GetMethod("Format", new Type[] { typeof(string), typeof(object) }), null);
-
             il.Emit(LDARG0);
             il.Emit(OpCodes.Box, typeof(char));
             il.EmitCall(CALL, typeof(Console).GetMethod("Write", new Type[] { typeof(string), typeof(object) }), null);
-
             il.Emit(RET);
         }
 
         static void BuildWriteInt()
         {
-            // void write (int x, int width) 
-            writeInt = program.DefineMethod("write", MethodAttributes.Static,
-                                            typeof(void),
-                                            new Type[] { typeof(int), typeof(int) });
+            writeInt = program.DefineMethod("write", MethodAttributes.Static, typeof(void), new Type[] { typeof(int), typeof(int) });
             il = writeInt.GetILGenerator();
-
-            // System.Console.Write(System.String.Format("{{0,{0}}}", width), x)
             il.Emit(OpCodes.Ldstr, "{{0,{0}}}");
             il.Emit(LDARG1);
             il.Emit(OpCodes.Box, typeof(int));
             il.EmitCall(CALL, typeof(string).GetMethod("Format", new Type[] { typeof(string), typeof(object) }), null);
-
             il.Emit(LDARG0);
             il.Emit(OpCodes.Box, typeof(int));
             il.EmitCall(CALL, typeof(Console).GetMethod("Write", new Type[] { typeof(string), typeof(object) }), null);
             il.Emit(RET);
         }
     }
-
 
     /* Z# Code Item.
      * An item stores the attributes of an operand during code generation.
