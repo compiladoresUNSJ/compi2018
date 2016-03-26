@@ -1163,7 +1163,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             guardarComoToolStripMenuItem.Enabled = true;
 
             // button5.Enabled = true;
-            string fileName = "escritura.txt";
+            string fileName = "asignacion.txt";
             textReader = new StreamReader(fileName);
             string fileText = textReader.ReadToEnd();
 

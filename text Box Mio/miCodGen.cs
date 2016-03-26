@@ -278,8 +278,15 @@ namespace at.jku.ssw.cc {
 
         //Fin Modificacion - Grupo 1 - 10/9/15
 
-        public static void cargaInstr(string instr)
-        {
+        /*public static void cargaInstr2(string instr, System.Windows.Forms.TreeNode papito)
+        {   //fgfranco inicio
+            System.Windows.Forms.TreeNode instruccionDelArbol = new System.Windows.Forms.TreeNode("( "+instr+")");
+            papito.Nodes.Add(instruccionDelArbol);
+            instruccionDelArbol.ExpandAll();
+            //fgfranco fin
+
+
+
             string instrConNroLinea;
             instrConNroLinea = Parser.nroDeInstrCorriente.ToString() + ":" + instr  ;
             if (Parser.nroDeInstrCorriente < 10) instrConNroLinea = " " + instrConNroLinea;
@@ -295,8 +302,40 @@ namespace at.jku.ssw.cc {
 
             //Para ser utilizada despues
             Parser.cil[Parser.nroDeInstrCorriente].instrString = instrConNroLinea;
-        }
+        }*/
 
+        public static void cargaInstr(string instr)
+        {
+            
+            string instrConNroLinea;
+            instrConNroLinea = Parser.nroDeInstrCorriente.ToString() + ":" + instr;
+            if (Parser.nroDeInstrCorriente < 10) instrConNroLinea = " " + instrConNroLinea;
+            string stack = Program1.form1.richTextBox3.Text;
+            if (stack == "") Program1.form1.richTextBox3.Text = instrConNroLinea;
+            else Program1.form1.richTextBox3.Text = stack + "\n" + instrConNroLinea;
+
+            //------------------------------------------------------Grupo 2 23/10/15---------------------------------------------------------- 
+            System.Windows.Forms.TreeNode previo = Program1.form1.treeView1.Nodes[Program1.form1.treeView1.Nodes.Count - 1].LastNode;
+            System.Windows.Forms.TreeNode actual = previo;
+            while (actual != null && actual.Nodes.Count > 0)
+            {
+                previo = actual;
+                actual = actual.Nodes[actual.Nodes.Count - 1].LastNode;
+            }
+            previo.Nodes.Add("( " + instrConNroLinea + " )");
+            //------------------------------------------------------Grupo 2 23/10/15----------------------------------------------------------
+
+
+            string texto = Program1.form1.richTextBox3.Text;
+            Program1.form1.richTextBox3.SelectionStart = texto.Length;
+            Program1.form1.richTextBox3.ScrollToCaret();
+
+            if (Parser.muestraCargaDeInstrs) Program1.form1.instContinuar.ShowDialog();  //Parser.MessageBoxCon3Preg();
+
+            //Para ser utilizada despues
+            Parser.cil[Parser.nroDeInstrCorriente].instrString = instrConNroLinea;
+        }
+        
         public static void cargaProgDeLaGram(string prod)
         {
             if (Parser.muestraProducciones)
@@ -450,6 +489,7 @@ namespace at.jku.ssw.cc {
         // ---------- instruction generation
 
         /* Load the operand x onto the expression stack. */
+        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
         internal static void Load(Item x)
         {
             switch (x.kind)
@@ -472,7 +512,7 @@ namespace at.jku.ssw.cc {
                     Parser.nroDeInstrCorriente++;
                     Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.loadLocal;
                     Parser.cil[Parser.nroDeInstrCorriente].nro = x.adr;
-
+                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                     switch (x.adr)
                     {
                         case 0: il.Emit(LDLOC0); cargaInstr("ldloc.0   ");
@@ -488,22 +528,25 @@ namespace at.jku.ssw.cc {
                             il.Emit(LDLOC, x.adr); cargaInstr(instr);
                             break;
                     }
+                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                     break;
                 case Item.Kinds.Static:
-
+                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                     if (x.sym.fld != null)
                     {
                         il.Emit(LDSFLD, x.sym.fld);
                         cargaInstr(".field static assembly int32 "+ x.sym.name); 
                     }
-
+                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                    break;
                 case Item.Kinds.Stack: break; // nothing to do (already loaded)
                 case Item.Kinds.Field:  // assert: object base address is on stack
+                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                     if (x.sym.fld != null) 
                       {il.Emit(LDFLD, x.sym.fld); 
                        cargaInstr(".field static assembly int32 "+ x.sym.name); 
                       };
+                    //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                     break;
                 case Item.Kinds.Elem: // assert: array base address and index are on stack
                     if (x.type == Tab.charType) il.Emit(LDELEMCHR);
@@ -524,7 +567,7 @@ namespace at.jku.ssw.cc {
                 bl = bl + " ";
             return bl;
         }
-
+        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------                    
         internal static void LoadConst(int n)
         {
             Parser.nroDeInstrCorriente++;
@@ -537,12 +580,12 @@ namespace at.jku.ssw.cc {
                 case 1: il.Emit(LDC1); cargaInstr("ldc.i4 1  "); break;
                 case 2: il.Emit(LDC2); cargaInstr("ldc.i4 2  "); break;
                 case 3: il.Emit(LDC3); cargaInstr("ldc.i4 3  "); break;
-                default: il.Emit(LDC, n); cargaInstr("ldc.i4 " + n.ToString() + blancos(3 - n.ToString().Length) ) ; break;
+                default: il.Emit(LDC, n); cargaInstr("ldc.i4 " + n.ToString() + blancos(3 - n.ToString().Length)); break;
 	        }
         }
-
+        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
         /* Generate an assignment x = y. */
-        internal static void Assign(Item izq, Item der)
+        internal static void Assign(Item izq, Item der, System.Windows.Forms.TreeNode padrecito)
         {
             switch (izq.kind)
              {
@@ -558,7 +601,7 @@ namespace at.jku.ssw.cc {
                             Parser.nroDeInstrCorriente++;
                             Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.storeLocal;
                             Parser.cil[Parser.nroDeInstrCorriente].nro= nroDeArg; //cuando haya args hay restarle la cant de args
-
+                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                             switch (nroDeArg)
                             {
                                 case 0: il.Emit(STLOC0); cargaInstr("stloc.0   "); break; //il.EmitWriteLine("..dentro del Assign: STLOC0 "); 
@@ -569,21 +612,26 @@ namespace at.jku.ssw.cc {
                                          //il.EmitWriteLine("..dentro del Assign por el default..."); 
                                     cargaInstr("stloc." + nroDeArg.ToString());
                                          break;
-                            } 
+                            }
+                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                             //En el caso de local (x = 17), hubo un load(x)=ldloc.0 antes de ldc.17
                             //por lo tanto, luego del stloc.0, queda aun en la pila el x
                             //il.EmitWriteLine("...********* dentro del Assign *********...");
                             //il.EmitWriteLine("ultimaVbleLocalDin");
 
                             il.Emit(POP);
+                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                             Parser.nroDeInstrCorriente++; cargaInstr("pop      ");
                             Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
+                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
 
                             break;
                         case Symbol.Kinds.Global:
                             if (izq.sym == null) { Console.Write("Error 3032928)"); if (ZZ.readKey) Console.ReadKey(); }
+                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                             il.Emit(STSFLD, izq.sym.fld); cargaInstr(".field static assembly int32 " + izq.sym.name);
                             il.Emit(POP); Parser.nroDeInstrCorriente++; cargaInstr("pop");
+                            //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                             break;
                         default: Parser.Errors.Error("izq.kind=Stack, yo contemplè solo 3 casos: Arg, Local y Global"); break;
                        }//Fin switch (izq.sym.kind)
@@ -591,6 +639,7 @@ namespace at.jku.ssw.cc {
                 
                 case Item.Kinds.Field:
                     il.Emit(STFLD, izq.sym.fld); cargaInstr(".field static assembly int32 " + izq.sym.name);
+                //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
                     break;
                 case Item.Kinds.Elem:
                     if (izq.type == Tab.intType) il.Emit(STELEMINT);
@@ -619,6 +668,7 @@ namespace at.jku.ssw.cc {
         }
 
         /* False Jump. Generates conditional branch instruction. */
+        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
         internal static void FJump(Item x)  
         {
             //Code.FJump
@@ -633,7 +683,7 @@ namespace at.jku.ssw.cc {
             cargaInstr(brfalseString[x.relop - Token.EQ] + "  " //bge -1
                       + Parser.cil[Parser.nroDeInstrCorriente].nroLinea.ToString());
         }
-
+        //////----------------------------------------------------------------Grupo 2 22/10/2015------------------------------------------------------
         /* Generate an executable .NET-PE-File. */
         public static void WritePEFile()
         {
