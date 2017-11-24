@@ -146,8 +146,10 @@ namespace at.jku.ssw.cc
             Program1.form1.richTextBox5.Text = todasLasInstrs;
             System.Windows.Forms.MessageBox.Show("fin");
         }
-
-        public const int maxCantVarsLocales = 10;
+        //--------------------------------------------<test>-------------------------------------
+        public const int maxCantVarsLocales = 30;
+        //--------------------------------------------</test>-------------------------------------
+        //public const int maxCantVarsLocales = 10;
         public static int cantVarLocales;
         public static int[] locals = new int[maxCantVarsLocales];
 
@@ -208,7 +210,19 @@ namespace at.jku.ssw.cc
             //La 1° vez q se ejecuta, token queda con Token(1, 1), laToken con "class" (primer token del programa)
             la = laToken.kind;
         }
-
+        //--------------------------------------2017
+        static int getnumber(int expected)
+        {
+            int n=-1;
+            if (la == expected) {
+                
+                n = laToken.getVAl();
+            }
+            else
+                Errors.Error("Se esperaba un: " + Token.names[expected]);
+            return n; 
+        }
+        //---------------------------------------
         /* Verifies symbol and reads ahead. */
         static void Check(int expected) //expected viene de la gramatica,  la del laToken que leyó
         {
@@ -217,7 +231,7 @@ namespace at.jku.ssw.cc
             else
                 Errors.Error("Se esperaba un: " + Token.names[expected]);
         }
-
+       
         static void Program()
         {
             System.Windows.Forms.TreeNode program = new System.Windows.Forms.TreeNode();  //Crea el nodo program
@@ -360,8 +374,8 @@ namespace at.jku.ssw.cc
             Tab.CloseScope();
             Tab.mostrarTab();
             bool Depuracion = false;
-            if (!Depuracion)
-                ParteFinal1();
+            //if (!Depuracion)
+              //  ParteFinal1();
             if (ZZ.parser)
             {
                 Console.WriteLine("despues de prog.locals = Tab.topScope.locals; Tab.CloseScope()");
@@ -513,42 +527,89 @@ namespace at.jku.ssw.cc
             Code.Colorear("latoken");
             //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
             MessageBoxCon3Preg();
-            lbrakopc.Nodes.Add(".");
-            lbrakopc.ExpandAll();
-            MessageBoxCon3Preg();
-            Code.seleccLaProdEnLaGram(12);
-            MessageBoxCon3Preg();
-            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
-            Check(Token.IDENT); // "pos", en int pos,   .....int,....  x, i, etc
-            Code.seleccLaProdEnLaGram(6);
-            padre.Nodes.Add("ident");// Hace referencia a la x
-            MessageBoxCon3Preg();
-            Code.Colorear("token"); 
-            System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("IdentifiersOpc");
-            padre.Nodes.Add(hijo2);
-            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
-            ////
-            // debo insertar el token en la tabla de símbolos
-            cantVarLocales++; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
-            Symbol vble = Tab.Insert(kind, token.str, type);
-            //vble no, poner simbolo (para pos, en int[] pos)
-            //pues en este caso  es campo, y devuelve el Symbol p/pos,  type es int[]
-            //puede ser val, en Tabla val, y type es Table //y devuelve el Symbol p/val
-            Code.CreateMetadata(vble); //Para el campo pos (en int[] pos)Global, Field o .....  
-            //o Para la vbe Global val
-            //o para x en int x;
-            Code.seleccLaProdEnLaGram(7);
-            Identifieropc(hijo2, type, kind);
-            Code.Colorear("latoken"); 
-            Check(Token.SEMICOLON);
-            MessageBoxCon3Preg();
-            Code.seleccLaProdEnLaGram(6);
-            Code.Colorear("token");
-            padre.Nodes.Add("';'");
-            MessageBoxCon3Preg();
-            Code.seleccLaProdEnLaGram(8);
-            //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------------------
-            Code.cargaProgDeLaGram("IdentifiersOpc = .");
+            //-------------------------------------------------<GrupoUnico2017>----------------------------------------------------------------------- 
+
+            if (type.kind.ToString() == "Arr")
+            {
+                lbrakopc.Nodes.Add("'['");
+                lbrakopc.Nodes.Add("number");
+                lbrakopc.Nodes.Add("']'");
+
+                //------------------------------<test>-----------------------
+                lbrakopc.ExpandAll();
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(12);
+                MessageBoxCon3Preg();
+                Check(Token.IDENT); // "pos", en int pos,   .....int,....  x, i, etc
+                Code.seleccLaProdEnLaGram(6);
+                padre.Nodes.Add("ident");// Hace referencia a la x
+                MessageBoxCon3Preg();
+                Code.Colorear("token");
+                System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("IdentifiersOpc");
+                padre.Nodes.Add(hijo2);
+                cantVarLocales=cantVarLocales + type.size; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
+                Symbol vble = Tab.Insert(kind, token.str, type);
+                //vble no, poner simbolo (para pos, en int[] pos)
+                //pues en este caso  es campo, y devuelve el Symbol p/pos,  type es int[]
+                //puede ser val, en Tabla val, y type es Table //y devuelve el Symbol p/val
+                Code.CreateMetadata(vble); //Para el campo pos (en int[] pos)Global, Field o .....
+                                            //o Para la vbe Global val
+                                            //o para x en int x;
+                Code.seleccLaProdEnLaGram(7);
+                Identifieropc(hijo2, type, kind);
+                
+                Code.Colorear("latoken");
+                Check(Token.SEMICOLON);
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(6);
+                Code.Colorear("token");
+                padre.Nodes.Add("';'");
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(8);
+                Code.cargaProgDeLaGram("IdentifiersOpc = .");
+                //------------------------------</test>-----------------------
+            }
+            else
+            {
+                lbrakopc.Nodes.Add(".");
+                //-------------------------------------------------</GrupoUnico2017>----------------------------------------------------------------------- 
+
+                lbrakopc.ExpandAll();
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(12);
+                MessageBoxCon3Preg();
+                //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+                Check(Token.IDENT); // "pos", en int pos,   .....int,....  x, i, etc
+                Code.seleccLaProdEnLaGram(6);
+                padre.Nodes.Add("ident");// Hace referencia a la x
+                MessageBoxCon3Preg();
+                Code.Colorear("token");
+                System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("IdentifiersOpc");
+                padre.Nodes.Add(hijo2);
+                //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+                ////
+                // debo insertar el token en la tabla de símbolos
+                cantVarLocales++; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
+                Symbol vble = Tab.Insert(kind, token.str, type);
+                //vble no, poner simbolo (para pos, en int[] pos)
+                //pues en este caso  es campo, y devuelve el Symbol p/pos,  type es int[]
+                //puede ser val, en Tabla val, y type es Table //y devuelve el Symbol p/val
+                Code.CreateMetadata(vble); //Para el campo pos (en int[] pos)Global, Field o .....
+                                           //o Para la vbe Global val
+                                           //o para x en int x;
+                Code.seleccLaProdEnLaGram(7);
+                Identifieropc(hijo2, type, kind);
+                Code.Colorear("latoken");
+                Check(Token.SEMICOLON);
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(6);
+                Code.Colorear("token");
+                padre.Nodes.Add("';'");
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(8);
+                //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------------------
+                Code.cargaProgDeLaGram("IdentifiersOpc = .");
+            }
         }//Fin VardDecl
 
         static void ClassDecl()
@@ -729,11 +790,46 @@ namespace at.jku.ssw.cc
 
                 if (cantVarLocales > 0)
                 {
-                    string instrParaVarsLocs = ".locals init(int32 V_0";
-                    for (int i = 1; i < cantVarLocales; i++)
+                    //----------------------------------<test>--------------------------------------------
+                    Symbol actual = Tab.topScope.locals, ultimo = null;
+                    int descontador =0;
+                    int contadordearreglos = 0;
+                    while (actual != null)  //Fran sólo es necesario buscar en el Scope actual
                     {
-                        instrParaVarsLocs = instrParaVarsLocs + "," + "\n          int32 V_" + i.ToString(); // +"  ";
+
+                        if (actual.type.kind.ToString()=="Arr")
+                        {
+                            descontador += actual.type.size;
+                            contadordearreglos++;
+                        }
+                        ultimo = actual;
+                        actual = actual.next;
                     }
+                    actual = Tab.topScope.locals;
+                    //string instrParaVarsLocs = ".locals init(int32 V_0";
+                    // Dentro del for originalmente va i=1, con el test va cantVarLocales-descontador+contadordearreglos+1
+                    string instrParaVarsLocs = ".locals init(";
+                    //for (int i = 0; i < cantVarLocales-descontador+contadordearreglos+1; i++)
+                    int i = 0;
+                    while(actual != null)
+                    {
+                        if (actual.type.kind.ToString()=="Arr")
+                        {
+                            for (int j = 0; j < actual.type.size; j++)
+                            {
+                                instrParaVarsLocs = instrParaVarsLocs + "," + "\n       int32 V_" + i.ToString() + "." + j.ToString(); // +"  ";
+                              
+                            }
+                        }
+                        else
+                        {
+                            instrParaVarsLocs = instrParaVarsLocs + "," + "\n       int32 V_" + i.ToString(); // +"  ";
+                        }
+                        actual = actual.next;
+                        i++;
+                    }
+
+                    //----------------------------------</test>--------------------------------------------
                     instrParaVarsLocs = instrParaVarsLocs + ")";
                     Code.cargaInstr(instrParaVarsLocs);
 
@@ -818,10 +914,15 @@ namespace at.jku.ssw.cc
                 //Code.Colorear("latoken"); //un "[" o lo que sigue al type (un ident en int ident1)
                 if (la == Token.LBRACK)  // 
                 {
-                    Code.cargaProgDeLaGram("LbrackOpc = '[' ']'.");
+                    Code.cargaProgDeLaGram("LbrackOpc = '[' number ']'.");
                     Check(Token.LBRACK);
+                    int n = getnumber(Token.NUMBER); 
+                    Check(Token.NUMBER);
+
                     Check(Token.RBRACK);                  //int tipo del elem del array
+
                     xType = new Struct(Struct.Kinds.Arr, sym.type);
+                    xType.setSize(n);
                     //podria haber sido xType (Struct del int) en vez de sym.type  
                     //el nuevo xType que obtiene es un array de int
                 }
@@ -891,14 +992,33 @@ namespace at.jku.ssw.cc
                             RestOfstatement.Nodes.Add("'='");
                             RestOfstatement.ExpandAll();
                             MessageBoxCon3Preg(RestOfstatement);
-                            System.Windows.Forms.TreeNode nexpr = new System.Windows.Forms.TreeNode("Expr");
+                            //------------------------------------------------unico grupo 2017------------------------------------------------------------
+                            if (la == 27)
+                            {
+                                System.Windows.Forms.TreeNode nexpre = new System.Windows.Forms.TreeNode("ArrayDecl");
+                                Code.seleccLaProdEnLaGram(37);
+                                RestOfstatement.Nodes.Add(nexpre);
+                                MessageBoxCon3Preg(RestOfstatement);
+                                //ArrayDecl();
+                            }
+                            else       
+                            {
+                                System.Windows.Forms.TreeNode nexpr = new System.Windows.Forms.TreeNode("Expr");
+                                Code.seleccLaProdEnLaGram(23);
+                                RestOfstatement.Nodes.Add(nexpr);
+                                MessageBoxCon3Preg(RestOfstatement);
+                                Expr(out itemDer, nexpr);
+                                Code.Load(itemDer);
+                                Code.Assign(itemIzq, itemDer, nexpr);
+                            }
+                            /*System.Windows.Forms.TreeNode nexpr = new System.Windows.Forms.TreeNode("Expr");
                             Code.seleccLaProdEnLaGram(23);
                             RestOfstatement.Nodes.Add(nexpr);
                             MessageBoxCon3Preg(RestOfstatement);
                             //-------------------------------------------------Grupo 2 30/9/2015-----------------------------------------------------------
                             Expr(out itemDer, nexpr);
                             Code.Load(itemDer);
-                            Code.Assign(itemIzq, itemDer, nexpr);
+                            Code.Assign(itemIzq, itemDer, nexpr);*/
                             if (ZZ.parser)
                             {
                                 Console.WriteLine("Termina statement de asign: ..." + parteFinalDelDesign
@@ -1547,6 +1667,7 @@ namespace at.jku.ssw.cc
             OpCode op; Item itemSig;
             System.Windows.Forms.TreeNode OpcMinus = new System.Windows.Forms.TreeNode("OpcMinus");
             System.Windows.Forms.TreeNode Term = new System.Windows.Forms.TreeNode("Term");
+
             if (la == Token.MINUS)
             {
                 Check(Token.MINUS);
@@ -1566,16 +1687,28 @@ namespace at.jku.ssw.cc
             }
             else
             {
-                Code.Colorear("latoken");
-                OpcMinus.Nodes.Add(".");
-                OpcMinus.ExpandAll();
-                MessageBoxCon3Preg(OpcMinus);
-                padre.Nodes.Add(OpcMinus);
-                padre.ExpandAll();
-                MessageBoxCon3Preg(padre);
-                padre.Nodes.Add(Term);
-                MessageBoxCon3Preg(padre);
-                Parser.Term(out item, Term);
+                if (la == Token.NUMBER)
+                {
+                    Code.Colorear("latoken");
+                    Term.Nodes.Add(".");
+                    Term.ExpandAll();
+                    MessageBoxCon3Preg(Term);
+                    MessageBoxCon3Preg(padre);   
+                    Parser.Term(out item, Term);
+                }
+                else
+                {
+                    Code.Colorear("latoken");
+                    OpcMinus.Nodes.Add(".");
+                    OpcMinus.ExpandAll();
+                    MessageBoxCon3Preg(OpcMinus);
+                    padre.Nodes.Add(OpcMinus);
+                    padre.ExpandAll();
+                    MessageBoxCon3Preg(padre);
+                    padre.Nodes.Add(Term);
+                    MessageBoxCon3Preg(padre);
+                    Parser.Term(out item, Term);
+                }
             }
             string opString = "";
             System.Windows.Forms.TreeNode OpcAddopTerms = new System.Windows.Forms.TreeNode("OpcAddopTerms");
@@ -1617,8 +1750,15 @@ namespace at.jku.ssw.cc
                 OpcAddopTerms.Nodes.Add(Term_OpcAddop);
                 Parser.Term(out itemSig, Term_OpcAddop);
                 Code.Load(itemSig);
+                //-------------------------------------------<test>-----------------------------------------------
                 if (item.type != Tab.intType || itemSig.type != Tab.intType)
-                    Errors.Error("Los operandos deben ser de tipo int");
+                    if(item.type.kind.ToString() != "Arr" && itemSig.type.kind.ToString() != "Arr")
+                    if (item.type.kind.ToString()!="Arr" && itemSig.type != Tab.intType)
+                        if(item.type != Tab.intType && itemSig.type.kind.ToString() != "Arr")
+                            Errors.Error("Los operandos deben ser de tipo int");
+                //-------------------------------------------<test>-----------------------------------------------
+                //if (item.type != Tab.intType || itemSig.type != Tab.intType)
+                //   Errors.Error("Los operandos deben ser de tipo int");
                 nroDeInstrCorriente++;
                 Code.il.Emit(op);
                 Code.cargaInstr(opString);
@@ -1876,8 +2016,13 @@ namespace at.jku.ssw.cc
                     Code.Load(item);
                     Factor(out itemSig);
                     Code.Load(itemSig);
+                    //-------------------------------------------<test>-----------------------------------
                     if (item.type != Tab.intType || itemSig.type != Tab.intType)
-                        Errors.Error("Debe venir un Term");
+                        if (item.type.kind.ToString() != "Arr" && itemSig.type.kind.ToString() != "Arr")
+                            if (item.type.kind.ToString() != "Arr" && itemSig.type != Tab.intType)
+                                if (item.type != Tab.intType && itemSig.type.kind.ToString() != "Arr")
+                                    Errors.Error("Debe venir un Term");
+                    //------------------------------------------</test>----------------------------------------
                     Code.il.Emit(op);
                     nroDeInstrCorriente++;
                     Code.cargaInstr(opString);
@@ -1911,6 +2056,7 @@ namespace at.jku.ssw.cc
                 MessageBoxCon3Preg(padre);
                 Parser.Factor(out item, Factor);
                 bool existe_OpcMulOpFactor = false;
+
                 System.Windows.Forms.TreeNode OpcMulopFactors = new System.Windows.Forms.TreeNode("OpcMulopFactors");
                 padre.Nodes.Add(OpcMulopFactors);
                 MessageBoxCon3Preg(padre);
@@ -1970,10 +2116,13 @@ namespace at.jku.ssw.cc
                     MessageBoxCon3Preg(OpcMulopFactors);
                     Parser.Factor(out itemSig, Factor_OpcMulop);
                     Code.Load(itemSig);
+                    //----------------------------------------------<test-mult-slash>----------------------------
                     if (item.type != Tab.intType || itemSig.type != Tab.intType)
-                    {
-                        Errors.Error("Debe venir un Term");
-                    }
+                        if (item.type.kind.ToString() != "Arr" && itemSig.type.kind.ToString() != "Arr")
+                            if (item.type.kind.ToString() != "Arr" && itemSig.type != Tab.intType)
+                                if (item.type != Tab.intType && itemSig.type.kind.ToString() != "Arr")
+                                    Errors.Error("Debe venir un Term");
+                    //-----------------------------------------------</test-mult-slash>-------------------------
                     Code.il.Emit(op);
                     nroDeInstrCorriente++;
                     Code.cargaInstr(opString);
@@ -2045,7 +2194,12 @@ namespace at.jku.ssw.cc
                             padre.ExpandAll();
                             MessageBoxCon3Preg(padre);
                             item = new Item(token.val);//Nuevo
-                            Code.Load(item);
+                            //--------------------------------------------<test>---------------------------
+                            if (la != Token.RBRACK)
+                            {
+                                Code.Load(item);
+                            }
+                            //--------------------------------------------</test>--------------------------
                             break;
                         }
                     case Token.CHARCONST:
@@ -2208,22 +2362,74 @@ namespace at.jku.ssw.cc
                             Code.cargaProgDeLaGram("opcRestOfDesignator =  '[' Expr ']'.");
                             Code.Colorear("token");
                             if (muestraProducciones) MessageBoxCon3Preg();
+                        //--------------------------------------<test>---------------------------------------
+                        // No se carga el subindice ya que se calcula en el la linea 2376 con el valor que tiene
+                        //el subindice
+                        //item.adr = item.adr + itemSig.val;
+                        //Code.Load(item);
+                        //mas abajo supuestamente carga el indice pero no lo hace, no se que es lo que hace realmente
+                        //pero tambien lo comente ya que no tendria ninguna funcionalidad con respecto al indice del
+                        //arreglo
+                        //--------------------------------------<test>---------------------------------------
+                        Item itemSig;
+                        //
+                        System.Windows.Forms.TreeNode nexpr = new System.Windows.Forms.TreeNode("Expr");
+                        Code.seleccLaProdEnLaGram(23);
+                        //RestOfstatement.Nodes.Add(nexpr);
+                        //
+                        Expr(out itemSig, nexpr);
+                        //--------------------------------------<2test>-----------------------------------------
+                        //Code.il.Emit(Code.POP);
+                        //Parser.nroDeInstrCorriente++; Code.cargaInstr("pop      ");
+                        //Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
+                        item.adr = item.adr + itemSig.val;
+                        Item index = new Item(item.adr);
+                        Code.Load(index);
 
-                            Code.Load(item);
-                            Item itemSig;
-                            Expr(out itemSig, null);
+                        Code.il.Emit(Code.POP);
+                        nroDeInstrCorriente++; Code.cargaInstr("pop      ");
+                        cil[nroDeInstrCorriente].accionInstr = AccionInstr.pop;
 
-                            if (item.type.kind == Struct.Kinds.Arr)
+                        Code.Load(item);
+
+                        //--------------------------------------</2test>----------------------------------------
+                        if (item.type.kind == Struct.Kinds.Arr)
                             {
                                 if (itemSig.type != Tab.intType) Errors.Error("index must be of type int");
-                                Code.Load(itemSig);  //carga el subindice en el Stack
-                                itemSig.type = item.type.elemType;//Si char[10] a; => x.type quedará con char
+                            //--------------------------------------<test>---------------------------------------
+                            //Code.Load(itemSig);  //carga el subindice en el Stack
+                            //leer linea 2344 de Parser.cs
+
+
+                            //item.kind = Item.Kinds.Local;
+                            //Code.il.Emit(Code.POP);
+                            //Parser.nroDeInstrCorriente++; Code.cargaInstr("pop      ");
+                            //Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
+                            //--------------------------------------<test>---------------------------------------
+
+                            itemSig.type = item.type.elemType;//Si char[10] a; => x.type quedará con char
                             }
                             else Errors.Error(sym.name + " is not an array");
-                            item.kind = Item.Kinds.Elem;
 
-                            Check(Token.RBRACK);
-                        }
+                        //--------------------------------------<test>---------------------------------------
+                        //item.kind = Item.Kinds.Elem; linea original
+                        item.kind = Item.Kinds.Stack;// linea de test
+
+                        //--------------------------------------</test>---------------------------------------
+                        //item.adr = item.adr + itemSig.val;
+                        Check(Token.RBRACK);
+                        //--------------------------------------<test>---------------------------------------
+                        //if (laToken.kind == 4 || laToken.kind == 5 || 
+                        //    laToken.kind == 6 || laToken.kind == 7 || laToken.kind == 8)
+                        //{
+                        //    item.kind = Item.Kinds.Local;
+                        //    Code.il.Emit(Code.POP);
+                        //    Parser.nroDeInstrCorriente++; Code.cargaInstr("pop      ");
+                        //    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
+                        //}
+                        //                      No sirve para a[0] + a[0]
+                        //--------------------------------------</test>---------------------------------------
+                    }
                 }//Fin while
             }
             else
