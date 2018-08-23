@@ -1135,7 +1135,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            //COMENTARIO BERNAL
             //RichTextBox r1 = new RichTextBox();
             //r1.Text = "xxx";
 
