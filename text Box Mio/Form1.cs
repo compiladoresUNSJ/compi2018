@@ -35,6 +35,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             InitializeComponent();
             instContinuar = new text_Box_Mio.continuar();
             //  inicializa();
+            //comentario
 
         }
 
