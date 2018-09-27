@@ -117,8 +117,9 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             tabControl2.Visible = true;
             richTextBox7.Visible = true;
             button3.Visible = button4.Visible = false;
-            richTextBox2.Visible = richTextBox4.Visible = richTextBox5.Visible = false;
-            label1.Visible = label2.Visible = label7.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = label13.Visible = false;
+            //richTextBox2.Visible = richTextBox4.Visible = richTextBox5.Visible = false;
+            pilaLV.Visible = varLocales.Visible = false;
+            //label1.Visible = label2.Visible = label7.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = label13.Visible = false;
             //Fin Modificacion - Grupo 1 - 10/9/15
             //   
             Editor = (RichTextBox)pestania.SelectedTab.Controls[0];
@@ -737,8 +738,9 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             //if (!errorEnComilacion) maquVirtual();
             //Parser.ejecuta = false;
             //tabControl1.Width -= 100;
-            label1.Visible = label2.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = label13.Visible = true;
-            richTextBox2.Visible = richTextBox4.Visible = true;
+            //label1.Visible = label2.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = label13.Visible = true;
+            //richTextBox2.Visible = richTextBox4.Visible = true;
+            pilaLV.Visible = varLocales.Visible = true;
             tabControl1.SelectedIndex = 2;
             tabControl2.Visible = false;
             button3.Visible = true;
@@ -1237,8 +1239,9 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         private void maquVirtualToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tabControl1.Width -= 100;
-            label1.Visible = label2.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = true;
-            richTextBox2.Visible = richTextBox4.Visible = true;
+            //label1.Visible = label2.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = true;
+            //richTextBox2.Visible = richTextBox4.Visible = true;
+            pilaLV.Visible = varLocales.Visible = true;
             tabControl1.SelectedIndex = 2;
             tabControl2.Visible = false;
             richTextBox8.Visible = richTextBox9.Visible = true;
@@ -1425,6 +1428,11 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             
             pr.StartInfo.FileName = "z_gramatica.txt";
             pr.Start();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void acercaToolStripMenuItem_Click(object sender, EventArgs e)

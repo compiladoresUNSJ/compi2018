@@ -25,7 +25,9 @@ namespace at.jku.ssw.cc
 
         public void mostrarPilita()
         {
+            
             string pilaString = "";
+            Program1.form1.pilaLV.Items.Clear();
             for (int i = this.cantMaxDeElem - 1; i >= 0; i--)
             {
                 if (i > Parser.pilita.tope)
@@ -37,11 +39,19 @@ namespace at.jku.ssw.cc
                     if (((ElemPilita)elementos[i]).elemDePila == ElemPilita.ElemDePila.esEntero)
                         elemParaMostrar = ((ElemPilita)elementos[i]).entero.ToString();
                     else elemParaMostrar = ((ElemPilita)elementos[i]).estring;
+
                     pilaString = pilaString + "\n" + elemParaMostrar;
 
+                    System.Windows.Forms.ListViewItem lvi = new System.Windows.Forms.ListViewItem(i.ToString());
+                    lvi.SubItems.Add(elemParaMostrar);
+                    Program1.form1.pilaLV.Items.Add(lvi);
+                    Program1.form1.pilaLV.Items[Program1.form1.pilaLV.Items.Count - 1].Focused = true;
                 }
             }
             Program1.form1.richTextBox2.Text = pilaString;
+            //System.Windows.Forms.ListViewItem lvi = new System.Windows.Forms.ListViewItem("x");
+            //lvi.SubItems.Add("y");
+            //Program1.form1.pilaLV.Items.Add(lvi);
             if (Parser.muestraCargaDeInstrs) Parser.MessageBoxCon2PregMaqVirtual();
         }
 
@@ -153,14 +163,24 @@ namespace at.jku.ssw.cc
 
         public static void muestraVarsLocales()
         {
+            Program1.form1.varLocales.Items.Clear();
             string todasLasVarsLocales;
-            if (cantVarLocales == 0) todasLasVarsLocales = "No hay vars locales";
+            if (cantVarLocales == 0) { 
+                todasLasVarsLocales = "No hay vars locales";
+            }
             else
             {
                 todasLasVarsLocales = locals[0].ToString();
+                System.Windows.Forms.ListViewItem loc0 = new System.Windows.Forms.ListViewItem("0");
+                loc0.SubItems.Add(locals[0].ToString());
+                Program1.form1.varLocales.Items.Add(loc0);
+
                 for (int i = 1; i < cantVarLocales; i++)
                 {
                     todasLasVarsLocales = todasLasVarsLocales + "\n" + locals[i].ToString();
+                    System.Windows.Forms.ListViewItem lvi = new System.Windows.Forms.ListViewItem(i.ToString());
+                    lvi.SubItems.Add(locals[i].ToString());
+                    Program1.form1.varLocales.Items.Add(lvi);
                 }
                 Program1.form1.richTextBox4.Text = todasLasVarsLocales;
             }

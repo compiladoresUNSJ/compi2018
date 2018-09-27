@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 
 namespace at.jku.ssw.cc {
@@ -6,7 +7,9 @@ namespace at.jku.ssw.cc {
 /// They hold additional information about the symbol.
 /// AW, woess@dotnet.jku.at
 public class Token {
-	public const int
+
+    public Dictionary<string, int> dictionary = new Dictionary<string, int>();
+    public const int
 	//error token
 		NONE      =  0,
 	//terminal classes
@@ -63,7 +66,11 @@ public class Token {
 	public Token (int kind, int line, int col, int val)             : this(kind, line, col, val, null) {}
 	public Token (int kind, int line, int col,          string str) : this(kind, line, col, 0, str) {}
 	public Token (int kind, int line, int col, int val, string str) {
-		this.kind = kind;
+            for (int i = 0; i < names.Length; i++)
+            {
+                dictionary.Add(names[i], i);
+            }
+        this.kind = kind;
 		this.line = line; this.col = col;
 		this.val = val; this.str = str;
 	}
