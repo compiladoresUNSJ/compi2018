@@ -13,11 +13,11 @@ using System.Threading;
 using System.Diagnostics;
 
 
-namespace at.jku.ssw.cc //Compilador //text_Box_Mio
+namespace at.jku.ssw.cc //Compilador //Compi
 {
     public partial class Form1 : Form
     {
-        public text_Box_Mio.continuar instContinuar;  // 
+        public Compi.continuar instContinuar;  // 
 
         public RichTextBox Editor;
         public TabPage T;
@@ -33,7 +33,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         public Form1()
         {
             InitializeComponent();
-            instContinuar = new text_Box_Mio.continuar();
+            instContinuar = new Compi.continuar();
             //  inicializa();
 
         }

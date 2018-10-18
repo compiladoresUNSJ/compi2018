@@ -44,7 +44,7 @@
             // 
             // button2
             // 
-            this.button2.Image = global::text_Box_Mio.Properties.Resources.Forward;
+            this.button2.Image = global::Compi.Properties.Resources.Forward;
             this.button2.Location = new System.Drawing.Point(96, -2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(54, 50);

@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using at.jku.ssw.cc;
 
-namespace text_Box_Mio
+namespace Compi
 {
     public partial class continuar : Form
     {

@@ -289,7 +289,7 @@
             // nuevoToolStripMenuItem
             // 
             this.nuevoToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.nuevoToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources._14_layer_newlayer_16x16;
+            this.nuevoToolStripMenuItem.Image = global::Compi.Properties.Resources._14_layer_newlayer_16x16;
             this.nuevoToolStripMenuItem.Name = "nuevoToolStripMenuItem";
             this.nuevoToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.nuevoToolStripMenuItem.Text = "Nuevo";
@@ -297,7 +297,7 @@
             // 
             // abrirToolStripMenuItem
             // 
-            this.abrirToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.folder_horizontal_open_16x16;
+            this.abrirToolStripMenuItem.Image = global::Compi.Properties.Resources.folder_horizontal_open_16x16;
             this.abrirToolStripMenuItem.Name = "abrirToolStripMenuItem";
             this.abrirToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.abrirToolStripMenuItem.Text = "Abrir";
@@ -311,7 +311,7 @@
             // guardarToolStripMenuItem
             // 
             this.guardarToolStripMenuItem.Enabled = false;
-            this.guardarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.filesave_16x16;
+            this.guardarToolStripMenuItem.Image = global::Compi.Properties.Resources.filesave_16x16;
             this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
             this.guardarToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.guardarToolStripMenuItem.Text = "Guardar";
@@ -320,7 +320,7 @@
             // guardarComoToolStripMenuItem
             // 
             this.guardarComoToolStripMenuItem.Enabled = false;
-            this.guardarComoToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.page_save_16x16;
+            this.guardarComoToolStripMenuItem.Image = global::Compi.Properties.Resources.page_save_16x16;
             this.guardarComoToolStripMenuItem.Name = "guardarComoToolStripMenuItem";
             this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.guardarComoToolStripMenuItem.Text = "Guardar como";
@@ -356,7 +356,7 @@
             // 
             // deshacerToolStripMenuItem
             // 
-            this.deshacerToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.gtk_undo_ltr_16x16;
+            this.deshacerToolStripMenuItem.Image = global::Compi.Properties.Resources.gtk_undo_ltr_16x16;
             this.deshacerToolStripMenuItem.Name = "deshacerToolStripMenuItem";
             this.deshacerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.deshacerToolStripMenuItem.Text = "Deshacer";
@@ -364,7 +364,7 @@
             // 
             // rehacerToolStripMenuItem
             // 
-            this.rehacerToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.gtk_undo_rtl_16x16;
+            this.rehacerToolStripMenuItem.Image = global::Compi.Properties.Resources.gtk_undo_rtl_16x16;
             this.rehacerToolStripMenuItem.Name = "rehacerToolStripMenuItem";
             this.rehacerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.rehacerToolStripMenuItem.Text = "Rehacer";
@@ -377,7 +377,7 @@
             // 
             // cortarToolStripMenuItem
             // 
-            this.cortarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.cut_16x16;
+            this.cortarToolStripMenuItem.Image = global::Compi.Properties.Resources.cut_16x16;
             this.cortarToolStripMenuItem.Name = "cortarToolStripMenuItem";
             this.cortarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.cortarToolStripMenuItem.Text = "Cortar";
@@ -385,7 +385,7 @@
             // 
             // copiarToolStripMenuItem
             // 
-            this.copiarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.copy_16x16;
+            this.copiarToolStripMenuItem.Image = global::Compi.Properties.Resources.copy_16x16;
             this.copiarToolStripMenuItem.Name = "copiarToolStripMenuItem";
             this.copiarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.copiarToolStripMenuItem.Text = "Copiar";
@@ -393,7 +393,7 @@
             // 
             // pegarToolStripMenuItem
             // 
-            this.pegarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.page_paste_16x16;
+            this.pegarToolStripMenuItem.Image = global::Compi.Properties.Resources.page_paste_16x16;
             this.pegarToolStripMenuItem.Name = "pegarToolStripMenuItem";
             this.pegarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.pegarToolStripMenuItem.Text = "Pegar";
@@ -463,7 +463,7 @@
             // 
             // ejecutarToolStripMenuItem
             // 
-            this.ejecutarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.jsconsole_16x16;
+            this.ejecutarToolStripMenuItem.Image = global::Compi.Properties.Resources.jsconsole_16x16;
             this.ejecutarToolStripMenuItem.Name = "ejecutarToolStripMenuItem";
             this.ejecutarToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.ejecutarToolStripMenuItem.Text = "Ejecutar";
@@ -471,7 +471,7 @@
             // 
             // salidaRealToolStripMenuItem
             // 
-            this.salidaRealToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.binary_16x16;
+            this.salidaRealToolStripMenuItem.Image = global::Compi.Properties.Resources.binary_16x16;
             this.salidaRealToolStripMenuItem.Name = "salidaRealToolStripMenuItem";
             this.salidaRealToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.salidaRealToolStripMenuItem.Text = "Salida Real";
@@ -754,7 +754,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::text_Box_Mio.Properties.Resources.monitor5;
+            this.pictureBox2.Image = global::Compi.Properties.Resources.monitor5;
             this.pictureBox2.Location = new System.Drawing.Point(59, 350);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(298, 209);

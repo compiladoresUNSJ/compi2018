@@ -1,4 +1,4 @@
-﻿namespace text_Box_Mio
+﻿namespace Compi
 {
     partial class continuar
     {

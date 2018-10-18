@@ -36,7 +36,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = global::text_Box_Mio.Properties.Resources.monitor1;
+            this.pictureBox1.BackgroundImage = global::Compi.Properties.Resources.monitor1;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Location = new System.Drawing.Point(40, 12);
             this.pictureBox1.Name = "pictureBox1";

@@ -8,7 +8,7 @@
     <ProjectGuid>{DC0B55E9-81FF-4E97-BDCC-9DD00D7EFB76}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>text_Box_Mio</RootNamespace>
+    <RootNamespace>Compi</RootNamespace>
     <AssemblyName>zsc</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
