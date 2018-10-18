@@ -1274,7 +1274,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "01.Overview.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\01.Overview.ppsx";
             pr.Start();
         }
 
@@ -1282,7 +1282,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "02.Scanning.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\02.Scanning.ppsx";
             pr.Start();
 
         }
@@ -1290,7 +1290,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "03.Parsing.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\03.Parsing.ppsx";
             pr.Start();
 
         }
@@ -1299,7 +1299,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "04.SemanticProcessing.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\04.SemanticProcessing.ppsx";
             pr.Start();
         }
 
@@ -1307,7 +1307,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "05.SymbolTable para Imprimir.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\05.SymbolTable para Imprimir.ppsx";
             pr.Start();
         }
 
@@ -1315,7 +1315,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "06.CodeGeneration - Fiambala.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\06.CodeGeneration - Fiambala.ppsx";
             pr.Start();
         }
 
@@ -1323,7 +1323,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "07.BU-Parsing.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\07.BU-Parsing.ppsx";
             pr.Start();
         }
 
@@ -1331,7 +1331,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "08.CompilerGenerators.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\08.CompilerGenerators.ppsx";
             pr.Start();
         }
 
@@ -1356,43 +1356,8 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "Autores.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\Autores.ppsx";
             pr.Start();
-
-
-            //TextReader textReader;
-
-            ////string fileName = "autores.txt";
-            //string fileName = "autores.txt";
-            //textReader = new StreamReader(fileName);
-            //string fileText = textReader.ReadToEnd();
-            //textReader.Dispose();
-            //string arreglado = "";
-            //for (int i = 0; i < fileText.Length; i++)
-            //{
-            //    int entero = (int)fileText[i];
-
-
-            //    //MessageBox.Show(fileText[i] + "");
-            //    //MessageBox.Show(Convert.ToString(entero));
-
-            //    if (entero == 65533) arreglado = arreglado + (char)241; // "ñ"
-            //        else arreglado = arreglado + fileText[i];
-
-            //    //if (entero == 65533) MessageBox.Show("......65533......");;
-            //    //else arreglado = arreglado + fileText[i];
-
-            //}
-            //richTextBox1.Text = arreglado; 
-
-            //richTextBox1.Visible = true;
-
-
-
-            //MessageBox.Show("Continuar");
-
-
-
         }
 
         private void pPTToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1409,7 +1374,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "Introduccion.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\Introduccion.ppsx";
             pr.Start();
 
         }
@@ -1418,7 +1383,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             pr.StartInfo.WorkingDirectory = @"slides\";
-            pr.StartInfo.FileName = "Ayuda.ppsx";
+            pr.StartInfo.FileName = "Resources\\slides\\Ayuda.ppsx";
             pr.Start();
         }
 
