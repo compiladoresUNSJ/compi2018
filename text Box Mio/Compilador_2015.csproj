@@ -221,6 +221,21 @@
     <None Include="Resources\img\monitor5.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\writeFloat.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\writeInt.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\compiladorcito\Compiladorcito.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\compiladorcito\Resources\writeFloat.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\compiladorcito\Resources\writeInt.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Resources\examples\programa con nested while and if.txt" />
     <Content Include="Resources\examples\programa con nested while.txt" />
     <Content Include="Resources\examples\programa expresion.txt" />

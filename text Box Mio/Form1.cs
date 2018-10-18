@@ -1263,9 +1263,7 @@ namespace at.jku.ssw.cc //Compilador //Compi
         private void miniGenerDeCodToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process pr = new Process();
-            pr.StartInfo.WorkingDirectory = @"Compiladorcito\Compiladorcito\bin\Debug\";
-            // Aqui se introduce el nombre del archivo
-            pr.StartInfo.FileName = "Compiladorcito.exe";
+            pr.StartInfo.FileName = "Resources\\compiladorcito\\Compiladorcito.exe";
 
             pr.Start();
         }
