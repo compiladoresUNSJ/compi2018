@@ -173,54 +173,62 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Forward.png" />
+    <None Include="Resources\img\Forward.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Folder.png" />
+    <None Include="Resources\img\Folder.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\14_layer_newlayer_16x16.png" />
+    <None Include="Resources\img\14_layer_newlayer_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\folder-horizontal-open_16x16.png" />
+    <None Include="Resources\img\folder-horizontal-open_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\filesave_16x16.png" />
+    <None Include="Resources\img\filesave_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\page_save_16x16.png" />
+    <None Include="Resources\img\page_save_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\exit_16x16.png" />
+    <None Include="Resources\img\exit_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\gtk-undo-ltr_16x16.png" />
+    <None Include="Resources\img\gtk-undo-ltr_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\gtk-undo-rtl_16x16.png" />
+    <None Include="Resources\img\gtk-undo-rtl_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\cut_16x16.png" />
+    <None Include="Resources\img\cut_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\copy_16x16.gif" />
+    <None Include="Resources\img\copy_16x16.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\page_paste_16x16.png" />
+    <None Include="Resources\img\page_paste_16x16.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\binary_16x16.gif" />
+    <None Include="Resources\img\binary_16x16.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\jsconsole_16x16.gif" />
+    <None Include="Resources\img\jsconsole_16x16.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Forward2.png" />
+    <None Include="Resources\img\Forward2.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\monitor5.jpg" />
+    <None Include="Resources\img\monitor5.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\examples\programa con nested while and if.txt" />
+    <Content Include="Resources\examples\programa con nested while.txt" />
+    <Content Include="Resources\examples\programa expresion.txt" />
+    <Content Include="Resources\examples\programa if then else.txt" />
+    <Content Include="Resources\examples\programa largo.txt" />
+    <Content Include="Resources\examples\programa muy simple.txt" />
+    <Content Include="Resources\examples\programa simple.txt" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\examples\programa.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
