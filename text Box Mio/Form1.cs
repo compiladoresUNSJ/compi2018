@@ -272,7 +272,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                 // Create an instance of StreamReader to read from a file.
                 // The using statement also closes the StreamReader.
                 //Lee: OK
-                using (StreamReader myFile = new StreamReader("z_gramatica.txt")) //
+                using (StreamReader myFile = new StreamReader("Resources\\txt\\z_gramatica.txt")) //
                 {
                     myString = myFile.ReadToEnd();
                     richTextBox7.Text = myString;
@@ -1165,7 +1165,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             guardarComoToolStripMenuItem.Enabled = true;
 
             // button5.Enabled = true;
-            string fileName = "programa.txt";
+            string fileName = "Resources\\examples\\programa.txt";
             textReader = new StreamReader(fileName);
             string fileText = textReader.ReadToEnd();
 
@@ -1426,7 +1426,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Process pr = new Process();
             
-            pr.StartInfo.FileName = "z_gramatica.txt";
+            pr.StartInfo.FileName = "Resources\\txt\\z_gramatica.txt";
             pr.Start();
         }
 
