@@ -203,11 +203,11 @@ namespace at.jku.ssw.cc
             Code.il.Emit(Code.POP);
         }
 
-        public const int
-            PROGRAM = 1, CONSTDECL = 2, VARDECL = 3, CLASSDECL = 4, METHODDECL = 5, FORMPARS = 6,
-            TYPE = 7, STATEMENT = 8, BLOCK = 9, ACTPARS = 10, CONDITION = 11, CONDTERM = 12,
-            CONDFACT = 13, EXPR = 14, TERM = 15, FACTOR = 16, DESIGNATOR = 17, RELOP = 18,
-            ADDOP = 19, MULOP = 20, IDENT = 21;
+        //public const int
+        //    PROGRAM = 1, CONSTDECL = 2, VARDECL = 3, CLASSDECL = 4, METHODDECL = 5, FORMPARS = 6,
+        //    TYPE = 7, STATEMENT = 8, BLOCK = 9, ACTPARS = 10, CONDITION = 11, CONDTERM = 12,
+        //    CONDFACT = 13, EXPR = 14, TERM = 15, FACTOR = 16, DESIGNATOR = 17, RELOP = 18,
+        //    ADDOP = 19, MULOP = 20, IDENT = 21;
 
         //static TextWriter output;
         public static Token token;    // last recognized token
