@@ -297,6 +297,7 @@ namespace at.jku.ssw.cc
             {
                 lineaEnLaGramatica += 9;
             }
+
             if (Parser.muestraProducciones)
             {
                 Code.restaurarRichTextBox7conNegro();//Gramatica
@@ -315,6 +316,13 @@ namespace at.jku.ssw.cc
                 Program1.form1.richTextBox7.Select(Program1.form1.richTextBox7.GetFirstCharIndexFromLine(lineaEnLaGramatica) + 0, sizeToken1);
                 Program1.form1.richTextBox7.SelectionColor = System.Drawing.Color.Red;
                 Program1.form1.richTextBox7.SelectionFont = new Font(Program1.form1.richTextBox7.Font.FontFamily, Program1.form1.richTextBox7.Font.Size, FontStyle.Bold);
+
+                //Pruebas
+                Program1.form1.gramaticaLV.Focus();
+                Program1.form1.gramaticaLV.Items[lineaEnLaGramatica].Selected = true;
+                Program1.form1.gramaticaLV.Items[lineaEnLaGramatica].Focused = true;
+                Program1.form1.gramaticaLV.Items[segmAnteriorGram].Selected = false;
+                Program1.form1.gramaticaLV.Items[segmAnteriorGram].Focused = true;
             }
         }
 
