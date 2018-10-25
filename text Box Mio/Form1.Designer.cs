@@ -109,10 +109,6 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label4 = new System.Windows.Forms.Label();
-            this.gramaticaLV = new System.Windows.Forms.ListView();
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.asd = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pag1.SuspendLayout();
@@ -147,7 +143,7 @@
             this.richTextBox3.Location = new System.Drawing.Point(3, 3);
             this.richTextBox3.Name = "richTextBox3";
             this.richTextBox3.ReadOnly = true;
-            this.richTextBox3.Size = new System.Drawing.Size(522, 296);
+            this.richTextBox3.Size = new System.Drawing.Size(522, 562);
             this.richTextBox3.TabIndex = 15;
             this.richTextBox3.Text = "";
             this.richTextBox3.TextChanged += new System.EventHandler(this.richTextBox3_TextChanged);
@@ -607,7 +603,7 @@
             this.tabControl1.Location = new System.Drawing.Point(490, 31);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(536, 330);
+            this.tabControl1.Size = new System.Drawing.Size(536, 596);
             this.tabControl1.TabIndex = 38;
             // 
             // pag1
@@ -618,7 +614,7 @@
             this.pag1.Location = new System.Drawing.Point(4, 24);
             this.pag1.Name = "pag1";
             this.pag1.Padding = new System.Windows.Forms.Padding(3);
-            this.pag1.Size = new System.Drawing.Size(528, 302);
+            this.pag1.Size = new System.Drawing.Size(528, 568);
             this.pag1.TabIndex = 0;
             this.pag1.Text = "Grámatica -Arbol";
             this.pag1.UseVisualStyleBackColor = true;
@@ -629,7 +625,7 @@
             this.treeView1.FullRowSelect = true;
             this.treeView1.Location = new System.Drawing.Point(3, 3);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(522, 296);
+            this.treeView1.Size = new System.Drawing.Size(522, 562);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
@@ -657,7 +653,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(528, 302);
+            this.tabPage1.Size = new System.Drawing.Size(528, 568);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Tabla de Símbolos ";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -667,7 +663,7 @@
             this.arbolTS.Dock = System.Windows.Forms.DockStyle.Fill;
             this.arbolTS.Location = new System.Drawing.Point(3, 3);
             this.arbolTS.Name = "arbolTS";
-            this.arbolTS.Size = new System.Drawing.Size(522, 296);
+            this.arbolTS.Size = new System.Drawing.Size(522, 562);
             this.arbolTS.TabIndex = 0;
             // 
             // tabPage2
@@ -676,7 +672,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(528, 302);
+            this.tabPage2.Size = new System.Drawing.Size(528, 568);
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "Instr CIL (RT 3)";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -849,46 +845,11 @@
             this.label4.Text = "Variables";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // gramaticaLV
-            // 
-            this.gramaticaLV.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader4,
-            this.columnHeader3});
-            this.gramaticaLV.Location = new System.Drawing.Point(522, 405);
-            this.gramaticaLV.Name = "gramaticaLV";
-            this.gramaticaLV.Size = new System.Drawing.Size(627, 240);
-            this.gramaticaLV.TabIndex = 48;
-            this.gramaticaLV.UseCompatibleStateImageBehavior = false;
-            this.gramaticaLV.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.DisplayIndex = 1;
-            this.columnHeader4.Text = "Regla de Derivación";
-            this.columnHeader4.Width = 573;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.DisplayIndex = 0;
-            this.columnHeader3.Text = "Nro";
-            this.columnHeader3.Width = 50;
-            // 
-            // asd
-            // 
-            this.asd.AutoSize = true;
-            this.asd.Location = new System.Drawing.Point(524, 383);
-            this.asd.Name = "asd";
-            this.asd.Size = new System.Drawing.Size(64, 15);
-            this.asd.TabIndex = 49;
-            this.asd.Text = "Gramatica";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1241, 657);
-            this.Controls.Add(this.asd);
-            this.Controls.Add(this.gramaticaLV);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.varLocales);
@@ -1015,9 +976,5 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.ListView gramaticaLV;
-        private System.Windows.Forms.Label asd;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }

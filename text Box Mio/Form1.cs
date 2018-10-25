@@ -275,14 +275,6 @@ namespace at.jku.ssw.cc //Compilador //Compi
                 using (StreamReader myFile = new StreamReader("Resources\\txt\\z_gramatica.txt")) //
                 {
                     myString = myFile.ReadToEnd();
-                    string[] strings = myString.Split('\n');
-                    for(int i = 0; i < strings.Length; i++)
-                    {
-                        string regla = strings[i];
-                        System.Windows.Forms.ListViewItem lvi = new System.Windows.Forms.ListViewItem(regla);
-                        lvi.SubItems.Add(i.ToString());
-                        gramaticaLV.Items.Add(lvi);
-                    }
                     richTextBox7.Text = myString;
                 }
             }
