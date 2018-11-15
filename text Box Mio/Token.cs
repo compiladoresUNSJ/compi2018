@@ -47,7 +47,7 @@ public class Token {
 		"(", ")", "[", "]", "{", "}", 
 		"break", "class", "const", "else", "if", "new",
 		"read", "return", "void", "while", "write", 
-		"end of file" , "comilla doble", "mmm..."
+		"end of file" , "writeln", "comilla doble"
 	};
 
 	
