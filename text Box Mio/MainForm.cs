@@ -11,7 +11,7 @@ using System.IO;
 //using Compilador;
 using System.Threading;
 using System.Diagnostics;
-
+using Compi;
 
 namespace at.jku.ssw.cc //Compilador //Compi
 {
@@ -1396,6 +1396,31 @@ namespace at.jku.ssw.cc //Compilador //Compi
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void optimizarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TabPage selectedTab = pestania.SelectedTab;
+            string optimizedTabName = pestania.SelectedTab.Name.Split('.')[0] + "-optimizado.txt";
+            T = new TabPage();
+            T.Name = optimizedTabName; //este el el nombre (interno) del TabPage
+            T.Text = optimizedTabName;  //Este es el texto que muestra en la pestanha
+            Editor = new RichTextBox();
+            //Editor.Name = a.Name + "Ritch";  //no es necesario
+            //Editor.Size = new Size(376, 554);
+            Editor.Size = new Size(428, 303);
+            Editor.Text = Optimizer.run(selectedTab.Controls[0].Text);
+
+            // Podria haberse hecho del sig. modo:
+            //Editor.LoadFile(openFD.FileName, RichTextBoxStreamType.PlainText);
+            T.Controls.Add(Editor);
+            pestania.TabPages.Add(T);
+            Editor.ContextMenuStrip = contextMenuStrip1;
+            pestania.SelectTab(optimizedTabName);
+
+            Editor.KeyPress += new KeyPressEventHandler(Editor_PressKey);
+            Editor.KeyUp += new KeyEventHandler(Editor_KeyUp);
+            Editor.MouseClick += new MouseEventHandler(Editor_MouseClick);
         }
 
         private void acercaToolStripMenuItem_Click(object sender, EventArgs e)

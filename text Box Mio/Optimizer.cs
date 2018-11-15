@@ -21,7 +21,6 @@ namespace Compi
             }
 
         }
-
         public static ExpressionTable getBetween(string strSource, string strStart, string strEnd, int desplazamiento)
         {
             int Start, End;
@@ -68,6 +67,37 @@ namespace Compi
             {
                 return null;
             }
+        }
+        public static string run(string code)
+        {
+            bool k = true;
+            int despl = 0;
+            List<ExpressionTable> list = new List<ExpressionTable>();
+            string auxtext = code;
+            while (k)
+            {
+                ExpressionTable data = Optimizer.getBetween(auxtext, "=", ";", 0);
+
+                if (data == null)
+                    k = false;
+                /*else if (data.type != EType.COMP) {
+                    despl = data.pos;
+                    auxtext = auxtext.Substring(despl);
+                }*/
+                else
+                {
+                    list.Add(data);
+                    despl = data.pos;
+                    auxtext = auxtext.Substring(despl);
+                }
+
+            }
+            foreach (ExpressionTable item in list)
+            {
+                if (item.type == EType.COMP)
+                    code = code.Replace(item.expression, " " + item.result);
+            }
+            return code;
         }
     }
 }

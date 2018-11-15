@@ -109,6 +109,7 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label4 = new System.Windows.Forms.Label();
+            this.optimizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pag1.SuspendLayout();
@@ -291,7 +292,7 @@
             this.nuevoToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.nuevoToolStripMenuItem.Image = global::Compi.Properties.Resources._14_layer_newlayer_16x16;
             this.nuevoToolStripMenuItem.Name = "nuevoToolStripMenuItem";
-            this.nuevoToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.nuevoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.nuevoToolStripMenuItem.Text = "Nuevo";
             this.nuevoToolStripMenuItem.Click += new System.EventHandler(this.nuevoToolStripMenuItem_Click);
             // 
@@ -299,21 +300,21 @@
             // 
             this.abrirToolStripMenuItem.Image = global::Compi.Properties.Resources.folder_horizontal_open_16x16;
             this.abrirToolStripMenuItem.Name = "abrirToolStripMenuItem";
-            this.abrirToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.abrirToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.abrirToolStripMenuItem.Text = "Abrir";
             this.abrirToolStripMenuItem.Click += new System.EventHandler(this.abrirToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // guardarToolStripMenuItem
             // 
             this.guardarToolStripMenuItem.Enabled = false;
             this.guardarToolStripMenuItem.Image = global::Compi.Properties.Resources.filesave_16x16;
             this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
-            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.guardarToolStripMenuItem.Text = "Guardar";
             this.guardarToolStripMenuItem.Click += new System.EventHandler(this.guardarToolStripMenuItem_Click);
             // 
@@ -322,19 +323,19 @@
             this.guardarComoToolStripMenuItem.Enabled = false;
             this.guardarComoToolStripMenuItem.Image = global::Compi.Properties.Resources.page_save_16x16;
             this.guardarComoToolStripMenuItem.Name = "guardarComoToolStripMenuItem";
-            this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.guardarComoToolStripMenuItem.Text = "Guardar como";
             this.guardarComoToolStripMenuItem.Click += new System.EventHandler(this.guardarComoToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // cerrarToolStripMenuItem
             // 
             this.cerrarToolStripMenuItem.Name = "cerrarToolStripMenuItem";
-            this.cerrarToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.cerrarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cerrarToolStripMenuItem.Text = "Salir";
             this.cerrarToolStripMenuItem.Click += new System.EventHandler(this.cerrarToolStripMenuItem_Click);
             // 
@@ -417,7 +418,8 @@
             this.árbolDeDerivaciónToolStripMenuItem,
             this.tablaDeSímbolosToolStripMenuItem,
             this.instruccionesToolStripMenuItem,
-            this.gramaticaToolStripMenuItem});
+            this.gramaticaToolStripMenuItem,
+            this.optimizarToolStripMenuItem});
             this.inspeccionarToolStripMenuItem.Name = "inspeccionarToolStripMenuItem";
             this.inspeccionarToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.inspeccionarToolStripMenuItem.Text = "Inspeccionar";
@@ -769,7 +771,7 @@
             this.pilaLV.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Nro,
             this.Valor});
-            this.pilaLV.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pilaLV.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pilaLV.ForeColor = System.Drawing.Color.White;
             this.pilaLV.Location = new System.Drawing.Point(1041, 168);
             this.pilaLV.Name = "pilaLV";
@@ -795,11 +797,11 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.label3.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.InfoText;
             this.label3.Location = new System.Drawing.Point(1043, 151);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(99, 14);
+            this.label3.Size = new System.Drawing.Size(102, 15);
             this.label3.TabIndex = 45;
             this.label3.Text = "Pila de Ejecución";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -810,7 +812,7 @@
             this.varLocales.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.varLocales.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.varLocales.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.varLocales.ForeColor = System.Drawing.Color.White;
             this.varLocales.Location = new System.Drawing.Point(1041, 339);
             this.varLocales.Name = "varLocales";
@@ -836,14 +838,21 @@
             // 
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.InfoText;
             this.label4.Location = new System.Drawing.Point(1065, 322);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(58, 14);
+            this.label4.Size = new System.Drawing.Size(58, 15);
             this.label4.TabIndex = 47;
             this.label4.Text = "Variables";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // optimizarToolStripMenuItem
+            // 
+            this.optimizarToolStripMenuItem.Name = "optimizarToolStripMenuItem";
+            this.optimizarToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.optimizarToolStripMenuItem.Text = "Optimizar";
+            this.optimizarToolStripMenuItem.Click += new System.EventHandler(this.optimizarToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -976,5 +985,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ToolStripMenuItem optimizarToolStripMenuItem;
     }
 }

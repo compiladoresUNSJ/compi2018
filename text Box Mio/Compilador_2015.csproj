@@ -227,6 +227,9 @@
     <EmbeddedResource Include="Resources\compiladorcito\Resources\writeInt.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\examples\optimizacion\ejemplo1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Resources\examples\programa con nested while and if.txt" />
     <Content Include="Resources\examples\programa con nested while.txt" />
     <Content Include="Resources\examples\programa expresion.txt" />
@@ -243,9 +246,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\examples\optimizacion\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
