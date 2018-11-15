@@ -77,12 +77,6 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmContinuar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmContinuar.Designer.cs">
-      <DependentUpon>FrmContinuar.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmContinuarMaqVirtual.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,10 +101,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmContinuar.resx">
-      <DependentUpon>FrmContinuar.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmContinuarMaqVirtual.resx">

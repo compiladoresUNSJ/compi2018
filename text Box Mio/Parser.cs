@@ -65,7 +65,7 @@ namespace at.jku.ssw.cc
 
     class Parser
     {
-        public static FrmContinuar mens = new FrmContinuar();
+        //public static FrmContinuar mens = new FrmContinuar();
         public static FrmContinuarMaqVirtual mensMaqVirtual = new FrmContinuarMaqVirtual();
 
         public static bool muestraProducciones = true;
