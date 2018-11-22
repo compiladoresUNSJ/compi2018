@@ -1401,22 +1401,39 @@ namespace at.jku.ssw.cc //Compilador //Compi
         private void optimizarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TabPage selectedTab = pestania.SelectedTab;
-            string optimizedTabName = pestania.SelectedTab.Name.Split('.')[0] + "-optimizado.txt";
-            T = new TabPage();
-            T.Name = optimizedTabName; //este el el nombre (interno) del TabPage
-            T.Text = optimizedTabName;  //Este es el texto que muestra en la pestanha
-            Editor = new RichTextBox();
-            //Editor.Name = a.Name + "Ritch";  //no es necesario
-            //Editor.Size = new Size(376, 554);
-            Editor.Size = new Size(428, 303);
-            Editor.Text = Optimizer.run(selectedTab.Controls[0].Text);
+            if(!selectedTab.Name.Contains("[OPTIMIZADO]"))
+            {
+                string optimizedTabName = "[OPTIMIZADO] " + selectedTab.Name;
+                this.addTab(optimizedTabName, Optimizer.run(selectedTab.Controls[0].Text));
+            }
+        }
 
-            // Podria haberse hecho del sig. modo:
-            //Editor.LoadFile(openFD.FileName, RichTextBoxStreamType.PlainText);
+        private void cerrarPestañaActualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(pestania.TabCount > 0)
+            {
+                pestania.TabPages.RemoveByKey(pestania.SelectedTab.Name);
+                if(pestania.TabCount == 0)
+                {
+                    this.addTab("nuevo-programa.txt", "");
+                }
+            }
+        }
+
+        private void addTab(string tabName, string tabContent)
+        {
+            TabPage T = new TabPage();
+            T.Name = tabName; //este el el nombre (interno) del TabPage
+            T.Text = tabName;
+
+            Editor = new RichTextBox();
+            Editor.Size = new Size(428, 303);
+            Editor.Text = tabContent;
+
             T.Controls.Add(Editor);
             pestania.TabPages.Add(T);
             Editor.ContextMenuStrip = contextMenuStrip1;
-            pestania.SelectTab(optimizedTabName);
+            pestania.SelectTab(tabName);
 
             Editor.KeyPress += new KeyPressEventHandler(Editor_PressKey);
             Editor.KeyUp += new KeyEventHandler(Editor_KeyUp);

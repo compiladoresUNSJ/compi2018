@@ -48,6 +48,7 @@
             this.archivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nuevoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abrirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cerrarPestañaActualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guardarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,6 +68,7 @@
             this.tablaDeSímbolosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.instruccionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gramaticaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optimizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.depurarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ejecutarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salidaRealToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,7 +111,6 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label4 = new System.Windows.Forms.Label();
-            this.optimizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pag1.SuspendLayout();
@@ -278,6 +279,7 @@
             this.archivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.nuevoToolStripMenuItem,
             this.abrirToolStripMenuItem,
+            this.cerrarPestañaActualToolStripMenuItem,
             this.toolStripSeparator3,
             this.guardarToolStripMenuItem,
             this.guardarComoToolStripMenuItem,
@@ -303,6 +305,13 @@
             this.abrirToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.abrirToolStripMenuItem.Text = "Abrir";
             this.abrirToolStripMenuItem.Click += new System.EventHandler(this.abrirToolStripMenuItem_Click);
+            // 
+            // cerrarPestañaActualToolStripMenuItem
+            // 
+            this.cerrarPestañaActualToolStripMenuItem.Name = "cerrarPestañaActualToolStripMenuItem";
+            this.cerrarPestañaActualToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cerrarPestañaActualToolStripMenuItem.Text = "Cerrar archivo";
+            this.cerrarPestañaActualToolStripMenuItem.Click += new System.EventHandler(this.cerrarPestañaActualToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -451,6 +460,13 @@
             this.gramaticaToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.gramaticaToolStripMenuItem.Text = "Gramatica";
             this.gramaticaToolStripMenuItem.Click += new System.EventHandler(this.gramaticaToolStripMenuItem_Click);
+            // 
+            // optimizarToolStripMenuItem
+            // 
+            this.optimizarToolStripMenuItem.Name = "optimizarToolStripMenuItem";
+            this.optimizarToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.optimizarToolStripMenuItem.Text = "Optimizar";
+            this.optimizarToolStripMenuItem.Click += new System.EventHandler(this.optimizarToolStripMenuItem_Click);
             // 
             // depurarToolStripMenuItem
             // 
@@ -847,13 +863,6 @@
             this.label4.Text = "Variables";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // optimizarToolStripMenuItem
-            // 
-            this.optimizarToolStripMenuItem.Name = "optimizarToolStripMenuItem";
-            this.optimizarToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.optimizarToolStripMenuItem.Text = "Optimizar";
-            this.optimizarToolStripMenuItem.Click += new System.EventHandler(this.optimizarToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -986,5 +995,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ToolStripMenuItem optimizarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cerrarPestañaActualToolStripMenuItem;
     }
 }
