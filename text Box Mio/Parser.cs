@@ -3,9 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
-//using at.jku.ssw.cc.tests;
-using text_Box_Mio;
-//using compilador;
+using Compi;
 
 namespace at.jku.ssw.cc
 {
@@ -25,7 +23,9 @@ namespace at.jku.ssw.cc
 
         public void mostrarPilita()
         {
+            
             string pilaString = "";
+            Program1.form1.pilaLV.Items.Clear();
             for (int i = this.cantMaxDeElem - 1; i >= 0; i--)
             {
                 if (i > Parser.pilita.tope)
@@ -37,11 +37,19 @@ namespace at.jku.ssw.cc
                     if (((ElemPilita)elementos[i]).elemDePila == ElemPilita.ElemDePila.esEntero)
                         elemParaMostrar = ((ElemPilita)elementos[i]).entero.ToString();
                     else elemParaMostrar = ((ElemPilita)elementos[i]).estring;
+
                     pilaString = pilaString + "\n" + elemParaMostrar;
 
+                    System.Windows.Forms.ListViewItem lvi = new System.Windows.Forms.ListViewItem(i.ToString());
+                    lvi.SubItems.Add(elemParaMostrar);
+                    Program1.form1.pilaLV.Items.Add(lvi);
+                    Program1.form1.pilaLV.Items[Program1.form1.pilaLV.Items.Count - 1].Focused = true;
                 }
             }
             Program1.form1.richTextBox2.Text = pilaString;
+            //System.Windows.Forms.ListViewItem lvi = new System.Windows.Forms.ListViewItem("x");
+            //lvi.SubItems.Add("y");
+            //Program1.form1.pilaLV.Items.Add(lvi);
             if (Parser.muestraCargaDeInstrs) Parser.MessageBoxCon2PregMaqVirtual();
         }
 
@@ -57,7 +65,7 @@ namespace at.jku.ssw.cc
 
     class Parser
     {
-        public static FrmContinuar mens = new FrmContinuar();
+        //public static FrmContinuar mens = new FrmContinuar();
         public static FrmContinuarMaqVirtual mensMaqVirtual = new FrmContinuarMaqVirtual();
 
         public static bool muestraProducciones = true;
@@ -153,14 +161,24 @@ namespace at.jku.ssw.cc
 
         public static void muestraVarsLocales()
         {
+            Program1.form1.varLocales.Items.Clear();
             string todasLasVarsLocales;
-            if (cantVarLocales == 0) todasLasVarsLocales = "No hay vars locales";
+            if (cantVarLocales == 0) { 
+                todasLasVarsLocales = "No hay vars locales";
+            }
             else
             {
                 todasLasVarsLocales = locals[0].ToString();
+                System.Windows.Forms.ListViewItem loc0 = new System.Windows.Forms.ListViewItem("0");
+                loc0.SubItems.Add(locals[0].ToString());
+                Program1.form1.varLocales.Items.Add(loc0);
+
                 for (int i = 1; i < cantVarLocales; i++)
                 {
                     todasLasVarsLocales = todasLasVarsLocales + "\n" + locals[i].ToString();
+                    System.Windows.Forms.ListViewItem lvi = new System.Windows.Forms.ListViewItem(i.ToString());
+                    lvi.SubItems.Add(locals[i].ToString());
+                    Program1.form1.varLocales.Items.Add(lvi);
                 }
                 Program1.form1.richTextBox4.Text = todasLasVarsLocales;
             }
@@ -183,12 +201,6 @@ namespace at.jku.ssw.cc
             Code.il.Emit(Code.POP);
         }
 
-        public const int
-            PROGRAM = 1, CONSTDECL = 2, VARDECL = 3, CLASSDECL = 4, METHODDECL = 5, FORMPARS = 6,
-            TYPE = 7, STATEMENT = 8, BLOCK = 9, ACTPARS = 10, CONDITION = 11, CONDTERM = 12,
-            CONDFACT = 13, EXPR = 14, TERM = 15, FACTOR = 16, DESIGNATOR = 17, RELOP = 18,
-            ADDOP = 19, MULOP = 20, IDENT = 21;
-
         //static TextWriter output;
         public static Token token;    // last recognized token
         public static Token laToken;  // lookahead token (not yet recognized)
@@ -197,10 +209,9 @@ namespace at.jku.ssw.cc
         /* Symbol table object of currently compiled method. */
         internal static Symbol curMethod;
 
-        /* Special Label to represent an undefined break destination. */
-        //static readonly Label undef;
-
-        /* Reads ahead one symbol. */
+        /// <summary>
+        /// Reads ahead one symbol
+        /// </summary>
         static void Scan()
         {
             token = laToken;
@@ -209,7 +220,10 @@ namespace at.jku.ssw.cc
             la = laToken.kind;
         }
 
-        /* Verifies symbol and reads ahead. */
+        /// <summary>
+        /// Verifies symbol and reads ahead
+        /// </summary>
+        /// <param name="expected"></param>
         static void Check(int expected) //expected viene de la gramatica,  la del laToken que leyó
         {
             if (la == expected)
@@ -266,7 +280,8 @@ namespace at.jku.ssw.cc
                 //Si laToken es "{" => la opcion es "PosDeclars = .", otherwise: "PosDeclars = Declaration PosDeclars."
                 Code.seleccLaProdEnLaGram(2);
                 System.Windows.Forms.TreeNode hijodeclar = new System.Windows.Forms.TreeNode("Declaration = ConstDecl | VarDecl | ClassDecl.");
-                posDeclars.Nodes.Add(hijodeclar); existeDecl = true;
+                posDeclars.Nodes.Add(hijodeclar);
+                existeDecl = true;
                 switch (la)
                 {
                     case Token.CONST:
@@ -339,11 +354,9 @@ namespace at.jku.ssw.cc
 
             Check(Token.RBRACE);
             Code.Colorear("token");
-            //////----------------------------------------------------------------Grupo 2 20/10/2015------------------------------------------------------
             MessageBoxCon3Preg(program);
             Code.seleccLaProdEnLaGram(0);
             program.Nodes.Add("}");
-            //////----------------------------------------------------------------Grupo 2 20/10/2015------------------------------------------------------
             if (ZZ.parser)
             {
                 Console.WriteLine("antes de prog.locals = Tab.topScope.locals; Tab.CloseScope()");
@@ -444,7 +457,6 @@ namespace at.jku.ssw.cc
             hijo2.Nodes.Add("';'");
         }//Fin ConstDecl
 
-        //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------------------         
         public static void Identifieropc(System.Windows.Forms.TreeNode identifieropc, Struct type, Symbol.Kinds kind)//NUEVA FUNCION RECURSIVA QUE CUELGA LOS IDENTIFIEROPC
         {
             if (la == Token.COMMA && la != Token.EOF)
@@ -464,11 +476,9 @@ namespace at.jku.ssw.cc
                 MessageBoxCon3Preg();
                 System.Windows.Forms.TreeNode identifieropc1 = new System.Windows.Forms.TreeNode("IdentifiersOpc");
                 identifieropc.Nodes.Add(identifieropc1);
-                //FGF INICIO 23/10
                 cantVarLocales++;
                 Symbol vble = Tab.Insert(kind, token.str, type);
                 Code.CreateMetadata(vble);
-                //FGF FIN  580 Identif
                 Identifieropc(identifieropc1, type, kind);
             }
             else
@@ -479,7 +489,6 @@ namespace at.jku.ssw.cc
             }
         }//Fin Identifieropc
 
-        //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
         static void VardDecl(Symbol.Kinds kind, System.Windows.Forms.TreeNode padre)
         {  //visto  //si es "int[] pos" y viene de "Class Tabla {", kind es "Field"
             // si es Tabla val y viene de "class P {", kind es "Global"
@@ -607,9 +616,6 @@ namespace at.jku.ssw.cc
             // int i,j; char ch; Pers p..etc, quedó apuntado por topScope.locals
         }//Fin ClassDecl
 
-        /// G3 PERUMETHODDECL Arreglado los nombres de las variables.
-        /// Corregido en PosDeclars ahora aparece '.'
-        /// Codigo mas limpio.
         static void MethodDecl(System.Windows.Forms.TreeNode methodDeclsopc)
         {
             System.Windows.Forms.TreeNode methodDecl = new System.Windows.Forms.TreeNode("MethodDecl"); //cuelga ESTE NODO DESPUES DE pintar el void
@@ -849,9 +855,6 @@ namespace at.jku.ssw.cc
             Program1.form1.richTextBox3.Text = newRichTexBox3;
         }//Fin markLabelMio
 
-        // G3 PERUSTATEMENT arreglo nombres de variables (padre e hijos) en este metodo.
-        // Nodos con palabras reservadas empiezan con n, ej. nodo while: nwhie.
-        // O cuando hay varios, ej. varios statements: nstatement, nstatement2.
         static void Statement(System.Windows.Forms.TreeNode statement)
         {
             if (ZZ.ParserStatem) Console.WriteLine("Comienza statement:" + laToken.str);
@@ -1303,8 +1306,6 @@ namespace at.jku.ssw.cc
             }
         } // Fin Statement
 
-        /// G3 PERUBLOCK Arreglado el arbol de StatementsOpc cuando esta vacio (".")
-        /// Y todos los nombres y padre en Block.
         static void Block(System.Windows.Forms.TreeNode methodDecl)
         {
             System.Windows.Forms.TreeNode block = new System.Windows.Forms.TreeNode("Block");
@@ -2338,10 +2339,11 @@ namespace at.jku.ssw.cc
                     Scan();
             }
         }
-        /* Starts the analysis. 
-         * Output is written to System.out.
-         */
 
+        /// <summary>
+        /// Starts the analysis. Output is written to System.out.
+        /// </summary>
+        /// <param name="prog"></param>
         public static void Parse(string prog)
         {
             Scanner.Init(new StringReader(prog), null);  //deja en ch el 1° char de prog 

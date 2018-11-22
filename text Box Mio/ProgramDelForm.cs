@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 //using Compilador;
 
-namespace at.jku.ssw.cc //Compilador//text_Box_Mio
+namespace at.jku.ssw.cc //Compilador//Compi
 {
     public static class Program1
     {

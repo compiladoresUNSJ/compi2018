@@ -345,13 +345,16 @@ public class Scanner {
     }
     static void ReadName(Token t)
     {
-        while ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_')
+        while ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_' || (ch >= '0' && ch <= '9'))
         {
             t.str = t.str+ch;
             NextCh();
         }
-        if (esPalabraClave(t.str))
-            switch (t.str)
+        //Optimizacion por diccionario y no por switch.
+
+            if (esPalabraClave(t.str))
+                t.kind = t.dictionary[t.str];
+            /*switch (t.str)
             {
                 case "break":
                     t.kind = Token.BREAK;
@@ -390,7 +393,7 @@ public class Scanner {
                     t.kind = Token.WRITELN;
                     break;
 
-            }
+            }*/
         else
         {
             t.kind = Token.IDENT;
