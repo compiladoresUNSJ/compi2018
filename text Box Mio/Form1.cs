@@ -196,11 +196,11 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             //alimentar program con el contenido de pestania.SelectedTab.Controls[0] (myString1)
             if (!Parser.ejecuta) Parser.MessageBoxCon3Preg();
 
-            try
+            /*try
             {
                 Parser.inicializaCil();
 
-                /* Quitar los comentarios para que funcione el Scanner */
+                //Quitar los comentarios para que funcione el Scanner 
                 if (ZZ.Program) Console.WriteLine("Main Compilador 2");
                 if (ZZ.Principal)
                 {
@@ -226,7 +226,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                 Editor.SelectionColor = Color.Red;
                 System.Windows.Forms.MessageBox.Show("error 3245..." + e1.msg);
                 errorEnComilacion = true;
-            }
+            }*/
             //Program1.form1.maquVirtualToolStripMenuItem.Enabled = true;
             Program1.form1.depurarToolStripMenuItem.Enabled = true;
 

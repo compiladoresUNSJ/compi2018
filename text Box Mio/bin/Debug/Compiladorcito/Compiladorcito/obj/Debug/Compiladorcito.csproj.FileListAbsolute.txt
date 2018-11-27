@@ -16,3 +16,10 @@ C:\Documents and Settings\Fernanda\Escritorio\Facu\Compiladores\Compiladorcito\C
 C:\Documents and Settings\Fernanda\Escritorio\Facu\Compiladores\Compiladorcito\Compiladorcito\obj\Debug\Compiladorcito.csproj.GenerateResource.Cache
 F:\Compiladorcito\Compiladorcito\obj\Debug\Compiladorcito.exe
 F:\Compiladorcito\Compiladorcito\obj\Debug\Compiladorcito.pdb
+C:\Users\Fernando\Source\Repos\dutis93\compi2018\text Box Mio\bin\Debug\Compiladorcito\Compiladorcito\obj\Debug\Compiladorcito.exe
+C:\Users\Fernando\Source\Repos\dutis93\compi2018\text Box Mio\bin\Debug\Compiladorcito\Compiladorcito\obj\Debug\Compiladorcito.pdb
+C:\Users\Fernando\Source\Repos\dutis93\compi2018\text Box Mio\bin\Debug\Compiladorcito\Compiladorcito\bin\Debug\Compiladorcito.exe
+C:\Users\Fernando\Source\Repos\dutis93\compi2018\text Box Mio\bin\Debug\Compiladorcito\Compiladorcito\bin\Debug\Compiladorcito.pdb
+C:\Users\Fernando\Source\Repos\dutis93\compi2018\text Box Mio\bin\Debug\Compiladorcito\Compiladorcito\obj\Debug\Compiladorcito.Form1.resources
+C:\Users\Fernando\Source\Repos\dutis93\compi2018\text Box Mio\bin\Debug\Compiladorcito\Compiladorcito\obj\Debug\Compiladorcito.Properties.Resources.resources
+C:\Users\Fernando\Source\Repos\dutis93\compi2018\text Box Mio\bin\Debug\Compiladorcito\Compiladorcito\obj\Debug\Compiladorcito.csproj.GenerateResource.Cache

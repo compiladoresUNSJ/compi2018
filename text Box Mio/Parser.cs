@@ -82,9 +82,9 @@ namespace at.jku.ssw.cc
 
         public static void MessageBoxCon3Preg()
         {
-            if (muestraProducciones)
+            /*if (muestraProducciones)
                 Program1.form1.instContinuar.ShowDialog();
-            Program1.form1.treeView1.ExpandAll();
+            Program1.form1.treeView1.ExpandAll();*/
         }//Fin MessageBoxCon3Preg()
 
 

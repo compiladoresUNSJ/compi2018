@@ -14,7 +14,7 @@ namespace text_Box_Mio
     {
         public continuar()
         {
-            InitializeComponent();
+           //InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)
