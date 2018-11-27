@@ -12,9 +12,11 @@ namespace text_Box_Mio
 {
     public partial class continuar : Form
     {
+        /*
         public continuar()
         {
-           //InitializeComponent();
+            //InitializeComponent();
+           // this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,6 +33,6 @@ namespace text_Box_Mio
         {
             at.jku.ssw.cc.Parser.muestraProducciones = at.jku.ssw.cc.Parser.muestraCargaDeInstrs = at.jku.ssw.cc.Tab.muestraTabSimb = false;
             this.Close();
-        }
+        }*/
     }
 }

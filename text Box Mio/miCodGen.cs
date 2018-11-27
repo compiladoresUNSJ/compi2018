@@ -267,7 +267,7 @@ namespace at.jku.ssw.cc
             Program1.form1.richTextBox3.SelectionStart = texto.Length;
             Program1.form1.richTextBox3.ScrollToCaret();
             if (Parser.muestraCargaDeInstrs)
-                Program1.form1.instContinuar.ShowDialog();
+                //Program1.form1.instContinuar.ShowDialog();
 
             //Para ser utilizada despues
             Parser.cil[Parser.nroDeInstrCorriente].instrString = instrConNroLinea;

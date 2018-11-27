@@ -46,11 +46,11 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         }
         private void button2_Click(object sender, EventArgs e)  //compilar
         {
-            treeView1.Nodes.Clear();
+           /* treeView1.Nodes.Clear();
             compilar();
 
             //Tab.mostrarTab();
-            //richTextBox10.Text =  Tab.tabSimbString;
+            //richTextBox10.Text =  Tab.tabSimbString;*/
         }
 
         public void guardar()
@@ -194,46 +194,46 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             Code.restaurarRichTextBox1conNegro();
 
             //alimentar program con el contenido de pestania.SelectedTab.Controls[0] (myString1)
-            if (!Parser.ejecuta) Parser.MessageBoxCon3Preg();
+            //if (!Parser.ejecuta) Parser.MessageBoxCon3Preg();
 
-            /*try
-            {
-                Parser.inicializaCil();
+            
+             try
+             {
+                 Parser.inicializaCil();
 
-                //Quitar los comentarios para que funcione el Scanner 
-                if (ZZ.Program) Console.WriteLine("Main Compilador 2");
-                if (ZZ.Principal)
-                {
-                    Console.WriteLine("ha pasado new ScannerTest()");
-                    Console.WriteLine("ha pasado SCTest.CRLFLineSeparators()");
-                    Console.WriteLine("ha pasado SCTest.LFLineSeparators");
-                }
-                if (ZZ.Program) Console.WriteLine("pasó InvalidSymbols()\n\nTERMINÓ TODO EL SCANNER");
-                /////////////////////////////////////////////////////////////////////////////
-                //System.Windows.Forms.MessageBox.Show("Parser.Parse(myString1)");
-                Parser.Parse(myString1);
-                /////////////////////////////////////////////////////////////////////////////
-                if (ZZ.Program) Console.WriteLine("Tab.mostrarTab().....al final");
-                if (ZZ.Program) Tab.mostrarTab();
-                ZZ.Program = false;
-                if (ZZ.Program) Console.WriteLine("TERMINA TODO");
-                if (ZZ.Program) Console.ReadKey();
-            }
-            catch (ErrorMio e1)
-            {
-                int linea1 = e1.linea; int col1 = e1.columna; int sizeToken1 = e1.sizeToken;
-                Editor.Select(Editor.GetFirstCharIndexFromLine(linea1 - 1) + col1 - 1, sizeToken1);
-                Editor.SelectionColor = Color.Red;
-                System.Windows.Forms.MessageBox.Show("error 3245..." + e1.msg);
-                errorEnComilacion = true;
-            }*/
+                 //Quitar los comentarios para que funcione el Scanner 
+                 if (ZZ.Program) Console.WriteLine("Main Compilador 2");
+                 if (ZZ.Principal)
+                 {
+                     Console.WriteLine("ha pasado new ScannerTest()");
+                     Console.WriteLine("ha pasado SCTest.CRLFLineSeparators()");
+                     Console.WriteLine("ha pasado SCTest.LFLineSeparators");
+                 }
+                 if (ZZ.Program) Console.WriteLine("pasó InvalidSymbols()\n\nTERMINÓ TODO EL SCANNER");
+                 /////////////////////////////////////////////////////////////////////////////
+                 //System.Windows.Forms.MessageBox.Show("Parser.Parse(myString1)");
+                 Parser.Parse(myString1);
+                 /////////////////////////////////////////////////////////////////////////////
+                 if (ZZ.Program) Console.WriteLine("Tab.mostrarTab().....al final");
+                 if (ZZ.Program) Tab.mostrarTab();
+                 ZZ.Program = false;
+                 if (ZZ.Program) Console.WriteLine("TERMINA TODO");
+                 if (ZZ.Program) Console.ReadKey();
+             }
+             catch (ErrorMio e1)
+             {
+                 int linea1 = e1.linea; int col1 = e1.columna; int sizeToken1 = e1.sizeToken;
+                 Editor.Select(Editor.GetFirstCharIndexFromLine(linea1 - 1) + col1 - 1, sizeToken1);
+                 Editor.SelectionColor = Color.Red;
+                 System.Windows.Forms.MessageBox.Show("error 3245..." + e1.msg);
+                 errorEnComilacion = true;
+             }
             //Program1.form1.maquVirtualToolStripMenuItem.Enabled = true;
             Program1.form1.depurarToolStripMenuItem.Enabled = true;
 
             sw.Close();
 
         } //Fin compilar()
-
 
         //private void button3_Click(object sender, EventArgs e)  //inicializar
         private void inicializa()  //inicializar
@@ -1198,12 +1198,14 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
         private void árbolDeDerivaciónToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            button1.Visible = true;
+            button5.Visible = true;
             Parser.muestraProducciones = true;
             Parser.muestraCargaDeInstrs = Tab.muestraTabSimb = false;
             tabControl1.SelectedIndex = 0;
             treeView1.Nodes.Clear();
             inicializa();
-            compilar();
+            //compilar();
             //Parser.muestraProducciones =  true;
 
 
@@ -1425,6 +1427,21 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             
             pr.StartInfo.FileName = "z_gramatica.txt";
             pr.Start();
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            treeView1.Nodes.Clear();
+            compilar();
+            button5.Visible = false;
+            button1.Visible = false;
+            //Tab.mostrarTab();
+            //richTextBox10.Text =  Tab.tabSimbString;
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            Parser.MessageBoxCon3Preg();
         }
 
         private void acercaToolStripMenuItem_Click(object sender, EventArgs e)
