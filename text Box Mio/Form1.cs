@@ -27,6 +27,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         public static int iniCommLine, iniCommCol, finCommLin, finCommCol;
         static string myString;
         static string myStringNombre;
+        static bool allowSelect = false;
         void P(string line) { }
 
 
@@ -232,7 +233,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             Program1.form1.depurarToolStripMenuItem.Enabled = true;
 
             sw.Close();
-
+            allowSelect = true;
         } //Fin compilar()
 
         //private void button3_Click(object sender, EventArgs e)  //inicializar
@@ -1195,45 +1196,54 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             else pestania.SelectTab(a.Name);
         }
 
-
-        private void árbolDeDerivaciónToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void árbolDeDerivaciónToolStripMenuItem_Click(object sender, EventArgs e)  //click opcion Arbol de derivacion
+         {
+            depurarToolStripMenuItem.Enabled = false;
+            treeView1.Nodes.Clear();
+            arbolTS.Nodes.Clear();
+            richTextBox7.Text = "";
+            richTextBox3.Text = "";
+            allowSelect = true;
+            tabControl1.SelectedIndex = 0;
+            allowSelect = false;
             button1.Visible = true;
             button5.Visible = true;
-            Parser.muestraProducciones = true;
-            Parser.muestraCargaDeInstrs = Tab.muestraTabSimb = false;
-            tabControl1.SelectedIndex = 0;
-            treeView1.Nodes.Clear();
+            Parser.muestraProducciones = Parser.muestraCargaDeInstrs = Tab.muestraTabSimb = false;
             inicializa();
-            //compilar();
-            //Parser.muestraProducciones =  true;
-
-
-            //Pars5er.muestraCargaDeInstrs = false;
-            //Parser.ejecuta = false;
-            //  Tab.muestraTabSimb = Program1.form1.richTextBox10.Visible = false;
             Program1.form1.treeView1.ExpandAll();
         }
 
-        private void tablaDeSímbolosToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tablaDeSímbolosToolStripMenuItem_Click(object sender, EventArgs e) //click opcion tabla de simbolos
         {
+            depurarToolStripMenuItem.Enabled = false;
+            treeView1.Nodes.Clear();
+            arbolTS.Nodes.Clear();
+            richTextBox7.Text = "";
+            richTextBox3.Text = "";
+            allowSelect = true;
             tabControl1.SelectedIndex = 1;
-
+            allowSelect = false;
+            button1.Visible = true;
+            button5.Visible = true;
+            Parser.muestraProducciones = Parser.muestraCargaDeInstrs = Tab.muestraTabSimb = false;
             inicializa();
-            Parser.muestraProducciones = Parser.muestraCargaDeInstrs = false;
-            Tab.muestraTabSimb = true;
-            compilar();
-            // this.Close();
+            Program1.form1.arbolTS.ExpandAll();
         }
 
-        private void instruccionesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void instruccionesToolStripMenuItem_Click(object sender, EventArgs e)  //click opcion instrucciones
         {
-            Parser.muestraProducciones = Tab.muestraTabSimb = false;
-            Parser.muestraCargaDeInstrs = true;
+            depurarToolStripMenuItem.Enabled = false;
+            treeView1.Nodes.Clear();
+            arbolTS.Nodes.Clear();
+            richTextBox7.Text = "";
+            richTextBox3.Text = "";
+            allowSelect = true;
             tabControl1.SelectedIndex = 2;
+            allowSelect = false;
+            button1.Visible = true;
+            button5.Visible = true;
+            Parser.muestraProducciones = Parser.muestraCargaDeInstrs = Tab.muestraTabSimb = false;
             inicializa();
-
-            compilar();
         }
 
         private void maquVirtualToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1245,8 +1255,6 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             tabControl2.Visible = false;
             richTextBox8.Visible = richTextBox9.Visible = true;
             maquVirtual();
-
-
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -1431,7 +1439,6 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
         private void button1_Click_2(object sender, EventArgs e)
         {
-            treeView1.Nodes.Clear();
             compilar();
             button5.Visible = false;
             button1.Visible = false;
@@ -1442,6 +1449,21 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         private void button5_Click_1(object sender, EventArgs e)
         {
             Parser.MessageBoxCon3Preg();
+        }
+
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+
+        }
+
+        private void tabControl1_Selected_1(object sender, TabControlEventArgs e)
+        {
+            
+        }
+
+        private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (!allowSelect) e.Cancel = true;
         }
 
         private void acercaToolStripMenuItem_Click(object sender, EventArgs e)

@@ -128,7 +128,7 @@ public class Tab {
             profundidad++;
             Program1.form1.arbolTS.Nodes.Add("Scope de :Type: " + sym.kind + " | Name: " + sym.name);
         }
-        if (muestraTabSimb) Program1.form1.instContinuar.ShowDialog();    //MessageBox.Show("ContinuarTSimb","T de simbolo");
+        //if (muestraTabSimb) Program1.form1.instContinuar.ShowDialog();    //MessageBox.Show("ContinuarTSimb","T de simbolo");
         //Codigo Tabla de Simbolos
 	}
 	
@@ -141,7 +141,7 @@ public class Tab {
         Program1.form1.arbolTS.Nodes.RemoveAt(profundidad--);
         ultimoNodo1.Nodes.AddRange(ultimosParametros.Pop().ToArray());
         Program1.form1.arbolTS.ExpandAll();
-        if (muestraTabSimb) Program1.form1.instContinuar.ShowDialog();  //MessageBox.Show("ContinuarTSimb", "T de simbolo");
+        //if (muestraTabSimb) Program1.form1.instContinuar.ShowDialog();  //MessageBox.Show("ContinuarTSimb", "T de simbolo");
         //Codigo Tabla de Simbolos
 
 	}
@@ -182,7 +182,7 @@ public class Tab {
         Program1.form1.arbolTS.Nodes[profundidad].Nodes.Add("Type: "+s.kind+ " | Name: " +s.name + str);
         ultimosParametros.Peek().Add(ultimoNodo = Program1.form1.arbolTS.Nodes[profundidad].Nodes[Program1.form1.arbolTS.Nodes[profundidad].Nodes.Count - 1]);
         Program1.form1.arbolTS.ExpandAll();
-        if (muestraTabSimb) Program1.form1.instContinuar.ShowDialog();   //MessageBox.Show("ContinuarTSimb", "T de simbolo");
+        //if (muestraTabSimb) Program1.form1.instContinuar.ShowDialog();   //MessageBox.Show("ContinuarTSimb", "T de simbolo");
         //Codigo Tabla de Simbolos
         
         
