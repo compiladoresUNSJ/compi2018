@@ -238,7 +238,7 @@ namespace at.jku.ssw.cc
                       Program1.form1.richTextBox3.GetFirstCharIndexFromLine((linea1 / 13) * 13);
                 Program1.form1.Editor.ScrollToCaret();
             }
-            if (Parser.muestraProducciones) Parser.MessageBoxCon3Preg();
+            //if (Parser.muestraProducciones) Parser.MessageBoxCon3Preg();
         }
 
         //Fin Modificacion - Grupo 1 - 10/9/15
