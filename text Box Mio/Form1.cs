@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Globalization;
 using System.IO;
-//using Compilador;
-using System.Threading;
 using System.Diagnostics;
-
+using AwaitForButton.Extensions;
 
 namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 {
     public partial class Form1 : Form
     {
+
         public text_Box_Mio.continuar instContinuar;  // 
 
         public RichTextBox Editor;
@@ -236,7 +229,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             allowSelect = true;
         } //Fin compilar()
 
-        public void pap(bool bandera)
+        public void pap()
         {
             //Inicio Modificacion - Grupo 1 - 10/9/15
             //Oculta Labels, RichTextBox y Buttons de Maquina Virtual. Oculta Monitor de Maquina Virtual   
@@ -323,6 +316,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
             //alimentar program con el contenido de pestania.SelectedTab.Controls[0] (myString1)
             //if (!Parser.ejecuta) Parser.MessageBoxCon3Preg(); //permite mostrar ventana con boton compilar y paso a paso  
+
             try
             {
                 Parser.inicializaCil();
@@ -338,7 +332,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                 if (ZZ.Program) Console.WriteLine("pasó InvalidSymbols()\n\nTERMINÓ TODO EL SCANNER");
                 /////////////////////////////////////////////////////////////////////////////
                 //System.Windows.Forms.MessageBox.Show("Parser.Parse(myString1)");
-                Parser.Parse(myString1); //permite llamar program que realiza el paso a paso
+                Parser.Parse2(myString1, button5); //permite llamar program que realiza el paso a paso
                                          /////////////////////////////////////////////////////////////////////////////
                 if (ZZ.Program) Console.WriteLine("Tab.mostrarTab().....al final");
                 if (ZZ.Program) Tab.mostrarTab();
@@ -1573,8 +1567,11 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
         private void button5_Click_1(object sender, EventArgs e)
         {
-            bandera = true;
-            pap(bandera);
+            if (bandera == false)
+            {
+                bandera = true;
+                pap();
+            }
         }
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)

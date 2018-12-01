@@ -3,8 +3,9 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
-//using at.jku.ssw.cc.tests;
+using at.jku.ssw.cc;
 using text_Box_Mio;
+using AwaitForButton.Extensions;
 //using compilador;
 
 namespace at.jku.ssw.cc
@@ -218,12 +219,14 @@ namespace at.jku.ssw.cc
                 Errors.Error("Se esperaba un: " + Token.names[expected]);
         }
 
-        static void Program()
+        static async void Program()
         {
             System.Windows.Forms.TreeNode program = new System.Windows.Forms.TreeNode();  //Crea el nodo program
             program.Text = "Program"; //Texto del nodo "program"
             Program1.form1.treeView1.Nodes.Add(program); //"cuelga" el nodo (raiz) "program" del treeView1 ya creado
             Parser.MessageBoxCon3Preg(); //muestro y paro
+            
+            //await button;
             Code.seleccLaProdEnLaGram(0);  //pinta de rojo    Program = 'class' ident PosDeclars '{' MethodDeclsOpc '}'.
             Parser.MessageBoxCon3Preg();//muestro y paro
             program.Nodes.Add("class");
@@ -344,6 +347,179 @@ namespace at.jku.ssw.cc
             Check(Token.RBRACE);
             Code.Colorear("token");
             Parser.MessageBoxCon3Preg();//muestro y paro final
+            //////----------------------------------------------------------------Grupo 2 20/10/2015------------------------------------------------------
+            MessageBoxCon3Preg(program);
+            Code.seleccLaProdEnLaGram(0);
+            program.Nodes.Add("}");
+            //////----------------------------------------------------------------Grupo 2 20/10/2015------------------------------------------------------
+            if (ZZ.parser)
+            {
+                Console.WriteLine("antes de prog.locals = Tab.topScope.locals; Tab.CloseScope()");
+                if (ZZ.readKey)
+                    Console.ReadKey();
+            };
+            prog.locals = Tab.topScope.locals;
+            if (ZZ.parser)
+            {
+                Console.WriteLine("mostrarSymbol");
+                prog.mostrarSymbol("");
+                if (ZZ.readKey) Console.ReadKey();
+            };
+            Tab.CloseScope();
+            Tab.mostrarTab();
+            bool Depuracion = false;
+            if (!Depuracion)
+                ParteFinal1();
+            if (ZZ.parser)
+            {
+                Console.WriteLine("despues de prog.locals = Tab.topScope.locals; Tab.CloseScope()");
+                if (ZZ.readKey) Console.ReadKey();
+                Tab.mostrarTab();
+            };
+        }//Fin Program
+
+        static async void Program2(System.Windows.Forms.Button button5)
+        {
+            System.Windows.Forms.TreeNode program = new System.Windows.Forms.TreeNode();  //Crea el nodo program
+            program.Text = "Program"; //Texto del nodo "program"
+            Program1.form1.treeView1.Nodes.Add(program); //"cuelga" el nodo (raiz) "program" del treeView1 ya creado
+            Parser.MessageBoxCon3Preg(); //muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(0);  //pinta de rojo    Program = 'class' ident PosDeclars '{' MethodDeclsOpc '}'.
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            program.Nodes.Add("class");
+            program.ExpandAll(); //Visualiza (Expande) hijo de Program
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            //antes del Check (Token.CLASS), token = ...(1,1),  laToken = ..."class".. y la = Token.CLASS
+            Check(Token.CLASS);   //class ProgrPpal
+            //Se cumple que:  (la == expected) => ejecuta Scan => token = ..."class"... y laToden = ..."ProgrPpal" 
+            Code.Colorear("token");   //colorea "class" en ventana de Edicion
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            //"Program = 'class' ident PosDeclars '{' MethodDeclsOpc '}'."
+            //Ya reconoció 'class', ahora va a reconocer ident
+            program.Nodes.Add("ident");
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Check(Token.IDENT); // "ProgrPpal" => debo insertar el token en la tabla de símbolos
+            // es el comienzo del programa y abrir un nuevo alcance
+            //Ahora token = "ProgrPpal" y laToken = "{"
+            Code.Colorear("token");  //"class" ya lo pintó, ahora pinta "ProgrPpal"  (lo que hay en token)
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Symbol prog = Tab.Insert(Symbol.Kinds.Prog, token.str, Tab.noType);//lo cuelga de universe
+            Code.CreateMetadata(prog);
+            Tab.OpenScope(prog); //topScore queda ahora apuntando a un nuevo Scope
+            //El Scope anterior (universo) lo accedo via topScore.outer
+            //Ya analizó Class ProgrPpal
+            //Declaraciones (de ctes, de Globals(aunque diga de vars) y de clases) 
+            //hasta q venga una "{"
+            //"Program = 'class' ident PosDeclars '{' MethodDeclsOpc '}'."
+            //Ya reconoció ident, ahora va a reconocer PosDeclars
+            System.Windows.Forms.TreeNode posDeclars = new System.Windows.Forms.TreeNode("PosDeclars");
+            program.Nodes.Add(posDeclars);  //Cuelga un TreeNode porque PosDeclars es No Terminal
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(1);  //"PosDeclars = . | Declaration PosDeclars.";
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            bool existeDecl = false;
+            //"Declaration = ConstDecl | VarDecl | ClassDecl."
+            while (la != Token.LBRACE && la != Token.EOF) //Si no existen declaraciones, la = Token.LBRACE
+            {
+                Code.Colorear("latoken"); Parser.MessageBoxCon3Preg(); await button5;//muestro y paro  //si existiera una declaracion, as "int i", colorea "int";  (yaPintado = true)
+                //El argumento "false" => que no debe pintar el "token" (que en este caso seria "ProgrPpal"), sino el laToken (que es "int")
+                //en este caso, debe "mirar hacia adelante" (laToken) 
+                //para determinar la opcion de la produccion "PosDeclars = . | Declaration PosDeclars."    
+                //Si laToken es "{" => la opcion es "PosDeclars = .", otherwise: "PosDeclars = Declaration PosDeclars."
+                Code.seleccLaProdEnLaGram(2);
+                System.Windows.Forms.TreeNode hijodeclar = new System.Windows.Forms.TreeNode("Declaration = ConstDecl | VarDecl | ClassDecl.");
+                posDeclars.Nodes.Add(hijodeclar); existeDecl = true;
+                switch (la)
+                {
+                    case Token.CONST:
+                        {
+                            ConstDecl(hijodeclar);
+                            break;
+                        }
+                    case Token.IDENT:  //Type ident..
+                        {
+                            Code.cargaProgDeLaGram("Declaration = VarDecl.");
+                            System.Windows.Forms.TreeNode hijo1 = new System.Windows.Forms.TreeNode("Declaration = VarDecl.");
+                            hijodeclar.Nodes.Add(hijo1);
+                            Code.seleccLaProdEnLaGram(6);
+                            Code.cargaProgDeLaGram("VarDecl = Type  ident IdentifiersOpc ';'.");
+                            Code.seleccLaProdEnLaGram(12);
+                            Code.cargaProgDeLaGram("Type = ident LbrackOpc."); //ya pintó el ident (por ej "int en int ii);
+                            VardDecl(Symbol.Kinds.Global, hijo1); //En program  //Table val;
+                            break;
+                        }
+                    case Token.CLASS:
+                        {
+                            ClassDecl();/*No se encuentra la gramatica para implementar declaracione de clases" */
+                            break;
+                        }
+                    default:
+                        {
+                            token = laToken;
+                            Errors.Error("Se esperaba Const, Tipo, Class");
+                            break;
+                        }
+                }
+                Code.seleccLaProdEnLaGram(1);
+                Code.cargaProgDeLaGram("selccionó la 1 PosDeclars = . | Declaration PosDeclars.");
+            }
+            Code.Colorear("latoken");
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            //en este caso, debe "mirar hacia adelante" (laToken) 
+            //para determinar la opcion de la produccion "PosDeclars = . | Declaration PosDeclars."    
+            //Si laToken es "{" => la opcion es "PosDeclars = .", otherwise: "PosDeclars = Declaration PosDeclars."
+            if (!existeDecl)
+            {
+                posDeclars.Nodes.Add(".");
+                posDeclars.ExpandAll(); //Visualiza (Expande) posDeclars
+                Parser.MessageBoxCon3Preg();//muestro y paro
+                await button5;
+            }
+            if (ZZ.parser)
+            {
+                Console.WriteLine("Terminó con todas las declaraciones");
+                Console.WriteLine("//el topScope queda apuntando a --> const size, class Table (con int[] pos y int[] neg), Table val");
+            };
+            if (ZZ.parser)
+            {
+                Console.WriteLine("empieza {"); if (ZZ.readKey) Console.ReadKey();
+            }
+            Check(Token.LBRACE);
+            Code.Colorear("token");  //ya lo pinto
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(0);
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            program.Nodes.Add("'{'");
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            System.Windows.Forms.TreeNode methodDeclsOpc = new System.Windows.Forms.TreeNode("MethodDeclsOpc");
+            program.Nodes.Add(methodDeclsOpc);
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(3);//3.MethodDeclsOpc = . | MethodDecl Meth
+            Parser.MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            // si "la" pertenece a First(MethodDec) => sólo deben haber metodos
+            while ((la == Token.IDENT || la == Token.VOID) && la != Token.EOF)
+            {
+                MethodDecl2(methodDeclsOpc, button5);  //void Main() int x,i; {val = new Table;....} // cuelga y pinta todos los datos internos al main 
+            }
+
+            Check(Token.RBRACE);
+            Code.Colorear("token");
+            Parser.MessageBoxCon3Preg();//muestro y paro final
+            await button5;
             //////----------------------------------------------------------------Grupo 2 20/10/2015------------------------------------------------------
             MessageBoxCon3Preg(program);
             Code.seleccLaProdEnLaGram(0);
@@ -557,6 +733,90 @@ namespace at.jku.ssw.cc
             Code.cargaProgDeLaGram("IdentifiersOpc = .");
         }//Fin VardDecl
 
+        static async void VardDecl2(Symbol.Kinds kind, System.Windows.Forms.TreeNode padre, System.Windows.Forms.Button button5)
+        {  //visto  //si es "int[] pos" y viene de "Class Tabla {", kind es "Field"
+            // si es Tabla val y viene de "class P {", kind es "Global"
+            Struct type;// = new Struct(Struct.Kinds.None); //int i;
+            Code.seleccLaProdEnLaGram(6);
+            if (muestraProducciones) MessageBoxCon3Preg(); //muestro y paro
+            await button5;
+            Code.cargaProgDeLaGram("VarDecl = Type  ident IdentifiersOpc ';'");
+            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+            System.Windows.Forms.TreeNode hijo1 = new System.Windows.Forms.TreeNode("Type");//type
+            padre.Nodes.Add(hijo1);
+            padre.ExpandAll();
+            MessageBoxCon3Preg(); //muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(12);
+            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+            Type(out type);  //En VardDecl
+            //int[] en el caso del "int[] pos",... int, Table, Persona, int[], etc  
+            //Table en el caso de Table val;
+            //int en int x;
+            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+            Code.Colorear("token");
+            hijo1.Nodes.Add("ident");
+            hijo1.ExpandAll();
+            MessageBoxCon3Preg(); //muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(12);
+            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+            System.Windows.Forms.TreeNode lbrakopc = new System.Windows.Forms.TreeNode("LbrakeOpc");
+            MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            hijo1.Nodes.Add(lbrakopc);
+            Code.seleccLaProdEnLaGram(13);
+            MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Code.Colorear("latoken");
+            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+            MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            lbrakopc.Nodes.Add(".");
+            lbrakopc.ExpandAll();
+            MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(12);
+            MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+            Check(Token.IDENT); // "pos", en int pos,   .....int,....  x, i, etc
+            Code.seleccLaProdEnLaGram(6);
+            padre.Nodes.Add("ident");// Hace referencia a la x
+            MessageBoxCon3Preg(); //muestro y paro
+            await button5;
+            Code.Colorear("token");
+            MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("IdentifiersOpc");
+            padre.Nodes.Add(hijo2);
+            //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+            ////
+            // debo insertar el token en la tabla de símbolos
+            cantVarLocales++; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
+            Symbol vble = Tab.Insert(kind, token.str, type);
+            //vble no, poner simbolo (para pos, en int[] pos)
+            //pues en este caso  es campo, y devuelve el Symbol p/pos,  type es int[]
+            //puede ser val, en Tabla val, y type es Table //y devuelve el Symbol p/val
+            Code.CreateMetadata(vble); //Para el campo pos (en int[] pos)Global, Field o .....  
+            //o Para la vbe Global val
+            //o para x en int x;
+            Code.seleccLaProdEnLaGram(7);
+            Identifieropc(hijo2, type, kind);
+            Code.Colorear("latoken");
+            Check(Token.SEMICOLON);
+            MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(6);
+            Code.Colorear("token");
+            padre.Nodes.Add("';'");
+            MessageBoxCon3Preg();//muestro y paro
+            await button5;
+            Code.seleccLaProdEnLaGram(8);
+            //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------------------
+            Code.cargaProgDeLaGram("IdentifiersOpc = .");
+        }//Fin VardDecl
+
         static void ClassDecl()
         {
             Check(Token.CLASS); //class Table {int[] pos;int[] pos;},.. class C1 {int i; void P1(){}; char ch; int P2{}; int[] arr;  }
@@ -759,6 +1019,187 @@ namespace at.jku.ssw.cc
                 MessageBoxCon3Preg(); // muestro y paro
                 Code.seleccLaProdEnLaGram(8);
                 MessageBoxCon3Preg();// muestro y paro
+                //Comienza Block
+                Block(methodDecl);  //Bloque dentro de MethodDecl()  //cuelga mas datos y pinta
+                curMethod.nArgs = Tab.topScope.nArgs;
+                curMethod.nLocs = Tab.topScope.nLocs;
+                curMethod.locals = Tab.topScope.locals;
+                Tab.CloseScope();
+                Tab.mostrarTab();
+                Code.il.Emit(Code.RET);  //si lo saco se clava en el InvokeMember
+                Parser.nroDeInstrCorriente++;
+                Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.ret;
+                Code.cargaInstr("ret");
+            }
+        }//Fin MethodDecl
+
+        static async void MethodDecl2(System.Windows.Forms.TreeNode methodDeclsopc, System.Windows.Forms.Button button5)
+        {
+            System.Windows.Forms.TreeNode methodDecl = new System.Windows.Forms.TreeNode("MethodDecl"); //cuelga ESTE NODO DESPUES DE pintar el void
+            Struct type = new Struct(Struct.Kinds.None);
+            System.Windows.Forms.TreeNode typeOrVoid = new System.Windows.Forms.TreeNode("TypeOrVoid"); //Pone por defecto void
+            if (la == Token.VOID || la == Token.IDENT)
+            {
+                if (la == Token.VOID)
+                {
+                    Code.Colorear("latoken");
+                    Parser.MessageBoxCon3Preg(); // muestro y paro 
+                    await button5;
+                    Check(Token.VOID); //token = void laToken = Main
+                    ///// Agrega 'MethodDecl' al arbol y lo cuelga de MethodDeclsOpc
+                    methodDeclsopc.Nodes.Add(methodDecl);
+                    methodDeclsopc.ExpandAll();
+                    MessageBoxCon3Preg(); // muestro y paro
+                    await button5;
+                    Code.seleccLaProdEnLaGram(8);
+                    MessageBoxCon3Preg(); // muestro y paro
+                    await button5;
+                    ///// Agrega 'TypeOrVoid' al arbol y lo cuelga de MethodDecl
+                    methodDecl.Nodes.Add(typeOrVoid);
+                    methodDecl.ExpandAll();
+                    MessageBoxCon3Preg(); // muestro y paro
+                    await button5;
+                    Code.seleccLaProdEnLaGram(9);
+                    MessageBoxCon3Preg(); // muestro y paro
+                    await button5;
+                    ///// Agrega 'void' al arbol y lo cuelga de typeorvoid
+                    typeOrVoid.Nodes.Add("'void'");
+                    typeOrVoid.Expand();
+                    MessageBoxCon3Preg(); // muestro y paro
+                    await button5;
+                    Code.seleccLaProdEnLaGram(8);
+                    type = Tab.noType; //  para void
+                }
+                else
+                    if (la == Token.IDENT)
+                {
+                    Type(out type);  //  token = UnTipo laToken = Main
+                    Code.Colorear("token");
+                    MessageBoxCon3Preg(); // muestro y paro
+                    await button5;
+                    /////////// Agrega 'Type' al arbol y lo cuelga de typeorvoid
+                    System.Windows.Forms.TreeNode ntype = new System.Windows.Forms.TreeNode("Type");
+                    typeOrVoid.Nodes.Add(ntype);
+                    ntype.Nodes.Add("" + type.kind.ToString());
+                    ntype.ExpandAll();
+                    MessageBoxCon3Preg();// muestro y paro
+                    await button5;
+                }
+                methodDecl.Nodes.Add("ident");
+                MessageBoxCon3Preg(); // muestro y paro
+                await button5;
+                Code.Colorear("token");
+                MessageBoxCon3Preg();// muestro y paro
+                await button5;
+                Check(Token.IDENT);  //Main por ej.  //token = Main, laToken = "("
+                Code.Colorear("token");
+                MessageBoxCon3Preg();// muestro y paro
+                await button5;
+                curMethod = Tab.Insert(Symbol.Kinds.Meth, token.str, type);//inserta void Main 
+                Tab.OpenScope(curMethod);
+                methodDecl.Nodes.Add("'('");
+                MessageBoxCon3Preg(); // muestro y paro
+                await button5;
+                Check(Token.LPAR);  //Si Main() => no tiene FormPars
+                Code.Colorear("token");
+                MessageBoxCon3Preg();// muestro y paro
+                await button5;
+                ///// Agrega 'pars' a MethodDecl
+                System.Windows.Forms.TreeNode pars = new System.Windows.Forms.TreeNode("Pars");
+                methodDecl.Nodes.Add(pars);
+                MessageBoxCon3Preg(); // muestro y paro
+                await button5;
+                Code.seleccLaProdEnLaGram(10);
+                MessageBoxCon3Preg(); // muestro y paro
+                await button5;
+                if (la == Token.IDENT)
+                {
+                    FormPars(pars);  //Aqui hay que crear los symbolos para los args 
+                    Code.Colorear("token"); MessageBoxCon3Preg(); await button5;// muestro y paro //pinta el ")"
+                    methodDecl.Nodes.Add("')'");
+                    MessageBoxCon3Preg(); // muestro y paro
+                    await button5;
+                    Check(Token.RPAR);
+                }
+                else
+                {
+                    //infiere que no hay params => 1) debe venir un ")". 2) La pocion de la produccion es "."
+                    Code.Colorear("latoken"); MessageBoxCon3Preg(); await button5;// muestro y paro  //pinta el ")"
+                    Check(Token.RPAR);
+                    Code.seleccLaProdEnLaGram(8);
+                    pars.Nodes.Add(".");
+                    pars.ExpandAll();
+                    methodDecl.Nodes.Add("')'");
+                    MessageBoxCon3Preg(); // muestro y paro
+                    await button5;
+                }
+
+                //Comienza Nodo Declaration.
+                System.Windows.Forms.TreeNode posDeclars = new System.Windows.Forms.TreeNode("PosDeclars");
+                methodDecl.Nodes.Add(posDeclars);
+                MessageBoxCon3Preg(); // muestro y paro
+                await button5;
+                Code.seleccLaProdEnLaGram(1);
+                MessageBoxCon3Preg();// muestro y paro
+                await button5;
+                //bool encuentraDecl = false;
+                Code.CreateMetadata(curMethod);  //genera il
+                                                 //Declaraciones  por ahora solo decl de var, luego habria q agregar const y clases
+                while (la != Token.LBRACE && la != Token.EOF)
+                //void Main()==> int x,i; {val = new Table;....}
+                {
+                    if (la == Token.IDENT)
+                    {
+                        //encuentraDecl = true;
+                        Code.Colorear("latoken"); MessageBoxCon3Preg(); await button5;// muestro y paro //colorea "int"  en int i; 
+                                                                                      //Infiere la 2° opcion de PosDeclars   aaaaaaaa
+                        System.Windows.Forms.TreeNode declaration = new System.Windows.Forms.TreeNode("Declaration");
+                        posDeclars.Nodes.Add(declaration);
+                        posDeclars.ExpandAll();
+                        MessageBoxCon3Preg(); // muestro y paro
+                        await button5;
+                        Code.seleccLaProdEnLaGram(2);
+                        System.Windows.Forms.TreeNode varDecl = new System.Windows.Forms.TreeNode("VarDecl");
+                        declaration.Nodes.Add(varDecl);
+                        declaration.ExpandAll();
+                        MessageBoxCon3Preg(); // muestro y paro
+                        await button5;
+                        Code.seleccLaProdEnLaGram(6);
+                        VardDecl2(Symbol.Kinds.Local, varDecl, button5); // int x,i; en MethodDecl()  con int ya consumido  //cuelga mas datos y pinta
+                    }
+                    else
+                    {
+                        token = laToken;
+                        Errors.Error("espero una declaracion de variable");
+                    }
+                }
+                //Termina Vardecl.
+                Code.seleccLaProdEnLaGram(2);
+
+                if (cantVarLocales > 0)
+                {
+                    string instrParaVarsLocs = ".locals init(int32 V_0";
+                    for (int i = 1; i < cantVarLocales; i++)
+                    {
+                        instrParaVarsLocs = instrParaVarsLocs + "," + "\n          int32 V_" + i.ToString(); // +"  ";
+                    }
+                    instrParaVarsLocs = instrParaVarsLocs + ")";
+                    Code.cargaInstr(instrParaVarsLocs);
+
+                }
+                Code.seleccLaProdEnLaGram(1);
+                MessageBoxCon3Preg(); // muestro y paro
+                await button5;
+                System.Windows.Forms.TreeNode posDeclarsAux = new System.Windows.Forms.TreeNode("PosDeclars");
+                posDeclarsAux.Nodes.Add(".");
+                posDeclarsAux.ExpandAll();
+                posDeclars.Nodes.Add(posDeclarsAux);
+                Code.Colorear("latoken");  //"{"
+                MessageBoxCon3Preg(); // muestro y paro
+                await button5;
+                Code.seleccLaProdEnLaGram(8);
+                MessageBoxCon3Preg();// muestro y paro
+                await button5;
                 //Comienza Block
                 Block(methodDecl);  //Bloque dentro de MethodDecl()  //cuelga mas datos y pinta
                 curMethod.nArgs = Tab.topScope.nArgs;
@@ -2365,6 +2806,21 @@ namespace at.jku.ssw.cc
             //porque el Scan comienza con token = laToken
             Scan();                     // scan first symbol
             Program();                  // start analysis  
+            Check(Token.EOF);
+        }
+
+        public static void Parse2(string prog, System.Windows.Forms.Button boton)
+        {
+            Scanner.Init(new StringReader(prog), null);  //deja en ch el 1° char de prog 
+            Tab.Init();  //topScope queda apuntando al Scope p/el universe
+            Errors.Init();
+            curMethod = null;
+            token = null;
+            //Con 1° char de prog en la vble ch, ya puede comenzar el Scanner 
+            laToken = new Token(1, 1);  // avoid crash when 1st symbol has scanner error
+            //porque el Scan comienza con token = laToken
+            Scan();                     // scan first symbol
+            Program2(boton);                  // start analysis  
             Check(Token.EOF);
         }
 
