@@ -7,7 +7,10 @@ namespace Compi
 {
     class Optimizer
     {
+
+        //Tipos de expresiones
         public enum EType { COMP, NCOMP, REDUC }
+        //TDA Tabla de expresiones
         public class ExpressionTable
         {
             public int pos;
@@ -21,6 +24,14 @@ namespace Compi
             }
 
         }
+        /// <summary>
+        /// Metodo para obtener las expresiones en el codigo.
+        /// </summary>
+        /// <param name="strSource">Codigo a optimizar</param>
+        /// <param name="strStart">Substring de inicio '=' </param>
+        /// <param name="strEnd">Substring de fin ';'</param>
+        /// <param name="desplazamiento">Posicion desde donde inspeccionar el stirng, 0.</param>
+        /// <returns>Expresion detectada o null si ya no hay mas expresiones.</returns>
         public static ExpressionTable getBetween(string strSource, string strStart, string strEnd, int desplazamiento)
         {
             int Start, End;
@@ -61,41 +72,64 @@ namespace Compi
                     ET.type = EType.NCOMP;
                     return ET;
                 }
-
+                   
             }
             else
             {
                 return null;
             }
         }
+
+        /// <summary>
+        /// Funcion que optimiza el codigo.
+        /// </summary>
+        /// <param name="code">Codigo a optimizar</param>
+        /// <returns>Codigo optimizado</returns>
         public static string run(string code)
         {
-            bool k = true;
             int despl = 0;
             List<ExpressionTable> list = new List<ExpressionTable>();
-            string auxtext = code;
-            while (k)
+            string remainingCode = code;
+            
+            //Paso 1: Deteccion y computacion de expresiones.
+            while (true)
             {
-                ExpressionTable data = Optimizer.getBetween(auxtext, "=", ";", 0);
+                //Encontramos las expresiones.
+                ExpressionTable data = Optimizer.getBetween(remainingCode, "=", ";", 0);
 
+                //Si no hay expresiones restantes entonces termina.
                 if (data == null)
-                    k = false;
-                /*else if (data.type != EType.COMP) {
-                    despl = data.pos;
-                    auxtext = auxtext.Substring(despl);
-                }*/
+                    break;
                 else
                 {
+                    //Si obtenemos una expresion la agregamos a la lista
+                    //Y actualizamos el desplazamiento para obtener el codigo remanente a optimizar.
                     list.Add(data);
                     despl = data.pos;
-                    auxtext = auxtext.Substring(despl);
+                    remainingCode = remainingCode.Substring(despl);
                 }
 
             }
+
+            //Paso 2: Reemplazo de las expresiones
             foreach (ExpressionTable item in list)
             {
-                if (item.type == EType.COMP)
-                    code = code.Replace(item.expression, " " + item.result);
+                switch (item.type)
+                {
+                    case EType.COMP:
+                        //Reemplazo de expresion por constante.
+                        code = code.Replace(item.expression, " " + item.result);
+                        break;
+
+                    case EType.REDUC:
+                        //A futuro: Implemental reduccion.
+                        break;
+
+                    case EType.NCOMP:
+                        //A futuro: Extender optimizacion.
+                        break;
+                }
+                    
             }
             return code;
         }
