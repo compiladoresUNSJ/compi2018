@@ -46,6 +46,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -187,6 +188,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\monitor5.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\parlantitos.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\no ver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Desktop\AutocompleteMenu\AutocompleteMenu\AutocompleteMenu\AutocompleteMenu.csproj">
+      <Project>{43cbc9aa-6a8e-463f-83a9-aff3124afdb6}</Project>
+      <Name>AutocompleteMenu</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

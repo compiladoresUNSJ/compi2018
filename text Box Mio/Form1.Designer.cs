@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.richTextBox4 = new System.Windows.Forms.RichTextBox();
@@ -47,7 +48,6 @@
             this.directoryEntry1 = new System.DirectoryServices.DirectoryEntry();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.richTextBox8 = new System.Windows.Forms.RichTextBox();
             this.richTextBox9 = new System.Windows.Forms.RichTextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -91,6 +91,9 @@
             this.bUParsingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compilerGeneratorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editorInteligenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mostrarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ocultarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.pag1 = new System.Windows.Forms.TabPage();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -101,12 +104,19 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.pestania = new System.Windows.Forms.TabControl();
+            this.correcciones = new System.Windows.Forms.TabPage();
+            this.correccionestxt = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.richTextBox8 = new System.Windows.Forms.RichTextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pestania = new System.Windows.Forms.TabControl();
+            this.autocompleteMenu1 = new AutocompleteMenuNS.AutocompleteMenu();
+            this.EditorDeCodigo = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pag1.SuspendLayout();
@@ -115,11 +125,15 @@
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.correcciones.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // richTextBox2
             // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.richTextBox2, null);
             this.richTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBox2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.richTextBox2.Location = new System.Drawing.Point(1068, 146);
@@ -134,6 +148,7 @@
             // 
             // richTextBox3
             // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.richTextBox3, null);
             this.richTextBox3.BackColor = System.Drawing.Color.White;
             this.richTextBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBox3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -141,13 +156,14 @@
             this.richTextBox3.Location = new System.Drawing.Point(3, 3);
             this.richTextBox3.Name = "richTextBox3";
             this.richTextBox3.ReadOnly = true;
-            this.richTextBox3.Size = new System.Drawing.Size(522, 541);
+            this.richTextBox3.Size = new System.Drawing.Size(522, 562);
             this.richTextBox3.TabIndex = 15;
             this.richTextBox3.Text = "";
             this.richTextBox3.TextChanged += new System.EventHandler(this.richTextBox3_TextChanged);
             // 
             // richTextBox4
             // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.richTextBox4, null);
             this.richTextBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBox4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.richTextBox4.Location = new System.Drawing.Point(1069, 360);
@@ -160,6 +176,7 @@
             // 
             // richTextBox5
             // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.richTextBox5, null);
             this.richTextBox5.Location = new System.Drawing.Point(1041, 527);
             this.richTextBox5.Name = "richTextBox5";
             this.richTextBox5.Size = new System.Drawing.Size(108, 67);
@@ -259,6 +276,7 @@
             // 
             // richTextBox7
             // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.richTextBox7, null);
             this.richTextBox7.BackColor = System.Drawing.Color.White;
             this.richTextBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox7.Location = new System.Drawing.Point(3, 3);
@@ -279,19 +297,9 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // richTextBox8
-            // 
-            this.richTextBox8.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.richTextBox8.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox8.Location = new System.Drawing.Point(89, 373);
-            this.richTextBox8.Name = "richTextBox8";
-            this.richTextBox8.Size = new System.Drawing.Size(236, 129);
-            this.richTextBox8.TabIndex = 30;
-            this.richTextBox8.Text = "";
-            this.richTextBox8.Visible = false;
-            // 
             // richTextBox9
             // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.richTextBox9, null);
             this.richTextBox9.BackColor = System.Drawing.SystemColors.Menu;
             this.richTextBox9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.richTextBox9.Location = new System.Drawing.Point(76, 561);
@@ -321,7 +329,8 @@
             this.ayudaToolStripMenuItem,
             this.miniGenerDeCodToolStripMenuItem,
             this.pPTToolStripMenuItem,
-            this.autoresToolStripMenuItem});
+            this.autoresToolStripMenuItem,
+            this.editorInteligenteToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1161, 24);
@@ -409,13 +418,14 @@
             this.ediciónToolStripMenuItem.Name = "ediciónToolStripMenuItem";
             this.ediciónToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.ediciónToolStripMenuItem.Text = "Edición";
+            this.ediciónToolStripMenuItem.DropDownOpening += new System.EventHandler(this.ediciónToolStripMenuItem_DropDownOpening);
             this.ediciónToolStripMenuItem.Click += new System.EventHandler(this.ediciónToolStripMenuItem_Click);
             // 
             // deshacerToolStripMenuItem
             // 
             this.deshacerToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.gtk_undo_ltr_16x16;
             this.deshacerToolStripMenuItem.Name = "deshacerToolStripMenuItem";
-            this.deshacerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.deshacerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deshacerToolStripMenuItem.Text = "Deshacer";
             this.deshacerToolStripMenuItem.Click += new System.EventHandler(this.deshacerToolStripMenuItem_Click);
             // 
@@ -423,20 +433,20 @@
             // 
             this.rehacerToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.gtk_undo_rtl_16x16;
             this.rehacerToolStripMenuItem.Name = "rehacerToolStripMenuItem";
-            this.rehacerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.rehacerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.rehacerToolStripMenuItem.Text = "Rehacer";
             this.rehacerToolStripMenuItem.Click += new System.EventHandler(this.rehacerToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(159, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // cortarToolStripMenuItem
             // 
             this.cortarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.cut_16x16;
             this.cortarToolStripMenuItem.Name = "cortarToolStripMenuItem";
-            this.cortarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.cortarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cortarToolStripMenuItem.Text = "Cortar";
             this.cortarToolStripMenuItem.Click += new System.EventHandler(this.copiarToolStripMenuItem_Click);
             // 
@@ -444,7 +454,7 @@
             // 
             this.copiarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.copy_16x16;
             this.copiarToolStripMenuItem.Name = "copiarToolStripMenuItem";
-            this.copiarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.copiarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copiarToolStripMenuItem.Text = "Copiar";
             this.copiarToolStripMenuItem.Click += new System.EventHandler(this.cortarToolStripMenuItem_Click_1);
             // 
@@ -452,19 +462,19 @@
             // 
             this.pegarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.page_paste_16x16;
             this.pegarToolStripMenuItem.Name = "pegarToolStripMenuItem";
-            this.pegarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.pegarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pegarToolStripMenuItem.Text = "Pegar";
             this.pegarToolStripMenuItem.Click += new System.EventHandler(this.pegarToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(159, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // seleccionarTodoToolStripMenuItem
             // 
             this.seleccionarTodoToolStripMenuItem.Name = "seleccionarTodoToolStripMenuItem";
-            this.seleccionarTodoToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.seleccionarTodoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.seleccionarTodoToolStripMenuItem.Text = "Seleccionar todo";
             this.seleccionarTodoToolStripMenuItem.Click += new System.EventHandler(this.seleccionarTodoToolStripMenuItem_Click);
             // 
@@ -482,28 +492,28 @@
             // árbolDeDerivaciónToolStripMenuItem
             // 
             this.árbolDeDerivaciónToolStripMenuItem.Name = "árbolDeDerivaciónToolStripMenuItem";
-            this.árbolDeDerivaciónToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.árbolDeDerivaciónToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.árbolDeDerivaciónToolStripMenuItem.Text = "Árbol de Derivación";
             this.árbolDeDerivaciónToolStripMenuItem.Click += new System.EventHandler(this.árbolDeDerivaciónToolStripMenuItem_Click);
             // 
             // tablaDeSímbolosToolStripMenuItem
             // 
             this.tablaDeSímbolosToolStripMenuItem.Name = "tablaDeSímbolosToolStripMenuItem";
-            this.tablaDeSímbolosToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.tablaDeSímbolosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tablaDeSímbolosToolStripMenuItem.Text = "Tabla de Símbolos";
             this.tablaDeSímbolosToolStripMenuItem.Click += new System.EventHandler(this.tablaDeSímbolosToolStripMenuItem_Click);
             // 
             // instruccionesToolStripMenuItem
             // 
             this.instruccionesToolStripMenuItem.Name = "instruccionesToolStripMenuItem";
-            this.instruccionesToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.instruccionesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.instruccionesToolStripMenuItem.Text = "Instrucciones";
             this.instruccionesToolStripMenuItem.Click += new System.EventHandler(this.instruccionesToolStripMenuItem_Click);
             // 
             // gramaticaToolStripMenuItem
             // 
             this.gramaticaToolStripMenuItem.Name = "gramaticaToolStripMenuItem";
-            this.gramaticaToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.gramaticaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.gramaticaToolStripMenuItem.Text = "Gramatica";
             this.gramaticaToolStripMenuItem.Click += new System.EventHandler(this.gramaticaToolStripMenuItem_Click);
             // 
@@ -652,6 +662,31 @@
             this.autoresToolStripMenuItem.Text = "Autores";
             this.autoresToolStripMenuItem.Click += new System.EventHandler(this.autoresToolStripMenuItem_Click);
             // 
+            // editorInteligenteToolStripMenuItem
+            // 
+            this.editorInteligenteToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mostrarToolStripMenuItem,
+            this.ocultarToolStripMenuItem});
+            this.editorInteligenteToolStripMenuItem.Name = "editorInteligenteToolStripMenuItem";
+            this.editorInteligenteToolStripMenuItem.Size = new System.Drawing.Size(109, 20);
+            this.editorInteligenteToolStripMenuItem.Text = "Editor Inteligente";
+            // 
+            // mostrarToolStripMenuItem
+            // 
+            this.mostrarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.ver;
+            this.mostrarToolStripMenuItem.Name = "mostrarToolStripMenuItem";
+            this.mostrarToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.mostrarToolStripMenuItem.Text = "Mostrar";
+            this.mostrarToolStripMenuItem.Click += new System.EventHandler(this.mostrarToolStripMenuItem_Click);
+            // 
+            // ocultarToolStripMenuItem
+            // 
+            this.ocultarToolStripMenuItem.Image = global::text_Box_Mio.Properties.Resources.no_ver;
+            this.ocultarToolStripMenuItem.Name = "ocultarToolStripMenuItem";
+            this.ocultarToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.ocultarToolStripMenuItem.Text = "Ocultar";
+            this.ocultarToolStripMenuItem.Click += new System.EventHandler(this.ocultarToolStripMenuItem_Click);
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.pag1);
@@ -688,6 +723,7 @@
             // 
             // richTextBox1
             // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.richTextBox1, null);
             this.richTextBox1.BackColor = System.Drawing.SystemColors.Menu;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
@@ -710,7 +746,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(528, 547);
+            this.tabPage1.Size = new System.Drawing.Size(528, 568);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Tabla de Símbolos ";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -720,7 +756,7 @@
             this.arbolTS.Dock = System.Windows.Forms.DockStyle.Fill;
             this.arbolTS.Location = new System.Drawing.Point(3, 3);
             this.arbolTS.Name = "arbolTS";
-            this.arbolTS.Size = new System.Drawing.Size(522, 541);
+            this.arbolTS.Size = new System.Drawing.Size(522, 562);
             this.arbolTS.TabIndex = 0;
             // 
             // tabPage2
@@ -729,7 +765,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(528, 547);
+            this.tabPage2.Size = new System.Drawing.Size(528, 568);
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "Instr CIL (RT 3)";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -737,6 +773,7 @@
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage4);
+            this.tabControl2.Controls.Add(this.correcciones);
             this.tabControl2.Location = new System.Drawing.Point(22, 340);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -754,14 +791,28 @@
             this.tabPage4.Text = "Gramatica (TB7)";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // pestania
+            // correcciones
             // 
-            this.pestania.Location = new System.Drawing.Point(22, 31);
-            this.pestania.Name = "pestania";
-            this.pestania.SelectedIndex = 0;
-            this.pestania.Size = new System.Drawing.Size(434, 305);
-            this.pestania.TabIndex = 40;
-            this.pestania.SelectedIndexChanged += new System.EventHandler(this.pestania_SelectedIndexChanged);
+            this.correcciones.Controls.Add(this.correccionestxt);
+            this.correcciones.Location = new System.Drawing.Point(4, 24);
+            this.correcciones.Name = "correcciones";
+            this.correcciones.Size = new System.Drawing.Size(458, 259);
+            this.correcciones.TabIndex = 2;
+            this.correcciones.Text = "Correcciones";
+            this.correcciones.UseVisualStyleBackColor = true;
+            // 
+            // correccionestxt
+            // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.correccionestxt, null);
+            this.correccionestxt.BackColor = System.Drawing.Color.Black;
+            this.correccionestxt.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.correccionestxt.ForeColor = System.Drawing.Color.Yellow;
+            this.correccionestxt.Location = new System.Drawing.Point(3, 3);
+            this.correccionestxt.Multiline = true;
+            this.correccionestxt.Name = "correccionestxt";
+            this.correccionestxt.ReadOnly = true;
+            this.correccionestxt.Size = new System.Drawing.Size(452, 253);
+            this.correccionestxt.TabIndex = 0;
             // 
             // contextMenuStrip1
             // 
@@ -809,24 +860,86 @@
             this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.pictureBox3);
+            this.panel1.Controls.Add(this.richTextBox8);
+            this.panel1.Controls.Add(this.pictureBox2);
+            this.panel1.Location = new System.Drawing.Point(19, 367);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(469, 285);
+            this.panel1.TabIndex = 16;
+            this.panel1.Visible = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.Color.White;
+            this.pictureBox3.Image = global::text_Box_Mio.Properties.Resources.parlantitos;
+            this.pictureBox3.Location = new System.Drawing.Point(328, 118);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(100, 101);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 43;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Visible = false;
+            // 
+            // richTextBox8
+            // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.richTextBox8, null);
+            this.richTextBox8.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.richTextBox8.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox8.Location = new System.Drawing.Point(54, 33);
+            this.richTextBox8.Name = "richTextBox8";
+            this.richTextBox8.Size = new System.Drawing.Size(236, 129);
+            this.richTextBox8.TabIndex = 44;
+            this.richTextBox8.Text = "";
+            // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::text_Box_Mio.Properties.Resources.monitor5;
-            this.pictureBox2.Location = new System.Drawing.Point(59, 350);
+            this.pictureBox2.Location = new System.Drawing.Point(24, 10);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(298, 209);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 42;
+            this.pictureBox2.TabIndex = 45;
             this.pictureBox2.TabStop = false;
-            this.pictureBox2.Visible = false;
+            // 
+            // pestania
+            // 
+            this.pestania.Location = new System.Drawing.Point(22, 55);
+            this.pestania.Name = "pestania";
+            this.pestania.SelectedIndex = 0;
+            this.pestania.Size = new System.Drawing.Size(459, 279);
+            this.pestania.TabIndex = 40;
+            this.pestania.SelectedIndexChanged += new System.EventHandler(this.pestania_SelectedIndexChanged);
+            this.pestania.KeyUp += new System.Windows.Forms.KeyEventHandler(this.pestania_KeyDown);
+            // 
+            // autocompleteMenu1
+            // 
+            this.autocompleteMenu1.Colors = ((AutocompleteMenuNS.Colors)(resources.GetObject("autocompleteMenu1.Colors")));
+            this.autocompleteMenu1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.autocompleteMenu1.ImageList = null;
+            this.autocompleteMenu1.Items = new string[0];
+            this.autocompleteMenu1.TargetControlWrapper = null;
+            // 
+            // EditorDeCodigo
+            // 
+            this.autocompleteMenu1.SetAutocompleteMenu(this.EditorDeCodigo, this.autocompleteMenu1);
+            this.EditorDeCodigo.Location = new System.Drawing.Point(243, 58);
+            this.EditorDeCodigo.Name = "EditorDeCodigo";
+            this.EditorDeCodigo.Size = new System.Drawing.Size(248, 276);
+            this.EditorDeCodigo.TabIndex = 41;
+            this.EditorDeCodigo.Text = "";
+            this.EditorDeCodigo.Visible = false;
+            this.EditorDeCodigo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EditorDeCodigo_KeyDown);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1161, 657);
-            this.Controls.Add(this.richTextBox8);
-            this.Controls.Add(this.pictureBox2);
+            this.ClientSize = new System.Drawing.Size(1161, 733);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.pestania);
             this.Controls.Add(this.richTextBox9);
             this.Controls.Add(this.tabControl1);
@@ -848,6 +961,7 @@
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.EditorDeCodigo);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -856,6 +970,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mini Compilador.  Draft Version.   ";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.DoubleClick += new System.EventHandler(this.Form1_DoubleClick);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -865,6 +980,10 @@
             this.tabPage2.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
+            this.correcciones.ResumeLayout(false);
+            this.correcciones.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -891,7 +1010,6 @@
         private System.DirectoryServices.DirectoryEntry directoryEntry1;
         private System.Windows.Forms.ImageList imageList1;
         private System.Drawing.Printing.PrintDocument printDocument1;
-        private System.Windows.Forms.RichTextBox richTextBox8;
         private System.Windows.Forms.RichTextBox richTextBox9;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -928,7 +1046,6 @@
         private System.Windows.Forms.ToolStripMenuItem árbolDeDerivaciónToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tablaDeSímbolosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem instruccionesToolStripMenuItem;
-        private System.Windows.Forms.TabControl pestania;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         public System.Windows.Forms.TreeView arbolTS;
         private System.Windows.Forms.Button button4;
@@ -945,11 +1062,22 @@
         private System.Windows.Forms.ToolStripMenuItem bUParsingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compilerGeneratorsToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ToolStripMenuItem autoresToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.ToolStripMenuItem introducciónToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem acercaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gramaticaToolStripMenuItem;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.RichTextBox richTextBox8;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.TabControl pestania;
+        private System.Windows.Forms.TabPage correcciones;
+        private System.Windows.Forms.TextBox correccionestxt;
+        private AutocompleteMenuNS.AutocompleteMenu autocompleteMenu1;
+        private System.Windows.Forms.RichTextBox EditorDeCodigo;
+        private System.Windows.Forms.ToolStripMenuItem editorInteligenteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mostrarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ocultarToolStripMenuItem;
     }
 }

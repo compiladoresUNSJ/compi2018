@@ -341,11 +341,17 @@ public class Scanner {
 		if (output != null) output.WriteLine("-- line {0}, col {1}: {2}", line, col, msg);
 //		else Parser.Errors.Error(msg);
 	}
-    public static void GeneraHashKeywords(){
-       string[] keywords ={"break", "class", "const", "else",
+        static string[] keywords ={"break", "class", "const", "else",
                            "if", "new", "read","return",
-                           "void","while","write","writeln"
+                           "void","while","write","writeln","say","static",
                           };
+        public static string[] getkeywords()
+        {
+            return keywords;
+        }
+
+        public static void GeneraHashKeywords(){
+       
        hashTableKeywords = new Hashtable();
         int i=0;
         for(i=0;i<keywords.Length;i++)
@@ -407,6 +413,9 @@ public class Scanner {
                     break;
                 case "writeln":
                     t.kind = Token.WRITELN;
+                    break;
+                case "say":
+                    t.kind = Token.SAY;
                     break;
 
             }

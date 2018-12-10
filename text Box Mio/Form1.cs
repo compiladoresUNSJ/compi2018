@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 //using Compilador;
 using System.Threading;
+using System.Speech.Synthesis;
 using System.Diagnostics;
 
 
@@ -18,9 +19,12 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
     public partial class Form1 : Form
     {
         public text_Box_Mio.continuar instContinuar;  // 
-
+        public List<String> AccionesEditor;
+        private int indiceAccion;
+        private bool HacerDeshacer;
         public RichTextBox Editor;
         public TabPage T;
+        public static bool PararCompilador;
 
         public static bool errorEnComilacion = false;
         //static int linea, col, sizeToken = 0;
@@ -33,6 +37,9 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         public Form1()
         {
             InitializeComponent();
+            PararCompilador = true;
+            AccionesEditor = new List<string>();
+            HacerDeshacer = false;
             instContinuar = new text_Box_Mio.continuar();
             //  inicializa();
             //comentario
@@ -112,6 +119,9 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             //Inicio Modificacion - Grupo 1 - 10/9/15
             //Oculta Labels, RichTextBox y Buttons de Maquina Virtual. Oculta Monitor de Maquina Virtual   
             Code.restaurarRichTextBox7conNegro();
+            correccionestxt.Clear();
+            tabControl2.SelectedIndex = 0;
+            richTextBox7.Select(0, 0);
             richTextBox8.Visible = false;
             richTextBox9.Visible = false;
             pictureBox2.Visible = false;
@@ -119,6 +129,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             richTextBox7.Visible = true;
             button3.Visible = button4.Visible = false;
             richTextBox2.Visible = richTextBox4.Visible = richTextBox5.Visible = false;
+            panel1.Visible = false;
             label1.Visible = label2.Visible = label7.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = label13.Visible = false;
             //Fin Modificacion - Grupo 1 - 10/9/15
             //   
@@ -161,6 +172,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             else
             {
                 // Parser.muestraProducciones = true;
+            
                 Parser.muestraCargaDeInstrs = true;
             }
 
@@ -200,7 +212,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             try
             {
                 Parser.inicializaCil();
-
+                
                 /* Quitar los comentarios para que funcione el Scanner */
                 if (ZZ.Program) Console.WriteLine("Main Compilador 2");
                 if (ZZ.Principal)
@@ -219,21 +231,28 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                 ZZ.Program = false;
                 if (ZZ.Program) Console.WriteLine("TERMINA TODO");
                 if (ZZ.Program) Console.ReadKey();
+                Program1.form1.depurarToolStripMenuItem.Enabled = true;
+                
             }
             catch (ErrorMio e1)
             {
+                Program1.form1.depurarToolStripMenuItem.Enabled = false;
                 int linea1 = e1.linea; int col1 = e1.columna; int sizeToken1 = e1.sizeToken;
                 Editor.Select(Editor.GetFirstCharIndexFromLine(linea1 - 1) + col1 - 1, sizeToken1);
                 Editor.SelectionColor = Color.Red;
-                System.Windows.Forms.MessageBox.Show("error 3245..." + e1.msg);
+                correccionestxt.Text = "Error: " + e1.msg;
+                tabControl2.SelectedIndex = 1;
+                correccionestxt.Select(0, 0);
+                //System.Windows.Forms.MessageBox.Show("error 3245..." + e1.msg);
                 errorEnComilacion = true;
             }
-            //Program1.form1.maquVirtualToolStripMenuItem.Enabled = true;
-            Program1.form1.depurarToolStripMenuItem.Enabled = true;
 
+            //Program1.form1.maquVirtualToolStripMenuItem.Enabled = true;            
             sw.Close();
 
         } //Fin compilar()
+
+        
 
 
         //private void button3_Click(object sender, EventArgs e)  //inicializar
@@ -446,8 +465,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                     case Parser.AccionInstr.storeLocal:
                         Parser.locals[Parser.cil[nroInstr].nro] = ((ElemPilita)Parser.pilita.pop()).entero;
                         Parser.muestraVarsLocales();
-                        break;
-
+                        break;                    
                     case Parser.AccionInstr.write:
                         int ancho = ((ElemPilita)Parser.pilita.pop()).entero;
                         int nuevoValor = ((ElemPilita)Parser.pilita.pop()).entero;
@@ -465,6 +483,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                                                            + 0, nuevo.Length);
                         Program1.form1.richTextBox8.SelectionColor = System.Drawing.Color.White;
                         richTextBox8.Visible = true;
+
                         break;
 
                     case Parser.AccionInstr.writeln:
@@ -488,6 +507,23 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                                                            + 0, nuevo.Length);
                         Program1.form1.richTextBox8.SelectionColor = System.Drawing.Color.White;
                         richTextBox8.Visible = true;
+                        break;
+                    case Parser.AccionInstr.say:
+                        {
+                            string argStringDelSay = "??";
+
+                            ElemPilita elemPilitaSay = (ElemPilita)Parser.pilita.pop();
+                            if (elemPilitaSay.elemDePila == ElemPilita.ElemDePila.esEstring)
+                                argStringDelSay = elemPilitaSay.estring;
+                            else System.Windows.Forms.MessageBox.Show("Error 9876543 asew");
+                            pictureBox3.Visible = true;
+                            pictureBox3.BringToFront();
+                            string nombre = "Microsoft Helena Desktop";
+                            SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                            synthesizer.SelectVoice(nombre);
+                                                      
+                            synthesizer.Speak(argStringDelSay);                            
+                        }
                         break;
                     case Parser.AccionInstr.branchInc:
                         nroInstr = Parser.cil[nroInstr].nroLinea - 1; //Porque al final del switch lo incr en 1
@@ -546,6 +582,11 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                 nroInstr++;
             }//Fin While
             //Parser.pilita.mostrarPilita();
+        }
+
+        private void Synthesizer_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
+        {
+            pictureBox3.Visible = false;
         }
 
         private void richTextBox3_TextChanged(object sender, EventArgs e)
@@ -703,12 +744,13 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                     Editor.KeyPress += new KeyPressEventHandler(Editor_PressKey);
                     Editor.KeyUp += new KeyEventHandler(Editor_KeyUp);
                     Editor.MouseClick += new MouseEventHandler(Editor_MouseClick);
+                    
                     //termino lo que yo hago
                 }
                 else pestania.SelectTab(a.Name);
             }
             //}
-        }
+        }        
 
         private void nuevoToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -744,6 +786,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             tabControl2.Visible = false;
             button3.Visible = true;
             richTextBox8.Visible = richTextBox9.Visible = true;
+            panel1.Visible = true;
             maquVirtual();
 
         }
@@ -784,6 +827,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         private void salidaRealToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //StreamWriter sw = new StreamWriter("salida.txt");
+            panel1.Visible = false;
 
             //la ejecucion que dejó en "salida.txt" la coloca en richTextBox2 
 
@@ -827,38 +871,21 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
         private void deshacerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Editor.CanUndo)
-            { Editor.Undo(); }
+            /*if (Editor.CanUndo)
+            { Editor.Undo(); }*/
+            Deshacer();
         }
 
         private void rehacerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Editor.CanRedo)
-            { Editor.Redo(); }
+            /*if (Editor.CanRedo)
+            { Editor.Redo(); }*/
+            Rehacer();
         }
 
         private void ediciónToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Editor.CanUndo)
-            { deshacerToolStripMenuItem.Enabled = true; }
-            else
-            { deshacerToolStripMenuItem.Enabled = false; }
-
-            if (Editor.CanRedo)
-            { rehacerToolStripMenuItem.Enabled = true; }
-            else
-            { rehacerToolStripMenuItem.Enabled = false; }
-
-            if (Editor.SelectedText.Length != 0)
-            {
-                copiarToolStripMenuItem.Enabled = true;
-                cortarToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                copiarToolStripMenuItem.Enabled = false;
-                cortarToolStripMenuItem.Enabled = false;
-            }
+            
         }
 
         private void copiarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -918,8 +945,9 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             {
                 int aux;
                 aux = Editor.SelectionStart;
-
+                HacerDeshacer = true;
                 Editor.Text = Editor.Text.Remove(Editor.SelectionStart - 4, 4);//remuevo la tabulacion
+                HacerDeshacer = false;
                 Editor.SelectionStart = aux - 5;// posiciono el cursor
                                                 // Editor.Select(Editor.SelectionStart, 1);
 
@@ -1181,22 +1209,71 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
                 //Editor.Size = new Size(376, 554);
                 Editor.Size = new Size(428, 303);
                 Editor.Text = fileText;
+                EditorDeCodigo.Text = fileText;
                 //myStringNombre = fileText;  //Agregado para que funcione guardar sin haber usado nuevo o abrir
-
+                AccionesEditor.Add(fileText);
+                indiceAccion = 0;
                 T.Controls.Add(Editor);
                 pestania.TabPages.Add(T);
                 Editor.ContextMenuStrip = contextMenuStrip1;
                 pestania.SelectTab(a.Name);
-
+                var PalabrasAutocompletar = new string[Scanner.getkeywords().Length + Parser.palReservadas.Length];
+                Scanner.getkeywords().CopyTo(PalabrasAutocompletar, 0);
+                Parser.palReservadas.CopyTo(PalabrasAutocompletar, Scanner.getkeywords().Length);
+                autocompleteMenu1.Items = Scanner.getkeywords();
                 Editor.KeyPress += new KeyPressEventHandler(Editor_PressKey);
                 Editor.KeyUp += new KeyEventHandler(Editor_KeyUp);
                 Editor.MouseClick += new MouseEventHandler(Editor_MouseClick);
+                Editor.TextChanged += new EventHandler(Editor_TextChange);
                 //termino lo que yo hago
             }
             else pestania.SelectTab(a.Name);
         }
 
+        private void Editor_TextChange(object sender, EventArgs e)
+        {
+            if(Editor.Text != AccionesEditor[indiceAccion])
+            {
+                if (!HacerDeshacer)
+                {
+                    int i = indiceAccion + 1;
+                    while((i<AccionesEditor.Count))
+                    {
+                        AccionesEditor.RemoveAt(i);                        
+                    }                    
+                    AccionesEditor.Add(Editor.Text);
+                    indiceAccion++;
+                }
+            }            
+                               
+            
+        }
 
+        private void Deshacer()
+        {
+            if(indiceAccion>0)
+            {
+                indiceAccion--;
+                HacerDeshacer = true;
+                Editor.Text = AccionesEditor[indiceAccion];
+                HacerDeshacer = false;
+            }
+                       
+            
+        }
+
+        private void Rehacer()
+        {
+            if(indiceAccion<AccionesEditor.Count-1)
+            {
+                indiceAccion++;
+                HacerDeshacer = true;
+                Editor.Text = AccionesEditor[indiceAccion];
+                HacerDeshacer = false;
+            }
+            
+
+        }
         private void árbolDeDerivaciónToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Parser.muestraProducciones = true;
@@ -1229,9 +1306,10 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             Parser.muestraProducciones = Tab.muestraTabSimb = false;
             Parser.muestraCargaDeInstrs = true;
+            PararCompilador = true;
             tabControl1.SelectedIndex = 2;
+            
             inicializa();
-
             compilar();
         }
 
@@ -1426,6 +1504,77 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             
             pr.StartInfo.FileName = "z_gramatica.txt";
             pr.Start();
+        }
+
+        private void ediciónToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            if (indiceAccion > 0)
+            { deshacerToolStripMenuItem.Enabled = true; }
+            else
+            { deshacerToolStripMenuItem.Enabled = false; }
+
+            if (indiceAccion < AccionesEditor.Count - 1)
+            { rehacerToolStripMenuItem.Enabled = true; }
+            else
+            { rehacerToolStripMenuItem.Enabled = false; }
+
+            if (Editor.SelectedText.Length != 0)
+            {
+                copiarToolStripMenuItem.Enabled = true;
+                cortarToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                copiarToolStripMenuItem.Enabled = false;
+                cortarToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        private void Form1_DoubleClick(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void pestania_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+        }
+
+        private void pestania_KeyDown(object sender, KeyEventArgs e)
+        {
+            EditorDeCodigo.Text = pestania.SelectedTab.Controls[0].Text;
+
+        }
+
+        private void EditorDeCodigo_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void mostrarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditorDeCodigo.Size = pestania.Size;
+            EditorDeCodigo.Location = pestania.Location;
+            EditorDeCodigo.Visible = true;
+            pestania.Visible = false;
+        }
+
+        private void ocultarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditorDeCodigo.Size = pestania.Size;
+            EditorDeCodigo.Location = pestania.Location;
+            EditorDeCodigo.Visible = false;
+            pestania.Visible = true;
+        }
+
+        private void EditorDeCodigo_TextChanged(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void EditorDeCodigo_KeyDown(object sender, KeyEventArgs e)
+        {
+            pestania.SelectedTab.Controls[0].Text = EditorDeCodigo.Text;
         }
 
         private void acercaToolStripMenuItem_Click(object sender, EventArgs e)

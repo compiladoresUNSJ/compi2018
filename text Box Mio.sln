@@ -1,7 +1,14 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28306.52
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "text Box Mio", "text Box Mio\text Box Mio.csproj", "{DC0B55E9-81FF-4E97-BDCC-9DD00D7EFB76}"
+	ProjectSection(ProjectDependencies) = postProject
+		{43CBC9AA-6A8E-463F-83A9-AFF3124AFDB6} = {43CBC9AA-6A8E-463F-83A9-AFF3124AFDB6}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutocompleteMenu", "..\..\..\Desktop\AutocompleteMenu\AutocompleteMenu\AutocompleteMenu\AutocompleteMenu.csproj", "{43CBC9AA-6A8E-463F-83A9-AFF3124AFDB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +20,15 @@ Global
 		{DC0B55E9-81FF-4E97-BDCC-9DD00D7EFB76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC0B55E9-81FF-4E97-BDCC-9DD00D7EFB76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC0B55E9-81FF-4E97-BDCC-9DD00D7EFB76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43CBC9AA-6A8E-463F-83A9-AFF3124AFDB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43CBC9AA-6A8E-463F-83A9-AFF3124AFDB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43CBC9AA-6A8E-463F-83A9-AFF3124AFDB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43CBC9AA-6A8E-463F-83A9-AFF3124AFDB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B27210D-ED87-4040-A291-EAE14867B37D}
 	EndGlobalSection
 EndGlobal
