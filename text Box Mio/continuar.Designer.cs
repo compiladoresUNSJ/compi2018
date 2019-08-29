@@ -59,8 +59,10 @@
             this.ClientSize = new System.Drawing.Size(343, 73);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "continuar";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Continuar";
             this.Load += new System.EventHandler(this.continuar_Load);
             this.ResumeLayout(false);

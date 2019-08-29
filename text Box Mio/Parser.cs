@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+
 //using at.jku.ssw.cc.tests;
 using text_Box_Mio;
 //using compilador;
@@ -60,7 +61,41 @@ namespace at.jku.ssw.cc
     {
         public static FrmContinuar mens = new FrmContinuar();
         public static FrmContinuarMaqVirtual mensMaqVirtual = new FrmContinuarMaqVirtual();
+<<<<<<< HEAD
         
+=======
+
+        public static string[] palReservadas = { "int", "void", "char", "class" };
+        static bool validarPalabrasReservadas(string palabra)
+        {
+            bool esPalabraReservada = false;
+            foreach (string reservada in palReservadas)
+            {
+                if (reservada.ToUpper() == palabra.ToUpper())
+                {
+                    esPalabraReservada = true;
+                    break;
+                }
+            }
+            if (!esPalabraReservada)
+            {
+                string[] keywords = Scanner.getkeywords();
+                int i = 0;
+                for (i = 0; i < keywords.Length; i++)
+                {
+                    if (keywords[i].ToUpper() == palabra.ToUpper())
+                    {
+                        esPalabraReservada = true;
+                        break;
+                    }
+                }
+            }
+            //1= si coincide con una palabra reserada, 0= no coincide
+            return esPalabraReservada;
+        }
+
+
+>>>>>>> ramigogui-master
         public static bool muestraProducciones = true;
         public static bool muestraCargaDeInstrs = true;
         public static bool ejecuta = false;
@@ -83,8 +118,32 @@ namespace at.jku.ssw.cc
 
         public static void MessageBoxCon3Preg()
         {
-            if (muestraProducciones)
-                Program1.form1.instContinuar.ShowDialog();
+            if (muestraProducciones && Form1.PararCompilador)
+            {
+                System.Windows.Forms.DialogResult res = Program1.form1.instContinuar.ShowDialog();
+                switch (res)
+                {
+                    
+                    case System.Windows.Forms.DialogResult.OK:
+                        {
+                            muestraProducciones = muestraCargaDeInstrs = Tab.muestraTabSimb = false;
+                        }
+                        break;
+                    case System.Windows.Forms.DialogResult.Cancel:
+                        {
+                            at.jku.ssw.cc.Parser.muestraProducciones = at.jku.ssw.cc.Parser.muestraCargaDeInstrs = at.jku.ssw.cc.Tab.muestraTabSimb = false;
+
+                        }
+                        break;                    
+                    case System.Windows.Forms.DialogResult.Retry:
+                        {
+
+                        }
+                        break;
+                    
+                }
+            }
+                
             Program1.form1.treeView1.ExpandAll();
         }//Fin MessageBoxCon3Preg()
 
@@ -92,7 +151,7 @@ namespace at.jku.ssw.cc
         public enum AccionInstr
         {
             nop, loadLocal, storeLocal, add, sub, mul, div, pop,
-            loadConst, write, writeln, branchInc, tJump, fJump, ldstr, ret
+            loadConst, write, writeln, branchInc, tJump, fJump, ldstr, ret, say
         }
 
         public class Instruccion
@@ -120,7 +179,7 @@ namespace at.jku.ssw.cc
         public static Instruccion[] cil;
         static string[] namesAccionInstr = { "nop", "ldloc.", "stloc.", "add", "sub", "mul", "div", "pop",
                                          "ldc.i4 ", "write", "writeln", "br", "br_tJump" ,
-                                         "br_fJuamp", "ldstr", "ret"};
+                                         "br_fJuamp", "ldstr", "ret","say"};
 
         public static void inicializaCil()
         {
@@ -147,8 +206,10 @@ namespace at.jku.ssw.cc
             Program1.form1.richTextBox5.Text = todasLasInstrs;
             System.Windows.Forms.MessageBox.Show("fin");
         }
-
-        public const int maxCantVarsLocales = 10;
+        //--------------------------------------------<test>-------------------------------------
+        public const int maxCantVarsLocales = 30;
+        //--------------------------------------------</test>-------------------------------------
+        //public const int maxCantVarsLocales = 10;
         public static int cantVarLocales;
         public static int[] locals = new int[maxCantVarsLocales];
 
@@ -209,7 +270,19 @@ namespace at.jku.ssw.cc
             //La 1° vez q se ejecuta, token queda con Token(1, 1), laToken con "class" (primer token del programa)
             la = laToken.kind;
         }
-
+        //--------------------------------------2017
+        static int getnumber(int expected)
+        {
+            int n=-1;
+            if (la == expected) {
+                
+                n = laToken.getVAl();
+            }
+            else
+                Errors.Error("Se esperaba un: " + Token.names[expected]);
+            return n; 
+        }
+        //---------------------------------------
         /* Verifies symbol and reads ahead. */
         static void Check(int expected) //expected viene de la gramatica,  la del laToken que leyó
         {
@@ -218,7 +291,7 @@ namespace at.jku.ssw.cc
             else
                 Errors.Error("Se esperaba un: " + Token.names[expected]);
         }
-
+       
         static void Program()
         {
             //Inicializacion de la pila que muestra por cual regla de la gramatica se está pasando
@@ -422,8 +495,8 @@ namespace at.jku.ssw.cc
             Tab.CloseScope();
             Tab.mostrarTab();
             bool Depuracion = false;
-            if (!Depuracion)
-                ParteFinal1();
+            //if (!Depuracion)
+              //  ParteFinal1();
             if (ZZ.parser)
             {
                 Console.WriteLine("despues de prog.locals = Tab.topScope.locals; Tab.CloseScope()");
@@ -541,6 +614,23 @@ namespace at.jku.ssw.cc
                 Check(Token.IDENT); //otro identif
                 if (muestraProducciones)
                     MessageBoxCon3Preg();
+
+                bool esPalabraReservada = false;
+                if (token.str == ",")
+                {
+                    esPalabraReservada = validarPalabrasReservadas(laToken.str);
+
+                }
+                else
+                {
+                    esPalabraReservada = validarPalabrasReservadas(token.str);
+                }
+
+                if (esPalabraReservada)
+                {
+                    Errors.Error("Error de palabra reservada");
+                }
+
                 Code.Colorear("token");
                 identifieropc.Nodes.Add("ident");
                 MessageBoxCon3Preg();
@@ -618,7 +708,96 @@ namespace at.jku.ssw.cc
             MessageBoxCon3Preg();
             Code.Colorear("latoken");
             //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+<<<<<<< HEAD
             //MessageBoxCon3Preg();
+=======
+            MessageBoxCon3Preg();
+<<<<<<< HEAD
+            //-------------------------------------------------<GrupoUnico2017>----------------------------------------------------------------------- 
+
+            if (type.kind.ToString() == "Arr")
+            {
+                lbrakopc.Nodes.Add("'['");
+                lbrakopc.Nodes.Add("number");
+                lbrakopc.Nodes.Add("']'");
+
+                //------------------------------<test>-----------------------
+                lbrakopc.ExpandAll();
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(12);
+                MessageBoxCon3Preg();
+                Check(Token.IDENT); // "pos", en int pos,   .....int,....  x, i, etc
+                Code.seleccLaProdEnLaGram(6);
+                padre.Nodes.Add("ident");// Hace referencia a la x
+                MessageBoxCon3Preg();
+                Code.Colorear("token");
+                System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("IdentifiersOpc");
+                padre.Nodes.Add(hijo2);
+                cantVarLocales=cantVarLocales + type.size; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
+                Symbol vble = Tab.Insert(kind, token.str, type);
+                //vble no, poner simbolo (para pos, en int[] pos)
+                //pues en este caso  es campo, y devuelve el Symbol p/pos,  type es int[]
+                //puede ser val, en Tabla val, y type es Table //y devuelve el Symbol p/val
+                Code.CreateMetadata(vble); //Para el campo pos (en int[] pos)Global, Field o .....
+                                            //o Para la vbe Global val
+                                            //o para x en int x;
+                Code.seleccLaProdEnLaGram(7);
+                Identifieropc(hijo2, type, kind);
+                
+                Code.Colorear("latoken");
+                Check(Token.SEMICOLON);
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(6);
+                Code.Colorear("token");
+                padre.Nodes.Add("';'");
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(8);
+                Code.cargaProgDeLaGram("IdentifiersOpc = .");
+                //------------------------------</test>-----------------------
+            }
+            else
+            {
+                lbrakopc.Nodes.Add(".");
+                //-------------------------------------------------</GrupoUnico2017>----------------------------------------------------------------------- 
+
+                lbrakopc.ExpandAll();
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(12);
+                MessageBoxCon3Preg();
+                //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+                Check(Token.IDENT); // "pos", en int pos,   .....int,....  x, i, etc
+                Code.seleccLaProdEnLaGram(6);
+                padre.Nodes.Add("ident");// Hace referencia a la x
+                MessageBoxCon3Preg();
+                Code.Colorear("token");
+                System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("IdentifiersOpc");
+                padre.Nodes.Add(hijo2);
+                //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
+                ////
+                // debo insertar el token en la tabla de símbolos
+                cantVarLocales++; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
+                Symbol vble = Tab.Insert(kind, token.str, type);
+                //vble no, poner simbolo (para pos, en int[] pos)
+                //pues en este caso  es campo, y devuelve el Symbol p/pos,  type es int[]
+                //puede ser val, en Tabla val, y type es Table //y devuelve el Symbol p/val
+                Code.CreateMetadata(vble); //Para el campo pos (en int[] pos)Global, Field o .....
+                                           //o Para la vbe Global val
+                                           //o para x en int x;
+                Code.seleccLaProdEnLaGram(7);
+                Identifieropc(hijo2, type, kind);
+                Code.Colorear("latoken");
+                Check(Token.SEMICOLON);
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(6);
+                Code.Colorear("token");
+                padre.Nodes.Add("';'");
+                MessageBoxCon3Preg();
+                Code.seleccLaProdEnLaGram(8);
+                //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------------------
+                Code.cargaProgDeLaGram("IdentifiersOpc = .");
+            }
+=======
+>>>>>>> ramigogui-master
             lbrakopc.Nodes.Add(".");
             lbrakopc.ExpandAll();
             MessageBoxCon3Preg();
@@ -627,6 +806,17 @@ namespace at.jku.ssw.cc
             Program1.form1.Pila_de_Llamados.Items.Remove(itm13);
 
             MessageBoxCon3Preg();
+
+            if (token.str == "int" || token.str == "char")
+            {
+                bool esPalabraReservada = validarPalabrasReservadas(laToken.str);
+                if (esPalabraReservada)
+                {
+                    Errors.Error("Error de palabra reservada");
+                }
+            }
+
+
             //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
             Check(Token.IDENT); // "pos", en int pos,   .....int,....  x, i, etc
             Code.seleccLaProdEnLaGram(6);
@@ -664,9 +854,13 @@ namespace at.jku.ssw.cc
             Code.seleccLaProdEnLaGram(8);
             //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------------------
             Code.cargaProgDeLaGram("IdentifiersOpc = .");
+<<<<<<< HEAD
 
             Program1.form1.Pila_de_Llamados.Items.Remove(itm);
 
+=======
+>>>>>>> 3e06696287a0f8ab37f34b1eeac77d46ce180e95
+>>>>>>> ramigogui-master
         }//Fin VardDecl
 
         static void ClassDecl()
@@ -903,11 +1097,46 @@ namespace at.jku.ssw.cc
 
                 if (cantVarLocales > 0)
                 {
-                    string instrParaVarsLocs = ".locals init(int32 V_0";
-                    for (int i = 1; i < cantVarLocales; i++)
+                    //----------------------------------<test>--------------------------------------------
+                    Symbol actual = Tab.topScope.locals, ultimo = null;
+                    int descontador =0;
+                    int contadordearreglos = 0;
+                    while (actual != null)  //Fran sólo es necesario buscar en el Scope actual
                     {
-                        instrParaVarsLocs = instrParaVarsLocs + "," + "\n          int32 V_" + i.ToString(); // +"  ";
+
+                        if (actual.type.kind.ToString()=="Arr")
+                        {
+                            descontador += actual.type.size;
+                            contadordearreglos++;
+                        }
+                        ultimo = actual;
+                        actual = actual.next;
                     }
+                    actual = Tab.topScope.locals;
+                    //string instrParaVarsLocs = ".locals init(int32 V_0";
+                    // Dentro del for originalmente va i=1, con el test va cantVarLocales-descontador+contadordearreglos+1
+                    string instrParaVarsLocs = ".locals init(";
+                    //for (int i = 0; i < cantVarLocales-descontador+contadordearreglos+1; i++)
+                    int i = 0;
+                    while(actual != null)
+                    {
+                        if (actual.type.kind.ToString()=="Arr")
+                        {
+                            for (int j = 0; j < actual.type.size; j++)
+                            {
+                                instrParaVarsLocs = instrParaVarsLocs + "," + "\n       int32 V_" + i.ToString() + "." + j.ToString(); // +"  ";
+                              
+                            }
+                        }
+                        else
+                        {
+                            instrParaVarsLocs = instrParaVarsLocs + "," + "\n       int32 V_" + i.ToString(); // +"  ";
+                        }
+                        actual = actual.next;
+                        i++;
+                    }
+
+                    //----------------------------------</test>--------------------------------------------
                     instrParaVarsLocs = instrParaVarsLocs + ")";
                     Code.cargaInstr(instrParaVarsLocs);
                 }
@@ -1029,10 +1258,15 @@ namespace at.jku.ssw.cc
                 //Code.Colorear("latoken"); //un "[" o lo que sigue al type (un ident en int ident1)
                 if (la == Token.LBRACK)  // 
                 {
-                    Code.cargaProgDeLaGram("LbrackOpc = '[' ']'.");
+                    Code.cargaProgDeLaGram("LbrackOpc = '[' number ']'.");
                     Check(Token.LBRACK);
+                    int n = getnumber(Token.NUMBER); 
+                    Check(Token.NUMBER);
+
                     Check(Token.RBRACK);                  //int tipo del elem del array
+
                     xType = new Struct(Struct.Kinds.Arr, sym.type);
+                    xType.setSize(n);
                     //podria haber sido xType (Struct del int) en vez de sym.type  
                     //el nuevo xType que obtiene es un array de int
                 }
@@ -1119,8 +1353,32 @@ namespace at.jku.ssw.cc
                             RestOfstatement.Nodes.Add("'='");
                             RestOfstatement.ExpandAll();
                             MessageBoxCon3Preg(RestOfstatement);
+<<<<<<< HEAD
                             MessageBoxCon3Preg();
                             System.Windows.Forms.TreeNode nexpr = new System.Windows.Forms.TreeNode("Expr");
+=======
+                            //------------------------------------------------unico grupo 2017------------------------------------------------------------
+                            if (la == 27)
+                            {
+                                System.Windows.Forms.TreeNode nexpre = new System.Windows.Forms.TreeNode("ArrayDecl");
+                                Code.seleccLaProdEnLaGram(37);
+                                RestOfstatement.Nodes.Add(nexpre);
+                                MessageBoxCon3Preg(RestOfstatement);
+                                //ArrayDecl();
+                            }
+                            else       
+                            {
+                                System.Windows.Forms.TreeNode nexpr = new System.Windows.Forms.TreeNode("Expr");
+                                Code.seleccLaProdEnLaGram(23);
+                                RestOfstatement.Nodes.Add(nexpr);
+                                MessageBoxCon3Preg(RestOfstatement);
+                                Expr(out itemDer, nexpr);
+                                Code.Load(itemDer);
+                                Code.Assign(itemIzq, itemDer, nexpr);
+                            }
+                            /*System.Windows.Forms.TreeNode nexpr = new System.Windows.Forms.TreeNode("Expr");
+                            Code.seleccLaProdEnLaGram(23);
+>>>>>>> ramigogui-master
                             RestOfstatement.Nodes.Add(nexpr);
                             MessageBoxCon3Preg(RestOfstatement);
                             //-------------------------------------------------Grupo 2 30/9/2015-----------------------------------------------------------
@@ -1128,7 +1386,7 @@ namespace at.jku.ssw.cc
                             Expr(out itemDer, nexpr);
                             Code.seleccLaProdEnLaGram(22);
                             Code.Load(itemDer);
-                            Code.Assign(itemIzq, itemDer, nexpr);
+                            Code.Assign(itemIzq, itemDer, nexpr);*/
                             if (ZZ.parser)
                             {
                                 Console.WriteLine("Termina statement de asign: ..." + parteFinalDelDesign
@@ -1344,6 +1602,105 @@ namespace at.jku.ssw.cc
                         //ZZ.parser = true; 
                         if (ZZ.parser) Console.WriteLine("reconoció el Read");
                         break;
+                    case Token.SAY:
+                        {
+                            Check(Token.SAY);
+                            System.Windows.Forms.TreeNode say = new System.Windows.Forms.TreeNode("'say'");
+                            statement.Nodes.Add(say);
+                            statement.ExpandAll();
+                            MessageBoxCon3Preg(statement);
+                            Code.Colorear("token");
+
+                            if (la == Token.LPAR)
+                            {
+                                say.Nodes.Add("'('");
+                                say.ExpandAll();
+                                MessageBoxCon3Preg(say);
+                                //////////////////////////
+                                Code.Colorear("latoken"); //pinta el "("
+                                Code.Colorear("token"); //solo para que deje yaPintado en false
+
+                                if (Scanner.ch != '\"')
+                                    Errors.Error("Se esperaba una COMILLA DOBLE");
+                                else
+                                {
+                                    string argStr = "";
+                                    Scanner.NextCh(); //ch = 2º com doble o Primer char del argStr
+
+                                    while (Scanner.ch != '\"' && Scanner.ch != '\u0080')
+                                    {
+                                        //if (ch == EOF) return new Token(Token.EOF, line, col);
+                                        argStr = argStr + Scanner.ch.ToString();
+                                        Scanner.NextCh();  //ch = 2º char del argStr o Com Doble
+                                    }
+                                    if(Scanner.ch != '\u0080')
+                                    {
+                                        token = new Token(Scanner.line, Scanner.col);
+                                        token.kind = Token.COMILLADOBLE; //se va a llamar argDeWriteLine
+                                        token.str = argStr; // excluye las comillas dobles
+                                                            //token.line lo deja =
+                                        token.col = token.col - argStr.Length; //+ 1; // -3; //DESPUES DEL "("
+
+                                        ////////////////////////////  Agrega 'argString' al arbol y lo muestra 
+                                        say.Nodes.Add("argstring"); // G3 2015
+                                        MessageBoxCon3Preg(say);
+                                        Code.Colorear("token");
+
+                                        ////////////////////////////
+                                        Parser.nroDeInstrCorriente++;
+                                        //Agregar  ldString  argStr, 
+                                        Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.ldstr;
+                                        Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;
+
+                                        muestraCargaDeInstrs = false; // -- G3 -  (Es para que no muestre la pantalla)
+                                        Code.cargaInstr("ldstr \"" + argStr + "\" ");
+                                        muestraCargaDeInstrs = true; // -- G3 -
+
+                                        Parser.nroDeInstrCorriente++;
+                                        Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.say;
+                                        muestraCargaDeInstrs = false; // -- G3 - (Es para que no muestre la pantalla)
+                                        Code.cargaInstr("call say#(string)");
+                                        muestraCargaDeInstrs = true; // -- G3 -
+                                                                     //Parser.cil[Parser.nroDeInstrCorriente].nro = item.val; // item.val;           //item.val;  aaaaaaa 
+                                                                     //Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;  //Provisorio ya no se usa argDelWriteLine
+
+
+                                        Scanner.NextCh(); //ch=")"
+                                        token = laToken; //token queda con argDeWriteLine
+                                        laToken = Scanner.Next(); //la token queda con ")"
+                                        la = laToken.kind;
+                                        Code.il.EmitWriteLine(argStr);
+
+                                        ////////////////////////////// Agrega ')' al arbol y lo muestra
+
+                                        say.Nodes.Add("')'");
+                                        MessageBoxCon3Preg(say);
+
+                                        Check(Token.RPAR);
+                                        Code.Colorear("token");
+                                        /////////////////////////////  Agrega ';' al arbol y lo muestra
+
+                                        say.Nodes.Add("';'"); // G3 2015
+                                        MessageBoxCon3Preg(say);
+                                        Check(Token.SEMICOLON);
+                                        Code.Colorear("token");
+                                    }
+                                    else
+                                    {
+                                        Errors.Error("Se esperaba una COMILLA DOBLE");
+                                    }
+                                    //ch = Com Doble
+                                    
+
+                                }
+
+                            }
+                            else
+                            {
+                                Errors.Error("Se esperaba una apertura de paréntesis '('");
+                            }
+                        }
+                        break;
                     case Token.WRITELN: /// En Statement G3 PERUWRITELN
                         //token queda con ";" y laToken = WRITELN y ch con '('               
                         ///////////////////////// Este bloque agrega y muestra writeln en el arbol y selecciona la gramatica
@@ -1377,62 +1734,70 @@ namespace at.jku.ssw.cc
                                 string argStr = "";
                                 Scanner.NextCh(); //ch = 2º com doble o Primer char del argStr
 
-                                while (Scanner.ch != '\"')
+                                while (Scanner.ch != '\"' && Scanner.ch != '\u0080')
                                 {
                                     //if (ch == EOF) return new Token(Token.EOF, line, col);
                                     argStr = argStr + Scanner.ch.ToString();
                                     Scanner.NextCh();  //ch = 2º char del argStr o Com Doble
                                 }
+                                if(Scanner.ch == '\u0080')
+                                {
+                                    Errors.Error("Se esperaba una COMILLA DOBLE");
+                                }
+                                else
+                                {
+                                    token = new Token(Scanner.line, Scanner.col);
+                                    token.kind = Token.COMILLADOBLE; //se va a llamar argDeWriteLine
+                                    token.str = argStr; // excluye las comillas dobles
+                                                        //token.line lo deja =
+                                    token.col = token.col - argStr.Length; //+ 1; // -3; //DESPUES DEL "("
+
+                                    ////////////////////////////  Agrega 'argString' al arbol y lo muestra 
+                                    writeln.Nodes.Add("argstring"); // G3 2015
+                                    MessageBoxCon3Preg(writeln);
+                                    Code.Colorear("token");
+
+                                    ////////////////////////////
+                                    Parser.nroDeInstrCorriente++;
+                                    //Agregar  ldString  argStr, 
+                                    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.ldstr;
+                                    Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;
+
+                                    muestraCargaDeInstrs = false; // -- G3 -  (Es para que no muestre la pantalla)
+                                    Code.cargaInstr("ldstr \"" + argStr + "\" ");
+                                    muestraCargaDeInstrs = true; // -- G3 -
+
+                                    Parser.nroDeInstrCorriente++;
+                                    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.writeln;
+                                    muestraCargaDeInstrs = false; // -- G3 - (Es para que no muestre la pantalla)
+                                    Code.cargaInstr("call writeln#(string)");
+                                    muestraCargaDeInstrs = true; // -- G3 -
+                                                                 //Parser.cil[Parser.nroDeInstrCorriente].nro = item.val; // item.val;           //item.val;  aaaaaaa 
+                                                                 //Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;  //Provisorio ya no se usa argDelWriteLine
+
+
+                                    Scanner.NextCh(); //ch=")"
+                                    token = laToken; //token queda con argDeWriteLine
+                                    laToken = Scanner.Next(); //la token queda con ")"
+                                    la = laToken.kind;
+                                    Code.il.EmitWriteLine(argStr);
+
+                                    ////////////////////////////// Agrega ')' al arbol y lo muestra
+
+                                    writeln.Nodes.Add("')'");
+                                    MessageBoxCon3Preg(writeln);
+
+                                    Check(Token.RPAR);
+                                    Code.Colorear("token");
+                                    /////////////////////////////  Agrega ';' al arbol y lo muestra
+
+                                    writeln.Nodes.Add("';'"); // G3 2015
+                                    MessageBoxCon3Preg(writeln);
+                                    Check(Token.SEMICOLON);
+                                    Code.Colorear("token");
+                                }
                                 //ch = Com Doble
-                                token = new Token(Scanner.line, Scanner.col);
-                                token.kind = Token.COMILLADOBLE; //se va a llamar argDeWriteLine
-                                token.str = argStr; // excluye las comillas dobles
-                                //token.line lo deja =
-                                token.col = token.col - argStr.Length; //+ 1; // -3; //DESPUES DEL "("
-
-                                ////////////////////////////  Agrega 'argString' al arbol y lo muestra 
-                                writeln.Nodes.Add("argstring"); // G3 2015
-                                MessageBoxCon3Preg(writeln);
-                                Code.Colorear("token");
-
-                                ////////////////////////////
-                                Parser.nroDeInstrCorriente++;
-                                //Agregar  ldString  argStr, 
-                                Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.ldstr;
-                                Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;
-
-                                muestraCargaDeInstrs = false; // -- G3 -  (Es para que no muestre la pantalla)
-                                Code.cargaInstr("ldstr \"" + argStr + "\" ");
-                                muestraCargaDeInstrs = true; // -- G3 -
-
-                                Parser.nroDeInstrCorriente++;
-                                Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.writeln;
-                                muestraCargaDeInstrs = false; // -- G3 - (Es para que no muestre la pantalla)
-                                Code.cargaInstr("call writeln#(string)");
-                                muestraCargaDeInstrs = true; // -- G3 -
-                                //Parser.cil[Parser.nroDeInstrCorriente].nro = item.val; // item.val;           //item.val;  aaaaaaa 
-                                //Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;  //Provisorio ya no se usa argDelWriteLine
-
-
-                                Scanner.NextCh(); //ch=")"
-                                token = laToken; //token queda con argDeWriteLine
-                                laToken = Scanner.Next(); //la token queda con ")"
-                                la = laToken.kind;
-                                Code.il.EmitWriteLine(argStr);
-
-                                ////////////////////////////// Agrega ')' al arbol y lo muestra
-
-                                writeln.Nodes.Add("')'");
-                                MessageBoxCon3Preg(writeln);
-
-                                Check(Token.RPAR);
-                                Code.Colorear("token");
-                                /////////////////////////////  Agrega ';' al arbol y lo muestra
-
-                                writeln.Nodes.Add("';'"); // G3 2015
-                                MessageBoxCon3Preg(writeln);
-                                Check(Token.SEMICOLON);
-                                Code.Colorear("token");
+                                
 
                             }
                         }
@@ -1526,6 +1891,7 @@ namespace at.jku.ssw.cc
                         Code.Colorear("token");
                         ///////////////
                         break;
+
                     case Token.LBRACE:
                         System.Windows.Forms.TreeNode blockint = new System.Windows.Forms.TreeNode("Block");
                         statement.Nodes.Add(blockint);
@@ -1603,8 +1969,8 @@ namespace at.jku.ssw.cc
             while (la != Token.RBRACE)
             {
                 if ((la == Token.IDENT || la == Token.IF || la == Token.WHILE || la == Token.BREAK
-                  || la == Token.RETURN || la == Token.READ || la == Token.WRITE || la == Token.WRITELN
-                  || la == Token.LBRACE || la == Token.SEMICOLON) && la != Token.EOF)
+                  || la == Token.RETURN || la == Token.READ || la == Token.WRITE || la == Token.WRITELN || la==Token.SAY
+                  || la == Token.LBRACE || la == Token.SEMICOLON) && la != Token.EOF )
                 {
                     Code.Colorear("latoken");
                     System.Windows.Forms.TreeNode statement = new System.Windows.Forms.TreeNode("Statement");
@@ -1914,6 +2280,7 @@ namespace at.jku.ssw.cc
             OpCode op; Item itemSig;
             System.Windows.Forms.TreeNode OpcMinus = new System.Windows.Forms.TreeNode("OpcMinus");
             System.Windows.Forms.TreeNode Term = new System.Windows.Forms.TreeNode("Term");
+
             if (la == Token.MINUS)
             {
                 Check(Token.MINUS);
@@ -1949,6 +2316,7 @@ namespace at.jku.ssw.cc
             }
             else
             {
+<<<<<<< HEAD
                 Code.Colorear("latoken");
                 padre.Nodes.Add(OpcMinus);
                 padre.ExpandAll();
@@ -1975,6 +2343,30 @@ namespace at.jku.ssw.cc
                 //Grupo Cocinero, Ledesma. Año 2018. Inicio
                 Code.seleccLaProdEnLaGram(23);
                 //Fin
+=======
+                if (la == Token.NUMBER)
+                {
+                    Code.Colorear("latoken");
+                    Term.Nodes.Add(".");
+                    Term.ExpandAll();
+                    MessageBoxCon3Preg(Term);
+                    MessageBoxCon3Preg(padre);   
+                    Parser.Term(out item, Term);
+                }
+                else
+                {
+                    Code.Colorear("latoken");
+                    OpcMinus.Nodes.Add(".");
+                    OpcMinus.ExpandAll();
+                    MessageBoxCon3Preg(OpcMinus);
+                    padre.Nodes.Add(OpcMinus);
+                    padre.ExpandAll();
+                    MessageBoxCon3Preg(padre);
+                    padre.Nodes.Add(Term);
+                    MessageBoxCon3Preg(padre);
+                    Parser.Term(out item, Term);
+                }
+>>>>>>> ramigogui-master
             }
             string opString = "";
             MessageBoxCon3Preg();
@@ -2045,8 +2437,15 @@ namespace at.jku.ssw.cc
                 Code.seleccLaProdEnLaGram(25);
                 //Fin
                 Code.Load(itemSig);
+                //-------------------------------------------<test>-----------------------------------------------
                 if (item.type != Tab.intType || itemSig.type != Tab.intType)
-                    Errors.Error("Los operandos deben ser de tipo int");
+                    if(item.type.kind.ToString() != "Arr" && itemSig.type.kind.ToString() != "Arr")
+                    if (item.type.kind.ToString()!="Arr" && itemSig.type != Tab.intType)
+                        if(item.type != Tab.intType && itemSig.type.kind.ToString() != "Arr")
+                            Errors.Error("Los operandos deben ser de tipo int");
+                //-------------------------------------------<test>-----------------------------------------------
+                //if (item.type != Tab.intType || itemSig.type != Tab.intType)
+                //   Errors.Error("Los operandos deben ser de tipo int");
                 nroDeInstrCorriente++;
                 Code.il.Emit(op);
                 Code.cargaInstr(opString);
@@ -2375,8 +2774,13 @@ namespace at.jku.ssw.cc
                     Code.seleccLaProdEnLaGram(26);
                     //Fin
                     Code.Load(itemSig);
+                    //-------------------------------------------<test>-----------------------------------
                     if (item.type != Tab.intType || itemSig.type != Tab.intType)
-                        Errors.Error("Debe venir un Term");
+                        if (item.type.kind.ToString() != "Arr" && itemSig.type.kind.ToString() != "Arr")
+                            if (item.type.kind.ToString() != "Arr" && itemSig.type != Tab.intType)
+                                if (item.type != Tab.intType && itemSig.type.kind.ToString() != "Arr")
+                                    Errors.Error("Debe venir un Term");
+                    //------------------------------------------</test>----------------------------------------
                     Code.il.Emit(op);
                     nroDeInstrCorriente++;
                     Code.cargaInstr(opString);
@@ -2431,6 +2835,7 @@ namespace at.jku.ssw.cc
                 MessageBoxCon3Preg();
                 //Fin
                 bool existe_OpcMulOpFactor = false;
+
                 System.Windows.Forms.TreeNode OpcMulopFactors = new System.Windows.Forms.TreeNode("OpcMulopFactors");
                 padre.Nodes.Add(OpcMulopFactors);
                 MessageBoxCon3Preg(padre);
@@ -2518,10 +2923,13 @@ namespace at.jku.ssw.cc
                     Code.seleccLaProdEnLaGram(26);
                     //Fin
                     Code.Load(itemSig);
+                    //----------------------------------------------<test-mult-slash>----------------------------
                     if (item.type != Tab.intType || itemSig.type != Tab.intType)
-                    {
-                        Errors.Error("Debe venir un Term");
-                    }
+                        if (item.type.kind.ToString() != "Arr" && itemSig.type.kind.ToString() != "Arr")
+                            if (item.type.kind.ToString() != "Arr" && itemSig.type != Tab.intType)
+                                if (item.type != Tab.intType && itemSig.type.kind.ToString() != "Arr")
+                                    Errors.Error("Debe venir un Term");
+                    //-----------------------------------------------</test-mult-slash>-------------------------
                     Code.il.Emit(op);
                     nroDeInstrCorriente++;
                     Code.cargaInstr(opString);
@@ -2612,7 +3020,12 @@ namespace at.jku.ssw.cc
                             padre.ExpandAll();
                             MessageBoxCon3Preg(padre);
                             item = new Item(token.val);//Nuevo
-                            Code.Load(item);
+                            //--------------------------------------------<test>---------------------------
+                            if (la != Token.RBRACK)
+                            {
+                                Code.Load(item);
+                            }
+                            //--------------------------------------------</test>--------------------------
                             break;
                         }
                     case Token.CHARCONST:
@@ -2802,22 +3215,74 @@ namespace at.jku.ssw.cc
                             Code.cargaProgDeLaGram("opcRestOfDesignator =  '[' Expr ']'.");
                             Code.Colorear("token");
                             if (muestraProducciones) MessageBoxCon3Preg();
+                        //--------------------------------------<test>---------------------------------------
+                        // No se carga el subindice ya que se calcula en el la linea 2376 con el valor que tiene
+                        //el subindice
+                        //item.adr = item.adr + itemSig.val;
+                        //Code.Load(item);
+                        //mas abajo supuestamente carga el indice pero no lo hace, no se que es lo que hace realmente
+                        //pero tambien lo comente ya que no tendria ninguna funcionalidad con respecto al indice del
+                        //arreglo
+                        //--------------------------------------<test>---------------------------------------
+                        Item itemSig;
+                        //
+                        System.Windows.Forms.TreeNode nexpr = new System.Windows.Forms.TreeNode("Expr");
+                        Code.seleccLaProdEnLaGram(23);
+                        //RestOfstatement.Nodes.Add(nexpr);
+                        //
+                        Expr(out itemSig, nexpr);
+                        //--------------------------------------<2test>-----------------------------------------
+                        //Code.il.Emit(Code.POP);
+                        //Parser.nroDeInstrCorriente++; Code.cargaInstr("pop      ");
+                        //Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
+                        item.adr = item.adr + itemSig.val;
+                        Item index = new Item(item.adr);
+                        Code.Load(index);
 
-                            Code.Load(item);
-                            Item itemSig;
-                            Expr(out itemSig, null);
+                        Code.il.Emit(Code.POP);
+                        nroDeInstrCorriente++; Code.cargaInstr("pop      ");
+                        cil[nroDeInstrCorriente].accionInstr = AccionInstr.pop;
 
-                            if (item.type.kind == Struct.Kinds.Arr)
+                        Code.Load(item);
+
+                        //--------------------------------------</2test>----------------------------------------
+                        if (item.type.kind == Struct.Kinds.Arr)
                             {
                                 if (itemSig.type != Tab.intType) Errors.Error("index must be of type int");
-                                Code.Load(itemSig);  //carga el subindice en el Stack
-                                itemSig.type = item.type.elemType;//Si char[10] a; => x.type quedará con char
+                            //--------------------------------------<test>---------------------------------------
+                            //Code.Load(itemSig);  //carga el subindice en el Stack
+                            //leer linea 2344 de Parser.cs
+
+
+                            //item.kind = Item.Kinds.Local;
+                            //Code.il.Emit(Code.POP);
+                            //Parser.nroDeInstrCorriente++; Code.cargaInstr("pop      ");
+                            //Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
+                            //--------------------------------------<test>---------------------------------------
+
+                            itemSig.type = item.type.elemType;//Si char[10] a; => x.type quedará con char
                             }
                             else Errors.Error(sym.name + " is not an array");
-                            item.kind = Item.Kinds.Elem;
 
-                            Check(Token.RBRACK);
-                        }
+                        //--------------------------------------<test>---------------------------------------
+                        //item.kind = Item.Kinds.Elem; linea original
+                        item.kind = Item.Kinds.Stack;// linea de test
+
+                        //--------------------------------------</test>---------------------------------------
+                        //item.adr = item.adr + itemSig.val;
+                        Check(Token.RBRACK);
+                        //--------------------------------------<test>---------------------------------------
+                        //if (laToken.kind == 4 || laToken.kind == 5 || 
+                        //    laToken.kind == 6 || laToken.kind == 7 || laToken.kind == 8)
+                        //{
+                        //    item.kind = Item.Kinds.Local;
+                        //    Code.il.Emit(Code.POP);
+                        //    Parser.nroDeInstrCorriente++; Code.cargaInstr("pop      ");
+                        //    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.pop;
+                        //}
+                        //                      No sirve para a[0] + a[0]
+                        //--------------------------------------</test>---------------------------------------
+                    }
                 }//Fin while
             }
             else

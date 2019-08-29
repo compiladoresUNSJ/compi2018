@@ -313,6 +313,16 @@ namespace text_Box_Mio.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap no_ver {
+            get {
+                object obj = ResourceManager.GetObject("no ver", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap page_paste_16x16 {
             get {
                 object obj = ResourceManager.GetObject("page_paste_16x16", resourceCulture);
@@ -326,6 +336,26 @@ namespace text_Box_Mio.Properties {
         internal static System.Drawing.Bitmap page_save_16x16 {
             get {
                 object obj = ResourceManager.GetObject("page_save_16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap parlantitos {
+            get {
+                object obj = ResourceManager.GetObject("parlantitos", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ver {
+            get {
+                object obj = ResourceManager.GetObject("ver", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

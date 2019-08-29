@@ -4,6 +4,8 @@ using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Drawing;
+using System.Threading;
+
 
 namespace at.jku.ssw.cc
 {
@@ -266,12 +268,23 @@ namespace at.jku.ssw.cc
             string texto = Program1.form1.richTextBox3.Text;
             Program1.form1.richTextBox3.SelectionStart = texto.Length;
             Program1.form1.richTextBox3.ScrollToCaret();
-            if (Parser.muestraCargaDeInstrs)
-                Program1.form1.instContinuar.ShowDialog();
+            Program1.form1.treeView1.Nodes[Program1.form1.treeView1.Nodes.Count - 1].EnsureVisible();
+            if (Parser.muestraCargaDeInstrs && Form1.PararCompilador)
+            {
+                System.Windows.Forms.DialogResult res = Program1.form1.instContinuar.ShowDialog();                
+                if (res == System.Windows.Forms.DialogResult.OK || res == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    at.jku.ssw.cc.Parser.muestraProducciones = at.jku.ssw.cc.Parser.muestraCargaDeInstrs = at.jku.ssw.cc.Tab.muestraTabSimb = false;
+                }
 
+            }                
             //Para ser utilizada despues
             Parser.cil[Parser.nroDeInstrCorriente].instrString = instrConNroLinea;
         }
+
+        
+
+
 
         public static void cargaProgDeLaGram(string prod)
         {
