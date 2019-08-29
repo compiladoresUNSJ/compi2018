@@ -19,7 +19,7 @@ namespace text_Box_Mio
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            DialogResult = DialogResult.Retry;
         }
 
         private void continuar_Load(object sender, EventArgs e)
@@ -28,9 +28,8 @@ namespace text_Box_Mio
         }
 
         private void button2_Click(object sender, EventArgs e)
-        {
-            at.jku.ssw.cc.Parser.muestraProducciones = at.jku.ssw.cc.Parser.muestraCargaDeInstrs = at.jku.ssw.cc.Tab.muestraTabSimb = false;
-            this.Close();
+        {            
+            DialogResult = DialogResult.OK;
         }
     }
 }
