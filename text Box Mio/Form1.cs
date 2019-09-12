@@ -108,8 +108,10 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         }
         public void compilar()
         {
-            //Inicio Modificacion - Grupo 1 - 10/9/15
-            //Oculta Labels, RichTextBox y Buttons de Maquina Virtual. Oculta Monitor de Maquina Virtual   
+            
+            //Oculta Labels, RichTextBox y Buttons de Maquina Virtual. Oculta Monitor de Maquina Virtual 
+            Pila_de_Llamados.Visible = true;//Grupo Cocinero, Ledesma. Año 2018. 
+            Nombre_Pila.Visible = true;
             Code.restaurarRichTextBox7conNegro();
             richTextBox8.Visible = false;
             richTextBox9.Visible = false;
@@ -304,6 +306,8 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
         public void maquVirtual()    //ejec maqu virtual                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
         {
+            Pila_de_Llamados.Visible = false;
+            Nombre_Pila.Visible = false;
             richTextBox8.Visible = true;
 
             pictureBox2.Visible = true;
@@ -1425,6 +1429,11 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             
             pr.StartInfo.FileName = "z_gramatica.txt";
             pr.Start();
+        }
+
+        private void Nombre_Pila_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void acercaToolStripMenuItem_Click(object sender, EventArgs e)

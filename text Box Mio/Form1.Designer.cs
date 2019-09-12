@@ -107,6 +107,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.Pila_de_Llamados = new System.Windows.Forms.ListView();
+            this.Nombre_Pila = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.pag1.SuspendLayout();
@@ -141,7 +143,7 @@
             this.richTextBox3.Location = new System.Drawing.Point(3, 3);
             this.richTextBox3.Name = "richTextBox3";
             this.richTextBox3.ReadOnly = true;
-            this.richTextBox3.Size = new System.Drawing.Size(522, 541);
+            this.richTextBox3.Size = new System.Drawing.Size(522, 562);
             this.richTextBox3.TabIndex = 15;
             this.richTextBox3.Text = "";
             this.richTextBox3.TextChanged += new System.EventHandler(this.richTextBox3_TextChanged);
@@ -281,11 +283,12 @@
             // 
             // richTextBox8
             // 
-            this.richTextBox8.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.richTextBox8.BackColor = System.Drawing.SystemColors.Desktop;
             this.richTextBox8.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox8.Location = new System.Drawing.Point(89, 373);
+            this.richTextBox8.ForeColor = System.Drawing.SystemColors.Window;
+            this.richTextBox8.Location = new System.Drawing.Point(76, 364);
             this.richTextBox8.Name = "richTextBox8";
-            this.richTextBox8.Size = new System.Drawing.Size(236, 129);
+            this.richTextBox8.Size = new System.Drawing.Size(273, 138);
             this.richTextBox8.TabIndex = 30;
             this.richTextBox8.Text = "";
             this.richTextBox8.Visible = false;
@@ -710,7 +713,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(528, 547);
+            this.tabPage1.Size = new System.Drawing.Size(528, 568);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Tabla de Símbolos ";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -720,7 +723,7 @@
             this.arbolTS.Dock = System.Windows.Forms.DockStyle.Fill;
             this.arbolTS.Location = new System.Drawing.Point(3, 3);
             this.arbolTS.Name = "arbolTS";
-            this.arbolTS.Size = new System.Drawing.Size(522, 541);
+            this.arbolTS.Size = new System.Drawing.Size(522, 562);
             this.arbolTS.TabIndex = 0;
             // 
             // tabPage2
@@ -729,7 +732,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(528, 547);
+            this.tabPage2.Size = new System.Drawing.Size(528, 568);
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "Instr CIL (RT 3)";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -811,20 +814,42 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::text_Box_Mio.Properties.Resources.monitor5;
-            this.pictureBox2.Location = new System.Drawing.Point(59, 350);
+            this.pictureBox2.Image = global::text_Box_Mio.Properties.Resources.c04938915;
+            this.pictureBox2.Location = new System.Drawing.Point(66, 360);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(298, 209);
+            this.pictureBox2.Size = new System.Drawing.Size(294, 195);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 42;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Visible = false;
+            // 
+            // Pila_de_Llamados
+            // 
+            this.Pila_de_Llamados.LabelEdit = true;
+            this.Pila_de_Llamados.Location = new System.Drawing.Point(1075, 147);
+            this.Pila_de_Llamados.Name = "Pila_de_Llamados";
+            this.Pila_de_Llamados.Size = new System.Drawing.Size(33, 476);
+            this.Pila_de_Llamados.TabIndex = 43;
+            this.Pila_de_Llamados.UseCompatibleStateImageBehavior = false;
+            // 
+            // Nombre_Pila
+            // 
+            this.Nombre_Pila.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Nombre_Pila.Location = new System.Drawing.Point(1025, 86);
+            this.Nombre_Pila.Name = "Nombre_Pila";
+            this.Nombre_Pila.Size = new System.Drawing.Size(132, 34);
+            this.Nombre_Pila.TabIndex = 44;
+            this.Nombre_Pila.Text = "Reglas de la gramática en uso";
+            this.Nombre_Pila.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Nombre_Pila.Click += new System.EventHandler(this.Nombre_Pila_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1161, 657);
+            this.Controls.Add(this.Nombre_Pila);
+            this.Controls.Add(this.Pila_de_Llamados);
             this.Controls.Add(this.richTextBox8);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pestania);
@@ -951,5 +976,7 @@
         private System.Windows.Forms.ToolStripMenuItem introducciónToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem acercaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gramaticaToolStripMenuItem;
+        public System.Windows.Forms.ListView Pila_de_Llamados;
+        private System.Windows.Forms.Label Nombre_Pila;
     }
 }
