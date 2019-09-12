@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
+
 //using at.jku.ssw.cc.tests;
 using text_Box_Mio;
 //using compilador;
@@ -60,7 +61,37 @@ namespace at.jku.ssw.cc
     {
         public static FrmContinuar mens = new FrmContinuar();
         public static FrmContinuarMaqVirtual mensMaqVirtual = new FrmContinuarMaqVirtual();
-        
+
+        public static string[] palReservadas = { "int", "void", "char", "class" };
+        static bool validarPalabrasReservadas(string palabra)
+        {
+            bool esPalabraReservada = false;
+            foreach (string reservada in palReservadas)
+            {
+                if (reservada.ToUpper() == palabra.ToUpper())
+                {
+                    esPalabraReservada = true;
+                    break;
+                }
+            }
+            if (!esPalabraReservada)
+            {
+                string[] keywords = Scanner.getkeywords();
+                int i = 0;
+                for (i = 0; i < keywords.Length; i++)
+                {
+                    if (keywords[i].ToUpper() == palabra.ToUpper())
+                    {
+                        esPalabraReservada = true;
+                        break;
+                    }
+                }
+            }
+            //1= si coincide con una palabra reserada, 0= no coincide
+            return esPalabraReservada;
+        }
+
+
         public static bool muestraProducciones = true;
         public static bool muestraCargaDeInstrs = true;
         public static bool ejecuta = false;
@@ -83,8 +114,32 @@ namespace at.jku.ssw.cc
 
         public static void MessageBoxCon3Preg()
         {
-            if (muestraProducciones)
-                Program1.form1.instContinuar.ShowDialog();
+            if (muestraProducciones && Form1.PararCompilador)
+            {
+                System.Windows.Forms.DialogResult res = Program1.form1.instContinuar.ShowDialog();
+                switch (res)
+                {
+                    
+                    case System.Windows.Forms.DialogResult.OK:
+                        {
+                            muestraProducciones = muestraCargaDeInstrs = Tab.muestraTabSimb = false;
+                        }
+                        break;
+                    case System.Windows.Forms.DialogResult.Cancel:
+                        {
+                            at.jku.ssw.cc.Parser.muestraProducciones = at.jku.ssw.cc.Parser.muestraCargaDeInstrs = at.jku.ssw.cc.Tab.muestraTabSimb = false;
+
+                        }
+                        break;                    
+                    case System.Windows.Forms.DialogResult.Retry:
+                        {
+
+                        }
+                        break;
+                    
+                }
+            }
+                
             Program1.form1.treeView1.ExpandAll();
         }//Fin MessageBoxCon3Preg()
 
@@ -92,7 +147,7 @@ namespace at.jku.ssw.cc
         public enum AccionInstr
         {
             nop, loadLocal, storeLocal, add, sub, mul, div, pop,
-            loadConst, write, writeln, branchInc, tJump, fJump, ldstr, ret
+            loadConst, write, writeln, branchInc, tJump, fJump, ldstr, ret, say
         }
 
         public class Instruccion
@@ -120,7 +175,7 @@ namespace at.jku.ssw.cc
         public static Instruccion[] cil;
         static string[] namesAccionInstr = { "nop", "ldloc.", "stloc.", "add", "sub", "mul", "div", "pop",
                                          "ldc.i4 ", "write", "writeln", "br", "br_tJump" ,
-                                         "br_fJuamp", "ldstr", "ret"};
+                                         "br_fJuamp", "ldstr", "ret","say"};
 
         public static void inicializaCil()
         {
@@ -206,12 +261,12 @@ namespace at.jku.ssw.cc
         {
             token = laToken;
             laToken = Scanner.Next();
-            //La 1° vez q se ejecuta, token queda con Token(1, 1), laToken con "class" (primer token del programa)
+            //La 1ï¿½ vez q se ejecuta, token queda con Token(1, 1), laToken con "class" (primer token del programa)
             la = laToken.kind;
         }
 
         /* Verifies symbol and reads ahead. */
-        static void Check(int expected) //expected viene de la gramatica,  la del laToken que leyó
+        static void Check(int expected) //expected viene de la gramatica,  la del laToken que leyï¿½
         {
             if (la == expected)
                 Scan();
@@ -221,22 +276,22 @@ namespace at.jku.ssw.cc
 
         static void Program()
         {
-            //Inicializacion de la pila que muestra por cual regla de la gramatica se está pasando
+            //Inicializacion de la pila que muestra por cual regla de la gramatica se estï¿½ pasando
             //Cocinero, Ledesma. 2018.
             Program1.form1.Pila_de_Llamados.Columns.Add("    ",5,HorizontalAlignment.Right);
             Program1.form1.Pila_de_Llamados.View = View.SmallIcon;
             Program1.form1.Pila_de_Llamados.Alignment = ListViewAlignment.SnapToGrid;
-            //Fin inicialización de la pila 
+            //Fin inicializaciï¿½n de la pila 
             System.Windows.Forms.TreeNode program = new System.Windows.Forms.TreeNode();  //Crea el nodo program
             program.Text = "Program"; //Texto del nodo "program"
             Program1.form1.treeView1.Nodes.Add(program); //"cuelga" el nodo (raiz) "program" del treeView1 ya creado
             Parser.MessageBoxCon3Preg();
             Code.seleccLaProdEnLaGram(0);  //pinta de rojo    Program = 'class' ident PosDeclars '{' MethodDeclsOpc '}'.
 
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm;
             itm = new ListViewItem("0");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             //Fin
 
             Parser.MessageBoxCon3Preg();
@@ -248,27 +303,27 @@ namespace at.jku.ssw.cc
             //Se cumple que:  (la == expected) => ejecuta Scan => token = ..."class"... y laToden = ..."ProgrPpal" 
             Code.Colorear("token");   //colorea "class" en ventana de Edicion
             //"Program = 'class' ident PosDeclars '{' MethodDeclsOpc '}'."
-            //Ya reconoció 'class', ahora va a reconocer ident
+            //Ya reconociï¿½ 'class', ahora va a reconocer ident
             program.Nodes.Add("ident");
             Parser.MessageBoxCon3Preg();
-            Check(Token.IDENT); // "ProgrPpal" => debo insertar el token en la tabla de símbolos
+            Check(Token.IDENT); // "ProgrPpal" => debo insertar el token en la tabla de sï¿½mbolos
             // es el comienzo del programa y abrir un nuevo alcance
             //Ahora token = "ProgrPpal" y laToken = "{"
-            Code.Colorear("token");  //"class" ya lo pintó, ahora pinta "ProgrPpal"  (lo que hay en token)                                    
+            Code.Colorear("token");  //"class" ya lo pintï¿½, ahora pinta "ProgrPpal"  (lo que hay en token)                                    
             Symbol prog = Tab.Insert(Symbol.Kinds.Prog, token.str, Tab.noType);//lo cuelga de universe
             Code.CreateMetadata(prog);
             Tab.OpenScope(prog); //topScore queda ahora apuntando a un nuevo Scope
             //El Scope anterior (universo) lo accedo via topScore.outer
-            //Ya analizó Class ProgrPpal
+            //Ya analizï¿½ Class ProgrPpal
             //Declaraciones (de ctes, de Globals(aunque diga de vars) y de clases) 
             //hasta q venga una "{"
             //"Program = 'class' ident PosDeclars '{' MethodDeclsOpc '}'."
-            //Ya reconoció ident, ahora va a reconocer PosDeclars
+            //Ya reconociï¿½ ident, ahora va a reconocer PosDeclars
             System.Windows.Forms.TreeNode posDeclars = new System.Windows.Forms.TreeNode("PosDeclars");
             program.Nodes.Add(posDeclars);  //Cuelga un TreeNode porque PosDeclars es No Terminal
             Parser.MessageBoxCon3Preg();
             Code.seleccLaProdEnLaGram(1);  //"PosDeclars = . | Declaration PosDeclars.";
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm1;
             itm1 = new ListViewItem("1");
 
@@ -277,7 +332,7 @@ namespace at.jku.ssw.cc
             while (la != Token.LBRACE && la != Token.EOF) //Si no existen declaraciones, la = Token.LBRACE
             {
                 
-                Program1.form1.Pila_de_Llamados.Items.Add(itm1);// Agrega el numero de regla en la pila de llamadas de la gramática
+                Program1.form1.Pila_de_Llamados.Items.Add(itm1);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
                 Parser.MessageBoxCon3Preg();
                 Code.Colorear("latoken"); //si existiera una declaracion, as "int i", colorea "int";  (yaPintado = true)
                 //El argumento "false" => que no debe pintar el "token" (que en este caso seria "ProgrPpal"), sino el laToken (que es "int")
@@ -288,7 +343,7 @@ namespace at.jku.ssw.cc
 
                 ListViewItem itm2;
                 itm2 = new ListViewItem("2");
-                Program1.form1.Pila_de_Llamados.Items.Add(itm2);// Agrega el numero de regla en la pila de llamadas de la gramática
+                Program1.form1.Pila_de_Llamados.Items.Add(itm2);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
                 System.Windows.Forms.TreeNode hijodeclar = new System.Windows.Forms.TreeNode("Declaration = ConstDecl | VarDecl | ClassDecl.");
                 posDeclars.Nodes.Add(hijodeclar); existeDecl = true;
@@ -312,16 +367,16 @@ namespace at.jku.ssw.cc
 
                            
                            
-                            Program1.form1.Pila_de_Llamados.Items.Add(itm6);// Agrega el numero de regla en la pila de llamadas de la gramática
+                            Program1.form1.Pila_de_Llamados.Items.Add(itm6);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
                             Code.cargaProgDeLaGram("VarDecl = Type  ident IdentifiersOpc ';'.");
                             Code.seleccLaProdEnLaGram(12);
 
                             
                             
-                            Program1.form1.Pila_de_Llamados.Items.Add(itm12);// Agrega el numero de regla en la pila de llamadas de la gramática
+                            Program1.form1.Pila_de_Llamados.Items.Add(itm12);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
-                            Code.cargaProgDeLaGram("Type = ident LbrackOpc."); //ya pintó el ident (por ej "int en int ii);
+                            Code.cargaProgDeLaGram("Type = ident LbrackOpc."); //ya pintï¿½ el ident (por ej "int en int ii);
                             VardDecl(Symbol.Kinds.Global, hijo1); //En program  //Table val;
 
 
@@ -340,13 +395,13 @@ namespace at.jku.ssw.cc
                             break;
                         }
                 }
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 Program1.form1.Pila_de_Llamados.Items.Remove(itm12);
                 Program1.form1.Pila_de_Llamados.Items.Remove(itm6);
                 Program1.form1.Pila_de_Llamados.Items.Remove(itm2);
                 //Fin
                 Code.seleccLaProdEnLaGram(1);
-                Code.cargaProgDeLaGram("selccionó la 1 PosDeclars = . | Declaration PosDeclars.");
+                Code.cargaProgDeLaGram("selccionï¿½ la 1 PosDeclars = . | Declaration PosDeclars.");
             }
             Code.Colorear("latoken");
             //en este caso, debe "mirar hacia adelante" (laToken) 
@@ -361,7 +416,7 @@ namespace at.jku.ssw.cc
             }
             if (ZZ.parser)
             {
-                Console.WriteLine("Terminó con todas las declaraciones");
+                Console.WriteLine("Terminï¿½ con todas las declaraciones");
                 Console.WriteLine("//el topScope queda apuntando a --> const size, class Table (con int[] pos y int[] neg), Table val");
             };
             if (ZZ.parser)
@@ -384,11 +439,11 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm3;
             itm3 = new ListViewItem("3");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm3);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm3);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             Parser.MessageBoxCon3Preg();
-            // si "la" pertenece a First(MethodDec) => sólo deben haber metodos
+            // si "la" pertenece a First(MethodDec) => sï¿½lo deben haber metodos
             while ((la == Token.IDENT || la == Token.VOID) && la != Token.EOF)
             {
                 MethodDecl(methodDeclsOpc);  //void Main() int x,i; {val = new Table;....}
@@ -459,21 +514,21 @@ namespace at.jku.ssw.cc
             hijo2.Nodes.Add("Type = " + type.kind.ToString());
             if (type != Tab.intType && type != Tab.charType)
             {
-                Errors.Error("el tipo de una def de const sólo puede ser int o char");
+                Errors.Error("el tipo de una def de const sï¿½lo puede ser int o char");
             }
             Check(Token.IDENT);
             hijo2.Nodes.Add("ident");
             Code.Colorear("token");
             if (muestraProducciones) MessageBoxCon3Preg(); ;
-            //token quedó con i, laToken con =
-            // debo agregar a la tabla de símbolos un nuevo símbolo  
+            //token quedï¿½ con i, laToken con =
+            // debo agregar a la tabla de sï¿½mbolos un nuevo sï¿½mbolo  
             Symbol constante = Tab.Insert(Symbol.Kinds.Const, token.str, type);
             if (ZZ.parser)
                 Console.WriteLine("termina de insertar constante con type = " + type.kind);
             Check(Token.ASSIGN);  //const
             hijo2.Nodes.Add("'='");
             Code.Colorear("token"); if (muestraProducciones) MessageBoxCon3Preg();
-            //token quedó con =, laToken con 10
+            //token quedï¿½ con =, laToken con 10
             System.Windows.Forms.TreeNode hijo3 = new System.Windows.Forms.TreeNode("NumberOrCharConst");
             hijo2.Nodes.Add(hijo3);
             switch (la)
@@ -506,7 +561,7 @@ namespace at.jku.ssw.cc
                     }
             }
             if (ZZ.parser)
-                Console.WriteLine("Ahora actualizó el valor");
+                Console.WriteLine("Ahora actualizï¿½ el valor");
             if (ZZ.parser)
                 Tab.mostrarTab();
             Check(Token.SEMICOLON);
@@ -526,7 +581,7 @@ namespace at.jku.ssw.cc
             ListViewItem itm;
             itm = new ListViewItem("7");
             if(Program1.form1.Pila_de_Llamados.Items.Contains(itm)==false)
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             //fin
 
             if (la == Token.COMMA && la != Token.EOF)
@@ -541,6 +596,23 @@ namespace at.jku.ssw.cc
                 Check(Token.IDENT); //otro identif
                 if (muestraProducciones)
                     MessageBoxCon3Preg();
+
+                bool esPalabraReservada = false;
+                if (token.str == ",")
+                {
+                    esPalabraReservada = validarPalabrasReservadas(laToken.str);
+
+                }
+                else
+                {
+                    esPalabraReservada = validarPalabrasReservadas(token.str);
+                }
+
+                if (esPalabraReservada)
+                {
+                    Errors.Error("Error de palabra reservada");
+                }
+
                 Code.Colorear("token");
                 identifieropc.Nodes.Add("ident");
                 MessageBoxCon3Preg();
@@ -572,7 +644,7 @@ namespace at.jku.ssw.cc
             // si es Tabla val y viene de "class P {", kind es "Global"
             Struct type;// = new Struct(Struct.Kinds.None); //int i;
             Code.seleccLaProdEnLaGram(6);
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm;
             itm = new ListViewItem("6");
             Program1.form1.Pila_de_Llamados.Items.Add(itm);
@@ -585,10 +657,10 @@ namespace at.jku.ssw.cc
             padre.ExpandAll();
             MessageBoxCon3Preg();
             Code.seleccLaProdEnLaGram(12);
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm12;
             itm12 = new ListViewItem("12");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm12);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm12);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             //Fin
 
             //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
@@ -609,10 +681,10 @@ namespace at.jku.ssw.cc
             hijo1.Nodes.Add(lbrakopc);
             MessageBoxCon3Preg();
             Code.seleccLaProdEnLaGram(13);
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm13;
             itm13 = new ListViewItem("13");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm13);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm13);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             //Fin
 
             MessageBoxCon3Preg();
@@ -627,6 +699,17 @@ namespace at.jku.ssw.cc
             Program1.form1.Pila_de_Llamados.Items.Remove(itm13);
 
             MessageBoxCon3Preg();
+
+            if (token.str == "int" || token.str == "char")
+            {
+                bool esPalabraReservada = validarPalabrasReservadas(laToken.str);
+                if (esPalabraReservada)
+                {
+                    Errors.Error("Error de palabra reservada");
+                }
+            }
+
+
             //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
             Check(Token.IDENT); // "pos", en int pos,   .....int,....  x, i, etc
             Code.seleccLaProdEnLaGram(6);
@@ -640,7 +723,7 @@ namespace at.jku.ssw.cc
             padre.Nodes.Add(hijo2);
             //-------------------------------------------------Grupo 2 28/9/2015----------------------------------------------------------------------- 
             ////
-            // debo insertar el token en la tabla de símbolos
+            // debo insertar el token en la tabla de sï¿½mbolos
             cantVarLocales++; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
             Symbol vble = Tab.Insert(kind, token.str, type);
             //vble no, poner simbolo (para pos, en int[] pos)
@@ -673,7 +756,7 @@ namespace at.jku.ssw.cc
         {
             ListViewItem itm;
             itm = new ListViewItem("ClassDecl");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             Check(Token.CLASS); //class Table {int[] pos;int[] pos;},.. class C1 {int i; void P1(){}; char ch; int P2{}; int[] arr;  }
@@ -727,7 +810,7 @@ namespace at.jku.ssw.cc
             Tab.CloseScope();  //con lo cual recuperamos topSScope
             Check(Token.RBRACE);   //laToken queda con Table (en Table ...)
             //class C1 { => int i,j; char ch; Pers p=new Pers(); int P2{}; int[] arr;  }
-            // int i,j; char ch; Pers p..etc, quedó apuntado por topScope.locals
+            // int i,j; char ch; Pers p..etc, quedï¿½ apuntado por topScope.locals
 
             Program1.form1.Pila_de_Llamados.Items.Remove(itm);
 
@@ -757,7 +840,7 @@ namespace at.jku.ssw.cc
                     MessageBoxCon3Preg();
                     Code.seleccLaProdEnLaGram(8);
 
-                    Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+                    Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
                     MessageBoxCon3Preg();
                     ///// Agrega 'TypeOrVoid' al arbol y lo cuelga de MethodDecl
@@ -765,10 +848,10 @@ namespace at.jku.ssw.cc
                     methodDecl.ExpandAll();
                     MessageBoxCon3Preg();
                     Code.seleccLaProdEnLaGram(9);
-                    //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                    //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                     ListViewItem itm9;
                     itm9 = new ListViewItem("9");
-                    Program1.form1.Pila_de_Llamados.Items.Add(itm9);// Agrega el numero de regla en la pila de llamadas de la gramática
+                    Program1.form1.Pila_de_Llamados.Items.Add(itm9);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
                     //Fin
 
                     MessageBoxCon3Preg();
@@ -814,7 +897,7 @@ namespace at.jku.ssw.cc
 
                 ListViewItem itm10;
                 itm10 = new ListViewItem("10");
-                Program1.form1.Pila_de_Llamados.Items.Add(itm10);// Agrega el numero de regla en la pila de llamadas de la gramática
+                Program1.form1.Pila_de_Llamados.Items.Add(itm10);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
                 MessageBoxCon3Preg();
@@ -847,10 +930,10 @@ namespace at.jku.ssw.cc
                 methodDecl.Nodes.Add(posDeclars);
                 MessageBoxCon3Preg();
                 Code.seleccLaProdEnLaGram(1);
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 ListViewItem itm1;
                 itm1 = new ListViewItem("1");
-                Program1.form1.Pila_de_Llamados.Items.Add(itm1);// Agrega el numero de regla en la pila de llamadas de la gramática
+                Program1.form1.Pila_de_Llamados.Items.Add(itm1);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
                 
 
                 Program1.form1.Pila_de_Llamados.Items.Remove(itm10);
@@ -859,7 +942,7 @@ namespace at.jku.ssw.cc
                 //bool encuentraDecl = false;
                 Code.CreateMetadata(curMethod);  //genera il
                                                  //Declaraciones  por ahora solo decl de var, luego habria q agregar const y clases
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 ListViewItem itm2;
                 itm2 = new ListViewItem("2");
                 ListViewItem itm6;
@@ -872,14 +955,14 @@ namespace at.jku.ssw.cc
                         {
                             //encuentraDecl = true;
                             Code.Colorear("latoken"); //colorea "int"  en int i; 
-                            //Infiere la 2° opcion de PosDeclars   aaaaaaaa
+                            //Infiere la 2ï¿½ opcion de PosDeclars   aaaaaaaa
                             System.Windows.Forms.TreeNode declaration = new System.Windows.Forms.TreeNode("Declaration");
                             posDeclars.Nodes.Add(declaration);
                             posDeclars.ExpandAll();
                             MessageBoxCon3Preg();
                             Code.seleccLaProdEnLaGram(2);
 
-                            Program1.form1.Pila_de_Llamados.Items.Add(itm2);// Agrega el numero de regla en la pila de llamadas de la gramática
+                            Program1.form1.Pila_de_Llamados.Items.Add(itm2);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
                             MessageBoxCon3Preg();
                             System.Windows.Forms.TreeNode varDecl = new System.Windows.Forms.TreeNode("VarDecl");
@@ -911,7 +994,7 @@ namespace at.jku.ssw.cc
                     instrParaVarsLocs = instrParaVarsLocs + ")";
                     Code.cargaInstr(instrParaVarsLocs);
                 }
-                //Arreglado por Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Arreglado por Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
 
                 Code.seleccLaProdEnLaGram(1);
                 Program1.form1.Pila_de_Llamados.Items.Remove(itm2);
@@ -943,7 +1026,7 @@ namespace at.jku.ssw.cc
                 Program1.form1.Pila_de_Llamados.Items.Remove(itm1);
                 MessageBoxCon3Preg();
 
-                //Fin arreglo Grupo Cocinero, Ledesma. Año 2018.
+                //Fin arreglo Grupo Cocinero, Ledesma. Aï¿½o 2018.
 
                 //Comienza Block
                 Block(methodDecl);  //Bloque dentro de MethodDecl() 
@@ -963,12 +1046,12 @@ namespace at.jku.ssw.cc
 
         }//Fin MethodDecl
 
-        static void FormPars(System.Windows.Forms.TreeNode padre)//Falta Árbol
+        static void FormPars(System.Windows.Forms.TreeNode padre)//Falta ï¿½rbol
         {
 
             ListViewItem itm;
             itm = new ListViewItem("14");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             Struct type = new Struct(Struct.Kinds.None);
@@ -1050,7 +1133,7 @@ namespace at.jku.ssw.cc
             Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.nop;
             Code.cargaInstr("nop   ");
             //ir a la linea correspondiente y marcar el label con la instr corriente
-            Parser.cil[nroInstrParaRectificarElIf].nroLinea = nroDeInstrCorriente;//Br cond ahora está definido
+            Parser.cil[nroInstrParaRectificarElIf].nroLinea = nroDeInstrCorriente;//Br cond ahora estï¿½ definido
             Parser.cil[nroInstrParaRectificarElIf].instrString =
                 Parser.cil[nroInstrParaRectificarElIf].instrString.Substring(0,
                     Parser.cil[nroInstrParaRectificarElIf].instrString.Length - 2)
@@ -1069,7 +1152,7 @@ namespace at.jku.ssw.cc
         // O cuando hay varios, ej. varios statements: nstatement, nstatement2.
         static void Statement(System.Windows.Forms.TreeNode statement)
         {
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm;
             itm = new ListViewItem("18");
             ListViewItem itm22;
@@ -1082,7 +1165,7 @@ namespace at.jku.ssw.cc
 
                 Code.Colorear("token"); //laToken (ident)  "writeln"  ya pintado  o "var1" en var1 = 10;
                 Item itemIzq, itemDer; // = new Item();  // 
-                // Agrega el numero de regla en la pila de llamadas de la gramática
+                // Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
                 //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------
                 System.Windows.Forms.TreeNode designator = new System.Windows.Forms.TreeNode("Designator");
                 statement.Nodes.Add(designator);
@@ -1093,7 +1176,7 @@ namespace at.jku.ssw.cc
                 String parteFinalDelDesign = token.str;
                 //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------
                 System.Windows.Forms.TreeNode RestOfstatement = new System.Windows.Forms.TreeNode("RestOfStatement");
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 Code.seleccLaProdEnLaGram(18);
               
                 MessageBoxCon3Preg();
@@ -1103,7 +1186,7 @@ namespace at.jku.ssw.cc
                 MessageBoxCon3Preg(statement);
                 MessageBoxCon3Preg();
                 Code.seleccLaProdEnLaGram(22);
-                Program1.form1.Pila_de_Llamados.Items.Add(itm22);// Agrega el numero de regla en la pila de llamadas de la gramática
+                Program1.form1.Pila_de_Llamados.Items.Add(itm22);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
                 MessageBoxCon3Preg();
                 //Fin
                 //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------
@@ -1152,7 +1235,7 @@ namespace at.jku.ssw.cc
                             Check(Token.PPLUS);
                             RestOfstatement.Nodes.Add("'++'");
                             MessageBoxCon3Preg(RestOfstatement);
-                            if (ZZ.parser) Console.WriteLine("reconoció el ++"); //zzzzzz
+                            if (ZZ.parser) Console.WriteLine("reconociï¿½ el ++"); //zzzzzz
                             break;
                         }
                     case Token.MMINUS:
@@ -1165,7 +1248,7 @@ namespace at.jku.ssw.cc
                 }
                
                 Check(Token.SEMICOLON);//falta nodo aca//
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 Code.seleccLaProdEnLaGram(22);
                 MessageBoxCon3Preg();
                 Program1.form1.Pila_de_Llamados.Items.Remove(itm22); // Quitamos el item correspondiente
@@ -1192,17 +1275,17 @@ namespace at.jku.ssw.cc
                         System.Windows.Forms.TreeNode condition = new System.Windows.Forms.TreeNode("Condition");
                         If.Nodes.Add(condition);
                         MessageBoxCon3Preg(If);
-                        if (ZZ.parser) Console.WriteLine("reconoció la cond del if");
+                        if (ZZ.parser) Console.WriteLine("reconociï¿½ la cond del if");
                         Check(Token.RPAR);
                         If.Nodes.Add(")");
                         MessageBoxCon3Preg(If);
                         Code.FJump(x);  //dentro del if (i<10) 
                         //Code.FJump(x) => bge x.fLabel, i.e. si >= debe ir a x.fLabel (debe saltar el then)
-                        //x.fLabel está indefinido, luego habrá un  //luego habrà un Code.il.MarkLabel(x.fLabel);
+                        //x.fLabel estï¿½ indefinido, luego habrï¿½ un  //luego habrï¿½ un Code.il.MarkLabel(x.fLabel);
 
                         //Code.FJump(x)=> Parser.cil[Parser.nroDeInstrCorriente]...=> bge -1 (por ej) 
                         nroInstrParaRectificarElIf = Parser.nroDeInstrCorriente;
-                        //luego habrà un Parser.cil[nroInstrParaRectificarElIf].nroLinea = label...
+                        //luego habrï¿½ un Parser.cil[nroInstrParaRectificarElIf].nroLinea = label...
                         //reemplazando "bge -1" con "bge label..."
                         //////////
                         System.Windows.Forms.TreeNode nstatement = new System.Windows.Forms.TreeNode("Statement");
@@ -1210,7 +1293,7 @@ namespace at.jku.ssw.cc
                         MessageBoxCon3Preg(If);
                         /////////
                         Statement(nstatement); //en el if de una statement
-                        if (ZZ.parser) Console.WriteLine("reconoció la Statem del if");
+                        if (ZZ.parser) Console.WriteLine("reconociï¿½ la Statem del if");
                         if (la == Token.ELSE)
                         {
                             Check(Token.ELSE);
@@ -1224,29 +1307,29 @@ namespace at.jku.ssw.cc
                             Code.Jump(end);  //=> il.Emit(BR, end); 
                             Parser.nroDeInstrCorriente++;
                             Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.branchInc;
-                            Parser.cil[Parser.nroDeInstrCorriente].nroLinea = endMio;  //Br Incond está indefinido
+                            Parser.cil[Parser.nroDeInstrCorriente].nroLinea = endMio;  //Br Incond estï¿½ indefinido
                             Code.cargaInstr("br" + "  " + Parser.cil[Parser.nroDeInstrCorriente].nroLinea.ToString());
                             //br end => br -1
                             int nroInstrParaRectificarElEndDelIf = Parser.nroDeInstrCorriente;
 
                             Code.il.MarkLabel(x.fLabel);
                             markLabelMio(nroInstrParaRectificarElIf, nelse);//agregar una nop
-                            //más: ir a la linea correspondiente y marcar el label con la instr corriente
-                            //más: reescribe cil (nuevoRichTexBox3) rectificando la marca
+                            //mï¿½s: ir a la linea correspondiente y marcar el label con la instr corriente
+                            //mï¿½s: reescribe cil (nuevoRichTexBox3) rectificando la marca
 
                             Statement(nelse);  //en el else de una statemnet
-                            if (ZZ.parser) Console.WriteLine("reconoció la Statem del else del if");
+                            if (ZZ.parser) Console.WriteLine("reconociï¿½ la Statem del else del if");
                             Code.il.MarkLabel(end);
                             markLabelMio(nroInstrParaRectificarElEndDelIf, nelse);//agregar una nop
-                            //más: ir a la linea correspondiente y marcar el label con la instr corriente
-                            //más: reescribe cil (nuevoRichTexBox3) rectificando la marca
+                            //mï¿½s: ir a la linea correspondiente y marcar el label con la instr corriente
+                            //mï¿½s: reescribe cil (nuevoRichTexBox3) rectificando la marca
                         }
                         else
                         {
                             Code.il.MarkLabel(x.fLabel);
                             markLabelMio(nroInstrParaRectificarElIf, nstatement);//agregar una nop
-                            //más: ir a la linea correspondiente y marcar el label con la instr corriente
-                            //más: reescribe cil (nuevoRichTexBox3) rectificando la marca
+                            //mï¿½s: ir a la linea correspondiente y marcar el label con la instr corriente
+                            //mï¿½s: reescribe cil (nuevoRichTexBox3) rectificando la marca
                         }
                         break;
 
@@ -1262,7 +1345,7 @@ namespace at.jku.ssw.cc
                         Code.il.MarkLabel(top);
                         topMio = Parser.nroDeInstrCorriente + 1; //(instr sig a la actual)
                         //para luego..Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.branchInc;
-                        //Parser.cil[Parser.nroDeInstrCorriente].nroLinea = topMio;  //Br Incond está definido
+                        //Parser.cil[Parser.nroDeInstrCorriente].nroLinea = topMio;  //Br Incond estï¿½ definido
                         Check(Token.LPAR);
                         Condition(out x);
                         nwhile.Nodes.Add("'('");
@@ -1274,10 +1357,10 @@ namespace at.jku.ssw.cc
                         MessageBoxCon3Preg(nwhile);
                         Code.FJump(x); //dentro del while (i<10) 
                         //Code.FJump(x) => bge x.fLabel, i.e. si >= debe ir a x.fLabel (debe salir del loop)
-                        //x.fLabel está indefinido, luego habrá un  //luego habrà un Code.il.MarkLabel(x.fLabel);
+                        //x.fLabel estï¿½ indefinido, luego habrï¿½ un  //luego habrï¿½ un Code.il.MarkLabel(x.fLabel);
                         //Code.FJump(x)=> Parser.cil[Parser.nroDeInstrCorriente]...=> bge -1 (por ej) 
                         nroInstrParaRectificarElWhile = Parser.nroDeInstrCorriente;
-                        //luego habrà un Parser.cil[nroInstrParaRectificarElWhile].nroLinea = label...
+                        //luego habrï¿½ un Parser.cil[nroInstrParaRectificarElWhile].nroLinea = label...
                         //reemplazando "bge -1" con "bge label..."
                         Check(Token.LBRACE);
                         nwhile.Nodes.Add("'{'");
@@ -1297,7 +1380,7 @@ namespace at.jku.ssw.cc
                         Code.Jump(top);
                         Parser.nroDeInstrCorriente++;
                         Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.branchInc;
-                        Parser.cil[Parser.nroDeInstrCorriente].nroLinea = topMio;  //Br Incond está definido
+                        Parser.cil[Parser.nroDeInstrCorriente].nroLinea = topMio;  //Br Incond estï¿½ definido
                         Code.cargaInstr("br" + "  " + Parser.cil[Parser.nroDeInstrCorriente].nroLinea.ToString());
                         //br top
                         Code.il.MarkLabel(x.fLabel);
@@ -1307,7 +1390,7 @@ namespace at.jku.ssw.cc
                         //Parser.cil[Parser.nroDeInstrCorriente].instrString =
                         Code.cargaInstr("nop   ");
                         //ir a la linea correspondiente y marcar el label con la instr corriente
-                        Parser.cil[nroInstrParaRectificarElWhile].nroLinea = nroDeInstrCorriente;//Br cond ahora está definido
+                        Parser.cil[nroInstrParaRectificarElWhile].nroLinea = nroDeInstrCorriente;//Br cond ahora estï¿½ definido
                         Parser.cil[nroInstrParaRectificarElWhile].instrString =
                             Parser.cil[nroInstrParaRectificarElWhile].instrString.Substring(0,
                                 Parser.cil[nroInstrParaRectificarElWhile].instrString.Length - 2)
@@ -1342,7 +1425,106 @@ namespace at.jku.ssw.cc
                         Check(Token.RPAR);
                         Check(Token.SEMICOLON);
                         //ZZ.parser = true; 
-                        if (ZZ.parser) Console.WriteLine("reconoció el Read");
+                        if (ZZ.parser) Console.WriteLine("reconociï¿½ el Read");
+                        break;
+                    case Token.SAY:
+                        {
+                            Check(Token.SAY);
+                            System.Windows.Forms.TreeNode say = new System.Windows.Forms.TreeNode("'say'");
+                            statement.Nodes.Add(say);
+                            statement.ExpandAll();
+                            MessageBoxCon3Preg(statement);
+                            Code.Colorear("token");
+
+                            if (la == Token.LPAR)
+                            {
+                                say.Nodes.Add("'('");
+                                say.ExpandAll();
+                                MessageBoxCon3Preg(say);
+                                //////////////////////////
+                                Code.Colorear("latoken"); //pinta el "("
+                                Code.Colorear("token"); //solo para que deje yaPintado en false
+
+                                if (Scanner.ch != '\"')
+                                    Errors.Error("Se esperaba una COMILLA DOBLE");
+                                else
+                                {
+                                    string argStr = "";
+                                    Scanner.NextCh(); //ch = 2ï¿½ com doble o Primer char del argStr
+
+                                    while (Scanner.ch != '\"' && Scanner.ch != '\u0080')
+                                    {
+                                        //if (ch == EOF) return new Token(Token.EOF, line, col);
+                                        argStr = argStr + Scanner.ch.ToString();
+                                        Scanner.NextCh();  //ch = 2ï¿½ char del argStr o Com Doble
+                                    }
+                                    if(Scanner.ch != '\u0080')
+                                    {
+                                        token = new Token(Scanner.line, Scanner.col);
+                                        token.kind = Token.COMILLADOBLE; //se va a llamar argDeWriteLine
+                                        token.str = argStr; // excluye las comillas dobles
+                                                            //token.line lo deja =
+                                        token.col = token.col - argStr.Length; //+ 1; // -3; //DESPUES DEL "("
+
+                                        ////////////////////////////  Agrega 'argString' al arbol y lo muestra 
+                                        say.Nodes.Add("argstring"); // G3 2015
+                                        MessageBoxCon3Preg(say);
+                                        Code.Colorear("token");
+
+                                        ////////////////////////////
+                                        Parser.nroDeInstrCorriente++;
+                                        //Agregar  ldString  argStr, 
+                                        Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.ldstr;
+                                        Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;
+
+                                        muestraCargaDeInstrs = false; // -- G3 -  (Es para que no muestre la pantalla)
+                                        Code.cargaInstr("ldstr \"" + argStr + "\" ");
+                                        muestraCargaDeInstrs = true; // -- G3 -
+
+                                        Parser.nroDeInstrCorriente++;
+                                        Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.say;
+                                        muestraCargaDeInstrs = false; // -- G3 - (Es para que no muestre la pantalla)
+                                        Code.cargaInstr("call say#(string)");
+                                        muestraCargaDeInstrs = true; // -- G3 -
+                                                                     //Parser.cil[Parser.nroDeInstrCorriente].nro = item.val; // item.val;           //item.val;  aaaaaaa 
+                                                                     //Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;  //Provisorio ya no se usa argDelWriteLine
+
+
+                                        Scanner.NextCh(); //ch=")"
+                                        token = laToken; //token queda con argDeWriteLine
+                                        laToken = Scanner.Next(); //la token queda con ")"
+                                        la = laToken.kind;
+                                        Code.il.EmitWriteLine(argStr);
+
+                                        ////////////////////////////// Agrega ')' al arbol y lo muestra
+
+                                        say.Nodes.Add("')'");
+                                        MessageBoxCon3Preg(say);
+
+                                        Check(Token.RPAR);
+                                        Code.Colorear("token");
+                                        /////////////////////////////  Agrega ';' al arbol y lo muestra
+
+                                        say.Nodes.Add("';'"); // G3 2015
+                                        MessageBoxCon3Preg(say);
+                                        Check(Token.SEMICOLON);
+                                        Code.Colorear("token");
+                                    }
+                                    else
+                                    {
+                                        Errors.Error("Se esperaba una COMILLA DOBLE");
+                                    }
+                                    //ch = Com Doble
+                                    
+
+                                }
+
+                            }
+                            else
+                            {
+                                Errors.Error("Se esperaba una apertura de parï¿½ntesis '('");
+                            }
+                        }
                         break;
                     case Token.WRITELN: /// En Statement G3 PERUWRITELN
                         //token queda con ";" y laToken = WRITELN y ch con '('               
@@ -1375,64 +1557,72 @@ namespace at.jku.ssw.cc
                             else
                             {
                                 string argStr = "";
-                                Scanner.NextCh(); //ch = 2º com doble o Primer char del argStr
+                                Scanner.NextCh(); //ch = 2ï¿½ com doble o Primer char del argStr
 
-                                while (Scanner.ch != '\"')
+                                while (Scanner.ch != '\"' && Scanner.ch != '\u0080')
                                 {
                                     //if (ch == EOF) return new Token(Token.EOF, line, col);
                                     argStr = argStr + Scanner.ch.ToString();
-                                    Scanner.NextCh();  //ch = 2º char del argStr o Com Doble
+                                    Scanner.NextCh();  //ch = 2ï¿½ char del argStr o Com Doble
+                                }
+                                if(Scanner.ch == '\u0080')
+                                {
+                                    Errors.Error("Se esperaba una COMILLA DOBLE");
+                                }
+                                else
+                                {
+                                    token = new Token(Scanner.line, Scanner.col);
+                                    token.kind = Token.COMILLADOBLE; //se va a llamar argDeWriteLine
+                                    token.str = argStr; // excluye las comillas dobles
+                                                        //token.line lo deja =
+                                    token.col = token.col - argStr.Length; //+ 1; // -3; //DESPUES DEL "("
+
+                                    ////////////////////////////  Agrega 'argString' al arbol y lo muestra 
+                                    writeln.Nodes.Add("argstring"); // G3 2015
+                                    MessageBoxCon3Preg(writeln);
+                                    Code.Colorear("token");
+
+                                    ////////////////////////////
+                                    Parser.nroDeInstrCorriente++;
+                                    //Agregar  ldString  argStr, 
+                                    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.ldstr;
+                                    Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;
+
+                                    muestraCargaDeInstrs = false; // -- G3 -  (Es para que no muestre la pantalla)
+                                    Code.cargaInstr("ldstr \"" + argStr + "\" ");
+                                    muestraCargaDeInstrs = true; // -- G3 -
+
+                                    Parser.nroDeInstrCorriente++;
+                                    Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.writeln;
+                                    muestraCargaDeInstrs = false; // -- G3 - (Es para que no muestre la pantalla)
+                                    Code.cargaInstr("call writeln#(string)");
+                                    muestraCargaDeInstrs = true; // -- G3 -
+                                                                 //Parser.cil[Parser.nroDeInstrCorriente].nro = item.val; // item.val;           //item.val;  aaaaaaa 
+                                                                 //Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;  //Provisorio ya no se usa argDelWriteLine
+
+
+                                    Scanner.NextCh(); //ch=")"
+                                    token = laToken; //token queda con argDeWriteLine
+                                    laToken = Scanner.Next(); //la token queda con ")"
+                                    la = laToken.kind;
+                                    Code.il.EmitWriteLine(argStr);
+
+                                    ////////////////////////////// Agrega ')' al arbol y lo muestra
+
+                                    writeln.Nodes.Add("')'");
+                                    MessageBoxCon3Preg(writeln);
+
+                                    Check(Token.RPAR);
+                                    Code.Colorear("token");
+                                    /////////////////////////////  Agrega ';' al arbol y lo muestra
+
+                                    writeln.Nodes.Add("';'"); // G3 2015
+                                    MessageBoxCon3Preg(writeln);
+                                    Check(Token.SEMICOLON);
+                                    Code.Colorear("token");
                                 }
                                 //ch = Com Doble
-                                token = new Token(Scanner.line, Scanner.col);
-                                token.kind = Token.COMILLADOBLE; //se va a llamar argDeWriteLine
-                                token.str = argStr; // excluye las comillas dobles
-                                //token.line lo deja =
-                                token.col = token.col - argStr.Length; //+ 1; // -3; //DESPUES DEL "("
-
-                                ////////////////////////////  Agrega 'argString' al arbol y lo muestra 
-                                writeln.Nodes.Add("argstring"); // G3 2015
-                                MessageBoxCon3Preg(writeln);
-                                Code.Colorear("token");
-
-                                ////////////////////////////
-                                Parser.nroDeInstrCorriente++;
-                                //Agregar  ldString  argStr, 
-                                Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.ldstr;
-                                Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;
-
-                                muestraCargaDeInstrs = false; // -- G3 -  (Es para que no muestre la pantalla)
-                                Code.cargaInstr("ldstr \"" + argStr + "\" ");
-                                muestraCargaDeInstrs = true; // -- G3 -
-
-                                Parser.nroDeInstrCorriente++;
-                                Parser.cil[Parser.nroDeInstrCorriente].accionInstr = Parser.AccionInstr.writeln;
-                                muestraCargaDeInstrs = false; // -- G3 - (Es para que no muestre la pantalla)
-                                Code.cargaInstr("call writeln#(string)");
-                                muestraCargaDeInstrs = true; // -- G3 -
-                                //Parser.cil[Parser.nroDeInstrCorriente].nro = item.val; // item.val;           //item.val;  aaaaaaa 
-                                //Parser.cil[Parser.nroDeInstrCorriente].argDelWriteLine = argStr;  //Provisorio ya no se usa argDelWriteLine
-
-
-                                Scanner.NextCh(); //ch=")"
-                                token = laToken; //token queda con argDeWriteLine
-                                laToken = Scanner.Next(); //la token queda con ")"
-                                la = laToken.kind;
-                                Code.il.EmitWriteLine(argStr);
-
-                                ////////////////////////////// Agrega ')' al arbol y lo muestra
-
-                                writeln.Nodes.Add("')'");
-                                MessageBoxCon3Preg(writeln);
-
-                                Check(Token.RPAR);
-                                Code.Colorear("token");
-                                /////////////////////////////  Agrega ';' al arbol y lo muestra
-
-                                writeln.Nodes.Add("';'"); // G3 2015
-                                MessageBoxCon3Preg(writeln);
-                                Check(Token.SEMICOLON);
-                                Code.Colorear("token");
+                                
 
                             }
                         }
@@ -1526,6 +1716,7 @@ namespace at.jku.ssw.cc
                         Code.Colorear("token");
                         ///////////////
                         break;
+
                     case Token.LBRACE:
                         System.Windows.Forms.TreeNode blockint = new System.Windows.Forms.TreeNode("Block");
                         statement.Nodes.Add(blockint);
@@ -1559,10 +1750,10 @@ namespace at.jku.ssw.cc
             MessageBoxCon3Preg(block);
             MessageBoxCon3Preg();
             Code.seleccLaProdEnLaGram(16);
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm;
             itm = new ListViewItem("16");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             //Fin
             MessageBoxCon3Preg();
             ////// Agrega '{' al arbol
@@ -1579,10 +1770,10 @@ namespace at.jku.ssw.cc
             MessageBoxCon3Preg(block);
             MessageBoxCon3Preg();
             Code.seleccLaProdEnLaGram(17);
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm17;
             itm17 = new ListViewItem("17");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm17);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm17);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             MessageBoxCon3Preg();
             //Fin
             /////// Agrega '.' al arbol si el block esta vacio
@@ -1596,15 +1787,15 @@ namespace at.jku.ssw.cc
                 MessageBoxCon3Preg();
             }
             int ii = 1;
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm18;
             itm18 = new ListViewItem("18");
             //Fin
             while (la != Token.RBRACE)
             {
                 if ((la == Token.IDENT || la == Token.IF || la == Token.WHILE || la == Token.BREAK
-                  || la == Token.RETURN || la == Token.READ || la == Token.WRITE || la == Token.WRITELN
-                  || la == Token.LBRACE || la == Token.SEMICOLON) && la != Token.EOF)
+                  || la == Token.RETURN || la == Token.READ || la == Token.WRITE || la == Token.WRITELN || la==Token.SAY
+                  || la == Token.LBRACE || la == Token.SEMICOLON) && la != Token.EOF )
                 {
                     Code.Colorear("latoken");
                     System.Windows.Forms.TreeNode statement = new System.Windows.Forms.TreeNode("Statement");
@@ -1612,10 +1803,10 @@ namespace at.jku.ssw.cc
                     statementsopc.ExpandAll();
                     MessageBoxCon3Preg(statement);
                     MessageBoxCon3Preg();
-                    //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                    //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                     Code.seleccLaProdEnLaGram(18);
                     if (!Program1.form1.Pila_de_Llamados.Items.Contains(itm18))
-                    Program1.form1.Pila_de_Llamados.Items.Add(itm18);// Agrega el numero de regla en la pila de llamadas de la gramática
+                    Program1.form1.Pila_de_Llamados.Items.Add(itm18);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
                     MessageBoxCon3Preg();
                     //Code.seleccLaProdEnLaGram(18);
                     //Fin
@@ -1662,7 +1853,7 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("19");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             Item item;
@@ -1683,7 +1874,7 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("Condition");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             Item y;
@@ -1706,15 +1897,15 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("Condition");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
-            System.Windows.Forms.TreeNode hijo = new System.Windows.Forms.TreeNode("Término");
+            System.Windows.Forms.TreeNode hijo = new System.Windows.Forms.TreeNode("Tï¿½rmino");
             padre.Nodes.Add(hijo);
             CondTerm(hijo);
             while (la == Token.OR && la != Token.EOF)
             {
                 Check(Token.OR);
-                System.Windows.Forms.TreeNode hijo1 = new System.Windows.Forms.TreeNode("Término");
+                System.Windows.Forms.TreeNode hijo1 = new System.Windows.Forms.TreeNode("Tï¿½rmino");
                 padre.Nodes.Add(hijo1);
                 MessageBoxCon3Preg(padre);
                 CondTerm(hijo1);
@@ -1728,7 +1919,7 @@ namespace at.jku.ssw.cc
         {
             ListViewItem itm;
             itm = new ListViewItem("CondTerm");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
             Item y;
             CondFact(out x);
@@ -1750,7 +1941,7 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("CondTerm");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
             System.Windows.Forms.TreeNode hijo = new System.Windows.Forms.TreeNode("Factor");
             padre.Nodes.Add(hijo);
@@ -1770,10 +1961,10 @@ namespace at.jku.ssw.cc
 
         static void Expr(out Item item)
         {
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm;
             itm = new ListViewItem("23");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             Code.seleccLaProdEnLaGram(23);
             MessageBoxCon3Preg();
             //Fin
@@ -1783,7 +1974,7 @@ namespace at.jku.ssw.cc
             {
                 Check(Token.MINUS);
                 Term(out item, null);
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 Code.seleccLaProdEnLaGram(23);
                 //Fin
                 if (item.type != Tab.intType) Errors.Error("Operando debe ser de tipo int");
@@ -1799,7 +1990,7 @@ namespace at.jku.ssw.cc
                 Code.cargaProgDeLaGram("Term = Factor  OpcMulopFactor.");
                 Code.cargaProgDeLaGram("Factor = Designator  OpcRestOfMethCall.");
                 Code.cargaProgDeLaGram("Designator = ident opcRestOfDesignator.");
-                Code.Colorear("latoken");//1º parte de Term (y de Factor), por ej 123
+                Code.Colorear("latoken");//1ï¿½ parte de Term (y de Factor), por ej 123
                 MessageBoxCon3Preg();
                 Term(out item);
             }
@@ -1853,7 +2044,7 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("CondFact");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             Item y; int op;
@@ -1876,17 +2067,17 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("CondFact");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
-            System.Windows.Forms.TreeNode hijo1 = new System.Windows.Forms.TreeNode("Expresión");
+            System.Windows.Forms.TreeNode hijo1 = new System.Windows.Forms.TreeNode("Expresiï¿½n");
             padre.Nodes.Add(hijo1);
             Item item1, item2;
             Expr(out item1, hijo1);
-            System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("Condición");
+            System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("Condiciï¿½n");
             padre.Nodes.Add(hijo2);
             MessageBoxCon3Preg(padre);
             Relop(hijo2);
-            System.Windows.Forms.TreeNode hijo3 = new System.Windows.Forms.TreeNode("Expresión");
+            System.Windows.Forms.TreeNode hijo3 = new System.Windows.Forms.TreeNode("Expresiï¿½n");
             padre.Nodes.Add(hijo3);
             MessageBoxCon3Preg(padre);
             Expr(out item2, hijo3);
@@ -1900,13 +2091,13 @@ namespace at.jku.ssw.cc
             item = new Item(12345);
         }//Fin AA
 
-        //Inicio Modificación - Grupo 1 - 28/10/15 - Se Arregló Expr
+        //Inicio Modificaciï¿½n - Grupo 1 - 28/10/15 - Se Arreglï¿½ Expr
         static void Expr(out Item item, System.Windows.Forms.TreeNode padre)
         {
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm;
             itm = new ListViewItem("23");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             Code.seleccLaProdEnLaGram(23);
             MessageBoxCon3Preg();
             //Fin
@@ -1920,11 +2111,11 @@ namespace at.jku.ssw.cc
                 padre.Nodes.Add(OpcMinus);
                 padre.ExpandAll();
                 MessageBoxCon3Preg(padre);
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 MessageBoxCon3Preg();
                 ListViewItem itm24;  //Creamos un item de listview
-                itm24 = new ListViewItem("24"); //Le asignamos el número correspondiente
-                Program1.form1.Pila_de_Llamados.Items.Add(itm24); // Agregamos el numero de regla en la pila de llamadas de la gramática
+                itm24 = new ListViewItem("24"); //Le asignamos el nï¿½mero correspondiente
+                Program1.form1.Pila_de_Llamados.Items.Add(itm24); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
                 Code.seleccLaProdEnLaGram(24);
                 MessageBoxCon3Preg(); 
                 OpcMinus.Nodes.Add("-");
@@ -1937,7 +2128,7 @@ namespace at.jku.ssw.cc
                 padre.Nodes.Add(Term);
                 MessageBoxCon3Preg(padre);
                 Parser.Term(out item, Term);
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 Code.seleccLaProdEnLaGram(23);
                 //Fin
                 if (item.type != Tab.intType)
@@ -1953,11 +2144,11 @@ namespace at.jku.ssw.cc
                 padre.Nodes.Add(OpcMinus);
                 padre.ExpandAll();
                 MessageBoxCon3Preg(padre);
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 MessageBoxCon3Preg();
                 ListViewItem itm24;  //Creamos un item de listview
-                itm24 = new ListViewItem("24"); //Le asignamos el número correspondiente
-                Program1.form1.Pila_de_Llamados.Items.Add(itm24); // Agregamos el numero de regla en la pila de llamadas de la gramática
+                itm24 = new ListViewItem("24"); //Le asignamos el nï¿½mero correspondiente
+                Program1.form1.Pila_de_Llamados.Items.Add(itm24); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
                 Code.seleccLaProdEnLaGram(24);
                 MessageBoxCon3Preg();
                 OpcMinus.Nodes.Add(".");
@@ -1972,7 +2163,7 @@ namespace at.jku.ssw.cc
                 MessageBoxCon3Preg(padre);
                 MessageBoxCon3Preg();
                 Parser.Term(out item, Term);
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 Code.seleccLaProdEnLaGram(23);
                 //Fin
             }
@@ -1983,10 +2174,10 @@ namespace at.jku.ssw.cc
             MessageBoxCon3Preg(padre);
             MessageBoxCon3Preg();
 
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm25;  //Creamos un item de listview
-            itm25 = new ListViewItem("25"); //Le asignamos el número correspondiente
-            Program1.form1.Pila_de_Llamados.Items.Add(itm25); // Agregamos el numero de regla en la pila de llamadas de la gramática
+            itm25 = new ListViewItem("25"); //Le asignamos el nï¿½mero correspondiente
+            Program1.form1.Pila_de_Llamados.Items.Add(itm25); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
             Code.seleccLaProdEnLaGram(25);
             MessageBoxCon3Preg();
             //Fin
@@ -1998,10 +2189,10 @@ namespace at.jku.ssw.cc
                 OpcAddopTerms.ExpandAll();
                 MessageBoxCon3Preg(OpcAddopTerms);
                 MessageBoxCon3Preg();
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 ListViewItem itm33;  //Creamos un item de listview
-                itm33 = new ListViewItem("33"); //Le asignamos el número correspondiente
-                Program1.form1.Pila_de_Llamados.Items.Add(itm33); // Agregamos el numero de regla en la pila de llamadas de la gramática
+                itm33 = new ListViewItem("33"); //Le asignamos el nï¿½mero correspondiente
+                Program1.form1.Pila_de_Llamados.Items.Add(itm33); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
                 Code.seleccLaProdEnLaGram(33);
                 MessageBoxCon3Preg();
 
@@ -2029,7 +2220,7 @@ namespace at.jku.ssw.cc
                 }
                 else op = Code.DUP;
 
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 MessageBoxCon3Preg();
                 Program1.form1.Pila_de_Llamados.Items.Remove(itm33); // Quitamos el item correspondiente
                 Code.seleccLaProdEnLaGram(25);
@@ -2041,7 +2232,7 @@ namespace at.jku.ssw.cc
                 OpcAddopTerms.Nodes.Add(Term_OpcAddop);
                 MessageBoxCon3Preg(Term_OpcAddop);
                 Parser.Term(out itemSig, Term_OpcAddop);
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 Code.seleccLaProdEnLaGram(25);
                 //Fin
                 Code.Load(itemSig);
@@ -2058,7 +2249,7 @@ namespace at.jku.ssw.cc
                     System.Windows.Forms.MessageBox.Show("Aun no implementado 343323");
             }//Fin While
 
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             Program1.form1.Pila_de_Llamados.Items.Remove(itm25); // Quitamos el item correspondiente
             Code.seleccLaProdEnLaGram(23);
             MessageBoxCon3Preg();
@@ -2075,15 +2266,15 @@ namespace at.jku.ssw.cc
 
 
         }//Fin Expr
-        //Fin Modificación - Grupo 1 - 28/10/15
+        //Fin Modificaciï¿½n - Grupo 1 - 28/10/15
 
-        //Inicio Modificación - Grupo 1 - 28/10/15 - Se Arregló Designator
+        //Inicio Modificaciï¿½n - Grupo 1 - 28/10/15 - Se Arreglï¿½ Designator
         static void Designator(out Item item)
         {
 
             ListViewItem itm;
             itm = new ListViewItem("31");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             Check(Token.IDENT);
@@ -2093,7 +2284,7 @@ namespace at.jku.ssw.cc
             if (ZZ.ParserStatem)
                 Console.WriteLine("token.str:" + token.str);
             if (sym == null)
-                Errors.Error(sym.name + "..no está en la Tab");
+                Errors.Error(sym.name + "..no estï¿½ en la Tab");
             item = new Item(sym);
             if ((la == Token.PERIOD || la == Token.LBRACK) && la != Token.EOF)
             {
@@ -2170,15 +2361,15 @@ namespace at.jku.ssw.cc
             Program1.form1.Pila_de_Llamados.Items.Remove(itm);
 
         }//Fin Designator
-        //Fin Modificación - Grupo 1 - 28/10/15
+        //Fin Modificaciï¿½n - Grupo 1 - 28/10/15
 
         static void Factor(out Item item)
         {
 
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm;
             itm = new ListViewItem("28");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             Code.seleccLaProdEnLaGram(28);
             MessageBoxCon3Preg();
             //Fin
@@ -2244,9 +2435,9 @@ namespace at.jku.ssw.cc
                             else
                             {
                                 xType = sym.type; //Devuelve int como tipo (Struct), no como nodo Symbol 
-                                if (ZZ.parser) Console.WriteLine("Encontró " + token.str);
+                                if (ZZ.parser) Console.WriteLine("Encontrï¿½ " + token.str);
                             };
-                            if (ZZ.parser) Console.WriteLine("Terminó new " + token.str);
+                            if (ZZ.parser) Console.WriteLine("Terminï¿½ new " + token.str);
 
                             if (la == Token.LBRACK)
                             {
@@ -2256,7 +2447,7 @@ namespace at.jku.ssw.cc
                                 Code.Load(item); //genera cod p/cargar el result de la expr	
                                 Code.il.Emit(Code.NEWARR, type.sysType); //NEWARR de char
                                 type = new Struct(Struct.Kinds.Arr, type);
-                                //el nuevo type será array de char (pag 33 de T de simb)
+                                //el nuevo type serï¿½ array de char (pag 33 de T de simb)
                                 Check(Token.RBRACK);
                             }
                             else
@@ -2296,14 +2487,14 @@ namespace at.jku.ssw.cc
         static void Term(out Item item)
         {
 
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             ListViewItem itm;
             itm = new ListViewItem("26");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             Code.seleccLaProdEnLaGram(26);
             MessageBoxCon3Preg();
             ListViewItem itm34;  //Creamos un item de listview
-            itm34 = new ListViewItem("34"); //Le asignamos el número correspondiente
+            itm34 = new ListViewItem("34"); //Le asignamos el nï¿½mero correspondiente
             //Fin
             //Fin
 
@@ -2314,10 +2505,10 @@ namespace at.jku.ssw.cc
                 while ((la == Token.TIMES || la == Token.SLASH || la == Token.REM) && la != Token.EOF)
                 {
                     Code.cargaProgDeLaGram("OpcMulopFactor = Mulop Factor.");
-                    //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                    //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                     ListViewItem itm27;
                     itm27 = new ListViewItem("27");
-                    Program1.form1.Pila_de_Llamados.Items.Add(itm27);// Agrega el numero de regla en la pila de llamadas de la gramática
+                    Program1.form1.Pila_de_Llamados.Items.Add(itm27);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
                     Code.seleccLaProdEnLaGram(27);
                     MessageBoxCon3Preg();
                     //Fin
@@ -2329,9 +2520,9 @@ namespace at.jku.ssw.cc
                                 Code.Colorear("token");
                                 Code.cargaProgDeLaGram("Mulop =	'*'.");
                                 if (muestraProducciones) MessageBoxCon3Preg();
-                                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                                 Code.seleccLaProdEnLaGram(34);
-                                Program1.form1.Pila_de_Llamados.Items.Add(itm34); // Agregamos el numero de regla en la pila de llamadas de la gramática
+                                Program1.form1.Pila_de_Llamados.Items.Add(itm34); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
                                 //Fin
                                 MessageBoxCon3Preg();
                                 break;
@@ -2342,9 +2533,9 @@ namespace at.jku.ssw.cc
                                 Code.Colorear("token");
                                 Code.cargaProgDeLaGram("Mulop =	'/'.");
                                 if (muestraProducciones) MessageBoxCon3Preg();
-                                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                                 Code.seleccLaProdEnLaGram(34);
-                                Program1.form1.Pila_de_Llamados.Items.Add(itm34); // Agregamos el numero de regla en la pila de llamadas de la gramática
+                                Program1.form1.Pila_de_Llamados.Items.Add(itm34); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
                                 //Fin
                                 break;
                             }
@@ -2362,13 +2553,13 @@ namespace at.jku.ssw.cc
                             }
                     } //Fin switch
                     Code.Load(item);
-                    // Grupo Cocinero, Ledesma.Año 2018.Inicio
+                    // Grupo Cocinero, Ledesma.Aï¿½o 2018.Inicio
                     Program1.form1.Pila_de_Llamados.Items.Remove(itm34); // Quitamos el item correspondiente
                     Code.seleccLaProdEnLaGram(27);
                     MessageBoxCon3Preg();
                     //Fin
                     Factor(out itemSig);
-                    //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                    //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                     Code.seleccLaProdEnLaGram(27);
                     MessageBoxCon3Preg();
                     Program1.form1.Pila_de_Llamados.Items.Remove(itm27); // Quitamos el item correspondiente
@@ -2402,19 +2593,19 @@ namespace at.jku.ssw.cc
 
         }//Fin Term
 
-        //Inicio Modificacíon - Grupo 1 - 28/10/15 - Se Arregló Term
+        //Inicio Modificacï¿½on - Grupo 1 - 28/10/15 - Se Arreglï¿½ Term
         static void Term(out Item item, System.Windows.Forms.TreeNode padre)
         {
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             MessageBoxCon3Preg();
             ListViewItem itm;
             itm = new ListViewItem("26");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             Code.seleccLaProdEnLaGram(26);
             MessageBoxCon3Preg();
 
             ListViewItem itm34;  //Creamos un item de listview
-            itm34 = new ListViewItem("34"); //Le asignamos el número correspondiente
+            itm34 = new ListViewItem("34"); //Le asignamos el nï¿½mero correspondiente
             //Fin
 
 
@@ -2426,7 +2617,7 @@ namespace at.jku.ssw.cc
                 padre.ExpandAll();
                 MessageBoxCon3Preg(padre);
                 Parser.Factor(out item, Factor);
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 Code.seleccLaProdEnLaGram(26);
                 MessageBoxCon3Preg();
                 //Fin
@@ -2435,10 +2626,10 @@ namespace at.jku.ssw.cc
                 padre.Nodes.Add(OpcMulopFactors);
                 MessageBoxCon3Preg(padre);
                 MessageBoxCon3Preg();
-                //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                 ListViewItem itm27;  //Creamos un item de listview
-                itm27 = new ListViewItem("27"); //Le asignamos el número correspondiente
-                Program1.form1.Pila_de_Llamados.Items.Add(itm27); // Agregamos el numero de regla en la pila de llamadas de la gramática
+                itm27 = new ListViewItem("27"); //Le asignamos el nï¿½mero correspondiente
+                Program1.form1.Pila_de_Llamados.Items.Add(itm27); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
                 Code.seleccLaProdEnLaGram(27);
                 MessageBoxCon3Preg();
                 //Fin
@@ -2462,8 +2653,8 @@ namespace at.jku.ssw.cc
                                 Code.cargaProgDeLaGram("Mulop =	'*'.");
                                 existe_OpcMulOpFactor = true;
                                 Code.seleccLaProdEnLaGram(34);
-                                //Grupo Cocinero, Ledesma. Año 2018. Inicio
-                                Program1.form1.Pila_de_Llamados.Items.Add(itm34); // Agregamos el numero de regla en la pila de llamadas de la gramática
+                                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
+                                Program1.form1.Pila_de_Llamados.Items.Add(itm34); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
                                 //Fin
                                 MessageBoxCon3Preg();
                                 MulOp.Nodes.Add("'*'");
@@ -2481,8 +2672,8 @@ namespace at.jku.ssw.cc
                                 Code.Colorear("token");
                                 Code.cargaProgDeLaGram("Mulop =	'/'.");
                                 Code.seleccLaProdEnLaGram(34);
-                                //Grupo Cocinero, Ledesma. Año 2018. Inicio
-                                Program1.form1.Pila_de_Llamados.Items.Add(itm34); // Agregamos el numero de regla en la pila de llamadas de la gramática
+                                //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
+                                Program1.form1.Pila_de_Llamados.Items.Add(itm34); // Agregamos el numero de regla en la pila de llamadas de la gramï¿½tica
                                 //Fin
                                 MessageBoxCon3Preg();
                                 MulOp.Nodes.Add("'/'");
@@ -2505,13 +2696,13 @@ namespace at.jku.ssw.cc
                     OpcMulopFactors.Nodes.Add(Factor_OpcMulop);
                     OpcMulopFactors.ExpandAll();
                     MessageBoxCon3Preg(OpcMulopFactors);
-                    // Grupo Cocinero, Ledesma.Año 2018.Inicio
+                    // Grupo Cocinero, Ledesma.Aï¿½o 2018.Inicio
                     Program1.form1.Pila_de_Llamados.Items.Remove(itm34); // Quitamos el item correspondiente
                     Code.seleccLaProdEnLaGram(27);
                     MessageBoxCon3Preg();
                     //Fin
                     Parser.Factor(out itemSig, Factor_OpcMulop);
-                    //Grupo Cocinero, Ledesma. Año 2018. Inicio
+                    //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
                     Code.seleccLaProdEnLaGram(27);
                     MessageBoxCon3Preg();
                     Program1.form1.Pila_de_Llamados.Items.Remove(itm27); // Quitamos el item correspondiente
@@ -2550,24 +2741,24 @@ namespace at.jku.ssw.cc
                 Errors.Error("ErrorStrings.MUL_OP");
                 item = new Item(0);
             }
-            // Grupo Cocinero, Ledesma.Año 2018.Inicio
+            // Grupo Cocinero, Ledesma.Aï¿½o 2018.Inicio
             Program1.form1.Pila_de_Llamados.Items.Remove(itm34); // Quitamos el item correspondiente
             //Fin
             Program1.form1.Pila_de_Llamados.Items.Remove(itm);// Quitamos el item correspondiente
                                                               //Fin
 
         }//Fin Term
-        //Fin Modificacíon - Grupo 1 - 28/10/15
+        //Fin Modificacï¿½on - Grupo 1 - 28/10/15
 
-        //Inicio Modificacíon - Grupo 1 - 28/10/15 - Se Arregló Factor
+        //Inicio Modificacï¿½on - Grupo 1 - 28/10/15 - Se Arreglï¿½ Factor
         static void Factor(out Item item, System.Windows.Forms.TreeNode padre)
         {
 
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             MessageBoxCon3Preg();
             ListViewItem itm;
             itm = new ListViewItem("28");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             Code.seleccLaProdEnLaGram(28);
             MessageBoxCon3Preg();
             //Fin
@@ -2641,10 +2832,10 @@ namespace at.jku.ssw.cc
                             {
                                 xType = sym.type; //Devuelve int como tipo (Struct), no como nodo Symbol 
                                 if (ZZ.parser)
-                                    Console.WriteLine("Encontró " + token.str);
+                                    Console.WriteLine("Encontrï¿½ " + token.str);
                             };
                             if (ZZ.parser)
-                                Console.WriteLine("Terminó new " + token.str);
+                                Console.WriteLine("Terminï¿½ new " + token.str);
                             if (la == Token.LBRACK)
                             {
                                 Check(Token.LBRACK);
@@ -2706,7 +2897,7 @@ namespace at.jku.ssw.cc
                                                               //Fin
 
         }//Fin Factor
-        //Fin Modificación - Grupo 1 - 28/10/15
+        //Fin Modificaciï¿½n - Grupo 1 - 28/10/15
 
         static void Designator(out Item item, System.Windows.Forms.TreeNode padre)
         {
@@ -2717,11 +2908,11 @@ namespace at.jku.ssw.cc
             Check(Token.IDENT); //ahora token.str="val"      y laToken= "="
             //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------
            
-            //Grupo Cocinero, Ledesma. Año 2018. Inicio
+            //Grupo Cocinero, Ledesma. Aï¿½o 2018. Inicio
             MessageBoxCon3Preg();
             ListViewItem itm;
             itm = new ListViewItem("31");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             //Fin
             Code.seleccLaProdEnLaGram(31);
             MessageBoxCon3Preg();
@@ -2739,13 +2930,13 @@ namespace at.jku.ssw.cc
             Code.seleccLaProdEnLaGram(32);
             ListViewItem itm32;
             itm32 = new ListViewItem("32");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm32);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm32);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
             MessageBoxCon3Preg();
 
             //-------------------------------------------------Grupo 2 28/9/2015-----------------------------------------------------------
             Symbol sym = Tab.Find(token.str);
             if (ZZ.ParserStatem) Console.WriteLine("token.str:" + token.str);
-            if (sym == null) Errors.Error(sym.name + "..no está en la Tab");
+            if (sym == null) Errors.Error(sym.name + "..no estï¿½ en la Tab");
 
             item = new Item(sym);
             if ((la == Token.PERIOD || la == Token.LBRACK) && la != Token.EOF)
@@ -2811,7 +3002,7 @@ namespace at.jku.ssw.cc
                             {
                                 if (itemSig.type != Tab.intType) Errors.Error("index must be of type int");
                                 Code.Load(itemSig);  //carga el subindice en el Stack
-                                itemSig.type = item.type.elemType;//Si char[10] a; => x.type quedará con char
+                                itemSig.type = item.type.elemType;//Si char[10] a; => x.type quedarï¿½ con char
                             }
                             else Errors.Error(sym.name + " is not an array");
                             item.kind = Item.Kinds.Elem;
@@ -2845,7 +3036,7 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("Relop");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             switch (la)
@@ -2882,7 +3073,7 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("Relop");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
             switch (la)
             {
@@ -2919,7 +3110,7 @@ namespace at.jku.ssw.cc
 
             ListViewItem itm;
             itm = new ListViewItem("33");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             if (la == Token.PLUS)
@@ -2938,7 +3129,7 @@ namespace at.jku.ssw.cc
         {
             ListViewItem itm;
             itm = new ListViewItem("34");
-            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramática
+            Program1.form1.Pila_de_Llamados.Items.Add(itm);// Agrega el numero de regla en la pila de llamadas de la gramï¿½tica
 
 
             if (la == Token.TIMES)
@@ -2956,7 +3147,7 @@ namespace at.jku.ssw.cc
 
         }//Fin Mulop
 
-        // Métodos agregados por Manuel para manejo de errores
+        // Mï¿½todos agregados por Manuel para manejo de errores
         static BitArray addConjuntos(BitArray a, BitArray b)
         {
             BitArray c = (BitArray)a.Clone();
@@ -2965,7 +3156,7 @@ namespace at.jku.ssw.cc
         }
         static void testParsing(BitArray c1, BitArray c2, int nro_error)
         {
-            if (c1[la] == false) // lookahead no está en c1
+            if (c1[la] == false) // lookahead no estï¿½ en c1
             {
                 Errors.Error(ErrorStrings.ADD_OP);
                 c1 = addConjuntos(c1, c2);
@@ -2979,12 +3170,12 @@ namespace at.jku.ssw.cc
 
         public static void Parse(string prog)
         {
-            Scanner.Init(new StringReader(prog), null);  //deja en ch el 1° char de prog 
+            Scanner.Init(new StringReader(prog), null);  //deja en ch el 1ï¿½ char de prog 
             Tab.Init();  //topScope queda apuntando al Scope p/el universe
             Errors.Init();
             curMethod = null;
             token = null;
-            //Con 1° char de prog en la vble ch, ya puede comenzar el Scanner 
+            //Con 1ï¿½ char de prog en la vble ch, ya puede comenzar el Scanner 
             laToken = new Token(1, 1);  // avoid crash when 1st symbol has scanner error
             //porque el Scan comienza con token = laToken
             Scan();                     // scan first symbol
