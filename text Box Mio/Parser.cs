@@ -216,7 +216,7 @@ namespace at.jku.ssw.cc
             int n=-1;
             if (la == expected) {
                 
-                n = laToken.getVAl();
+                n = laToken.val;
             }
             else
                 Errors.Error("Se esperaba un: " + Token.names[expected]);
@@ -547,7 +547,6 @@ namespace at.jku.ssw.cc
                 Code.Colorear("token");
                 System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("IdentifiersOpc");
                 padre.Nodes.Add(hijo2);
-                cantVarLocales=cantVarLocales + type.size; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
                 Symbol vble = Tab.Insert(kind, token.str, type);
                 //vble no, poner simbolo (para pos, en int[] pos)
                 //pues en este caso  es campo, y devuelve el Symbol p/pos,  type es int[]
@@ -796,12 +795,6 @@ namespace at.jku.ssw.cc
                     int contadordearreglos = 0;
                     while (actual != null)  //Fran sólo es necesario buscar en el Scope actual
                     {
-
-                        if (actual.type.kind.ToString()=="Arr")
-                        {
-                            descontador += actual.type.size;
-                            contadordearreglos++;
-                        }
                         ultimo = actual;
                         actual = actual.next;
                     }
@@ -813,18 +806,7 @@ namespace at.jku.ssw.cc
                     int i = 0;
                     while(actual != null)
                     {
-                        if (actual.type.kind.ToString()=="Arr")
-                        {
-                            for (int j = 0; j < actual.type.size; j++)
-                            {
-                                instrParaVarsLocs = instrParaVarsLocs + "," + "\n       int32 V_" + i.ToString() + "." + j.ToString(); // +"  ";
-                              
-                            }
-                        }
-                        else
-                        {
-                            instrParaVarsLocs = instrParaVarsLocs + "," + "\n       int32 V_" + i.ToString(); // +"  ";
-                        }
+                        instrParaVarsLocs = instrParaVarsLocs + "," + "\n       int32 V_" + i.ToString(); // +"  ";
                         actual = actual.next;
                         i++;
                     }
@@ -922,7 +904,6 @@ namespace at.jku.ssw.cc
                     Check(Token.RBRACK);                  //int tipo del elem del array
 
                     xType = new Struct(Struct.Kinds.Arr, sym.type);
-                    xType.setSize(n);
                     //podria haber sido xType (Struct del int) en vez de sym.type  
                     //el nuevo xType que obtiene es un array de int
                 }
